@@ -25,11 +25,23 @@ function setupRoutes(){
   app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, config.publicDir, 'index.html'));
   });
+
+  app.get('js/config.js', (req, res) => {
+    res.set('Content-Type', 'application/javascript');
+    res.send(`const PORT = ${config.port};`);
+  });
 }
 
 function setupSockets(){
   sioServer.on('connection', (socket) => {
     console.log(`Client ${socket.id} connected.`);
+
+    socket.on('disconnect', () => {
+      console.log(`Client ${socket.id} has disconnected.`);
+    });
+
+    // Handle other socket events:
+    // ...
   });
 }
 
