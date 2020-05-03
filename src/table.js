@@ -1,24 +1,21 @@
 // a table manages players joining a games
 class Table{
 
-  constructor(game){
-    this.game = game;
+  constructor(Game){
+    this.Game = Game;
+    this.match = null;
     this.players = [];
+    this.id = 'table_id'
     this.welcome();
   }
 
   welcome(){
-    console.log('Creating a table for ', this.game);
+    console.log('Creating a table for ', this.Game);
   }
 
   addPlayer(player){
     var new_lenght = this.players.push(player);
     console.log('Player ', player.name, ' joined the table ');
-    console.log('number of players on the table', this.players.length, ' ', new_lenght);
-    for (var i = this.players.length - 1; i >= 0; i--) {
-      this.players[i].message('The game is starting');
-    }
-    console.log('number of players on the table', this.players.length);
     player.setTable(this);
   }
 
@@ -34,10 +31,10 @@ class Table{
   tryToStartGame(){
     console.log('Trying to start game ');
 
-    if (this.game.canStartWith(this.players)){
+    if (this.Game.canStartWith(this.players)){
         console.log('Starting game ');
-        var g = new this.game(this.players);
-        g.start();
+        this.match = new this.Game(this.players, this);
+
     }
     else{
         console.log('Cant start game ');

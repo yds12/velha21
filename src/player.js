@@ -6,13 +6,11 @@ class Player{
   }
 
   message(message){
-    console.log('Message to player ', this.name, ': ', message);
-    // this.emit('message', message);
+    this.socket.emit('message', message);
   }
 
   updateGameState(state){
-    console.log('Update gameState player ', this.name, ': ', state);
-    // this.emit('state', this.gameState);
+    this.socket.emit('state', state);
   }
 
   setTable(table){

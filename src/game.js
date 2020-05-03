@@ -4,9 +4,10 @@ const TERMINATED = 2;
 
 class Game {
 
-  constructor(players){
-    this.name = 'Game';
+  constructor(players, table){
+    this.name = 'tic-tac-toe';
     this.players = players;
+    this.table = table;
     this.reset();
   }
 
@@ -21,7 +22,7 @@ class Game {
     for (var i = this.players.length - 1; i >= 0; i--) {
       this.players[i].message('The game is starting');
     }
-    console.log('A game of ', this.name, ' is starting on table ', this.id);
+    console.log('A match of ', this.name, ' is starting on table ', this.table.id);
   }
 
   reset(){
@@ -43,9 +44,12 @@ class Game {
   }
 
   moveIsValid(player, move){
-    if(this.status !== ONGOING) return false;
+    if(this.status !== ONGOING) {
+      player.message('Game finished.');
+      return false;
+    }
     if(!this.isFree(move.x, move.y)){
-      player.message(playerId, 'This square is already filled.');
+      player.message('This square is already filled.');
       return false;
     }
     if(!this.isPlayerTurn(player)){
@@ -64,7 +68,7 @@ class Game {
   }
 
   fill(x, y, player){
-    this.state[y * 3 + x] = this.players.indexOf(player);
+    this.state[y * 3 + x] = this.players.indexOf(player) + 1;
   }
 
   sendState(){
@@ -75,6 +79,7 @@ class Game {
 
   checkEnd(){
     const winner = this.getWinner();
+    console.log('Winner ', winner);
 
     if(this.turn === 8 && winner <= 0){
       for (var i = this.players.length - 1; i >= 0; i--) {
@@ -87,11 +92,11 @@ class Game {
         return;
       this.status = FINISHED;
       for (var i = this.players.length - 1; i >= 0; i--) {
-        if (i == winner){
-          this.player[winner].message('Congratulations, you won!');
+        if (i == (winner - 1)){
+          this.players[i].message('Congratulations, you won!');
         }
         else{
-          this.player[(winner + 1) % 2].message('You lost!');
+          this.players[i].message('You lost!');
         }
       }
     }

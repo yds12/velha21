@@ -62,6 +62,15 @@ function setupSockets(){
       delete socketPlayer[socket.id];
     });
 
+    socket.on('click', pos => {
+      player = socketPlayer[socket.id];
+      console.log(`Player ${socket.id} clicked on quadrant ${pos.x}, ${pos.y}`);
+      player.table.match.update(player, pos);
+    });
+    socket.on('clear', () => {
+      player.table.match.reset();
+    });
+
     // Handle other socket events:
     // ...
   });
