@@ -1,0 +1,30 @@
+body {
+  background: #2f7465;
+  color: #cccccc;
+  font-family: 'Didact Gothic', sans;
+  font-size: 24px;
+}
+
+.main_part * {
+  display: inline;
+}
+
+.main_part ul {
+  display: block;
+}
+
+.main_part ul li {
+  display: block;
+}
+
+input, button {
+  -webkit-border-radius: 50px;
+  -moz-border-radius: 50px;
+  border-radius: 50px;
+  font-size: 17px;
+}
+
+input[type=text] {
+  width: 130px;
+  padding-left: 10px;
+}
