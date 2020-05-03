@@ -30,12 +30,21 @@ function setupRoutes(){
   app.use(express.static(config.publicDir));
 
   app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, config.publicDir, 'index.html'));
+    res.sendFile(path.join(__dirname, '..', config.publicDir, 'index.html'));
   });
 
-  app.get('js/config.js', (req, res) => {
+  app.get('/tictactoe', (req, res) => {
+    res.sendFile(path.join(__dirname, '..', config.publicDir, 'ttt.html'));
+  });
+
+  app.get('/js/config.js', (req, res) => {
     res.set('Content-Type', 'application/javascript');
     res.send(`const PORT = ${config.port};`);
+  });
+
+  app.get('*', (req, res) => {
+    console.log('Requested URL: ', req.url);
+    res.send();
   });
 }
 
