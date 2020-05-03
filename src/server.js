@@ -5,10 +5,9 @@ const path = require('path');
 
 const Player = require('./player.js');
 const Table = require('./table.js');
-const Game = require('./game.js')
 
-let table = null;
-var socketPlayer = {};
+let table;
+let socketPlayer = {};
 
 // Server setup
 const app = express();
@@ -44,7 +43,7 @@ function setupRoutes(){
 
   app.get('*', (req, res) => {
     console.log('Requested URL: ', req.url);
-    res.send();
+    res.status(404).send('Error 404: Not found.');
   });
 }
 
@@ -54,7 +53,6 @@ function setupSockets(){
     player = new Player(socket.id, socket);
     alocatePlayer(player);
     socketPlayer[socket.id] = player;
-
 
     socket.on('disconnect', () => {
       console.log(`Client ${socket.id} has disconnected.`);
@@ -76,13 +74,11 @@ function setupSockets(){
   });
 }
 
-
 function alocatePlayer(player){
-  if (! table){
-   table = new Table(Game);
+  if (!table){
+   table = new Table();
   }
   table.addPlayer(player);
-  table.tryToStartGame();
 }
 
 module.exports.start = start;

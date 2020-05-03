@@ -3,7 +3,6 @@ const FINISHED = 1;
 const TERMINATED = 2;
 
 class Game {
-
   constructor(players, table){
     this.name = 'tic-tac-toe';
     this.players = players;
@@ -19,8 +18,9 @@ class Game {
   }
 
   start(){
-    for (var i = this.players.length - 1; i >= 0; i--) {
-      this.players[i].message('The game is starting');
+    for (let i = this.players.length - 1; i >= 0; i--) {
+      this.players[i].message(
+        `The game is starting. You are player ${i + 1}.`);
     }
     console.log('A match of ', this.name, ' is starting on table ', this.table.id);
   }
@@ -72,7 +72,7 @@ class Game {
   }
 
   sendState(){
-    for (var i = this.players.length - 1; i >= 0; i--) {
+    for (let i = this.players.length - 1; i >= 0; i--) {
       this.players[i].updateGameState(this.state);
     }
   }
@@ -82,7 +82,7 @@ class Game {
     console.log('Winner ', winner);
 
     if(this.turn === 8 && winner <= 0){
-      for (var i = this.players.length - 1; i >= 0; i--) {
+      for (let i = this.players.length - 1; i >= 0; i--) {
         this.players[i].message('Draw!');
       }
       this.status = FINISHED;
@@ -91,7 +91,7 @@ class Game {
       if(winner <= 0)
         return;
       this.status = FINISHED;
-      for (var i = this.players.length - 1; i >= 0; i--) {
+      for (let i = this.players.length - 1; i >= 0; i--) {
         if (i == (winner - 1)){
           this.players[i].message('Congratulations, you won!');
         }
