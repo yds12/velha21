@@ -1,6 +1,5 @@
 const ONGOING = 0;
 const FINISHED = 1;
-const TERMINATED = 2;
 
 const OBSERVER = -1;
 const PLAYER1 = 1;
@@ -8,9 +7,7 @@ const PLAYER2 = 2;
 
 class Game {
   static canStartWith(players){
-    if (players.length === 2) return true;
-
-    return false;
+    return players.length === 2;
   }
 
   constructor(players, table){
@@ -47,7 +44,7 @@ class Game {
   }
 
   moveIsValid(player, move){
-    if(this.getRole(player) === -1){
+    if(this.getRole(player) === OBSERVER){
       player.message('You are not playing!');
       return false;
     }
@@ -100,11 +97,13 @@ class Game {
         return;
       this.status = FINISHED;
       for (let i = this.players.length - 1; i >= 0; i--) {
-        if (i == (winner - 1)){
+        this.players[i].message(`Player ${this.players[winner].name} won!`);
+        if (i === (winner - 1)){
           this.players[i].message('Congratulations, you won!');
         }
         else{
-          this.players[i].message('You lost!');
+          if (this.getRole(this.players[i]) !== OBSERVER)
+            this.players[i].message('You lost!');
         }
       }
     }
