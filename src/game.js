@@ -2,7 +2,17 @@ const ONGOING = 0;
 const FINISHED = 1;
 const TERMINATED = 2;
 
+const OBSERVER = -1;
+const PLAYER1 = 1;
+const PLAYER2 = 2;
+
 class Game {
+  static canStartWith(players){
+    if (players.length === 2) return true;
+
+    return false;
+  }
+
   constructor(players, table){
     this.name = 'tic-tac-toe';
     this.players = players;
@@ -10,19 +20,12 @@ class Game {
     this.reset();
   }
 
-  static canStartWith(players){
-    if (players.length === 2){
-      return true;
-    }
-    return false;
-  }
-
   start(){
     for (let i = this.players.length - 1; i >= 0; i--) {
       this.players[i].message(
         `The game is starting. You are player ${i + 1}.`);
     }
-    console.log('A match of ', this.name, ' is starting on table ', this.table.id);
+    console.log('A match of', this.name, 'is starting on table', this.table.id);
   }
 
   reset(){
@@ -44,6 +47,11 @@ class Game {
   }
 
   moveIsValid(player, move){
+    if(this.getRole(player) === -1){
+      player.message('You are not playing!');
+      return false;
+    }
+
     if(this.status !== ONGOING) {
       player.message('Game finished.');
       return false;
@@ -123,7 +131,17 @@ class Game {
 
   finish(){
     // return to table | start again | return to server
-    console.log('End of the game ', this.name);
+    console.log('End of the game', this.name);
+  }
+
+  getRole(player){
+    let idx = this.players.findIndex(pl => pl.id === player.id);
+
+    switch(idx){
+      case 0: return PLAYER1;
+      case 1: return PLAYER2;
+      default: return OBSERVER;
+    }
   }
 }
 

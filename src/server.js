@@ -51,7 +51,7 @@ function setupSockets(){
   sioServer.on('connection', (socket) => {
     console.log(`Client ${socket.id} connected.`);
     player = new Player(socket.id, socket);
-    alocatePlayer(player);
+    allocatePlayer(player);
     socketPlayer[socket.id] = player;
 
     socket.on('disconnect', () => {
@@ -74,7 +74,7 @@ function setupSockets(){
   });
 }
 
-function alocatePlayer(player){
+function allocatePlayer(player){
   if (!table){
    table = new Table();
   }
