@@ -14,7 +14,9 @@ class Player{
 
   setTable(table){
     this.table = table;
-    this.message("You joined table ", table.id, " to play ", table.game);
+    // At this point table.match.name is undefined
+    this.message(`You joined table ${table.id}.`); 
+    // to play ${table.match.name}.`);
   }
 
   leave(){

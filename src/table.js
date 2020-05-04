@@ -4,7 +4,7 @@ const Game = require('./game.js');
 class Table{
   constructor(){
     this.players = [];
-    this.id = 'table_id';
+    this.id = Math.floor(Math.random() * 10000);
     this.welcome();
   }
 
@@ -22,7 +22,7 @@ class Table{
   removePlayer(player){
     this.players.splice(this.players.indexOf(player), 1);
     console.log('Player ', player.name, ' left table ', this.id);
-    player.message("You left the table ", this.id);
+    player.message(`You left the table ${this.id}.`);
     if (!this.players){
       console.log('Table empty.');
     }
@@ -36,7 +36,14 @@ class Table{
       this.match = new Game(this.players, this);
     }
     else{
-      console.log("Can't start game ");
+      console.log("Can't start the game.");
+      this.messagePlayers('Waiting for opponents...');
+    }
+  }
+
+  messagePlayers(message){
+    for(player of this.players){
+      player.message(message);
     }
   }
 }
