@@ -53,6 +53,7 @@ function setupSockets(){
     player = new Player(socket.id, socket);
     allocatePlayer(player);
     socketPlayer[socket.id] = player;
+    if(player.table.match) player.table.match.sendState();
 
     socket.on('disconnect', () => {
       console.log(`Client ${socket.id} has disconnected.`);
@@ -63,7 +64,7 @@ function setupSockets(){
     socket.on('click', pos => {
       player = socketPlayer[socket.id];
       console.log(`Player ${socket.id} clicked on quadrant ${pos.x}, ${pos.y}`);
-      player.table.match.update(player, pos);
+      if(player.table.match) player.table.match.update(player, pos);
     });
     socket.on('clear', () => {
       player.table.match.reset();
