@@ -1,6 +1,6 @@
 const Game = require('./game.js');
 
-// a table manages players joining a games
+// a table manages players joining a game
 class Table{
   constructor(){
     this.players = [];
