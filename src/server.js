@@ -6,7 +6,7 @@ const path = require('path');
 const Player = require('./player.js');
 const Table = require('./table.js');
 
-let table;
+let tables = [];
 let socketPlayer = {};
 
 // Server setup
@@ -67,7 +67,7 @@ function setupSockets(){
       if(player.table.match) player.table.match.update(player, pos);
     });
     socket.on('clear', () => {
-      player.table.match.reset();
+      if(player.table.match) player.table.match.reset();
     });
 
     // Handle other socket events:
@@ -76,8 +76,16 @@ function setupSockets(){
 }
 
 function allocatePlayer(player){
+  let table;
+  for (let i = tables.length - 1; i >= 0; i--) {
+    if (tables[i].waitingOpponents) {
+      table = tables[i];
+      break;
+    }
+  }
   if (!table){
    table = new Table();
+   tables.push(table);
   }
   table.addPlayer(player);
 }

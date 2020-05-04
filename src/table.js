@@ -6,6 +6,7 @@ class Table{
     this.players = [];
     this.id = Math.floor(Math.random() * 10000);
     this.welcome();
+    this.waitingOpponents = true;
   }
 
   welcome(){
@@ -13,7 +14,7 @@ class Table{
   }
 
   addPlayer(player){
-    let new_lenght = this.players.push(player);
+    this.players.push(player);
     console.log(`Player ${player.name} joined the table.`);
     this.messagePlayers(`Player ${player.name} joined the table.`);
     player.setTable(this);
@@ -26,9 +27,10 @@ class Table{
     this.players.splice(this.players.indexOf(player), 1);
     console.log('Player', player.name, 'left table', this.id);
     player.message(`You left table ${this.id}.`);
-    if (!this.players){
+    if (!this.players)
       console.log('Table empty.');
-    }
+    else
+      this.waitingOpponents = true;
   }
 
   tryToStartGame(){
@@ -38,6 +40,7 @@ class Table{
     if (Game.canStartWith(this.players)){
       console.log('Starting game...');
       this.match = new Game(this.players, this);
+      this.waitingOpponents = false;
     }
     else{
       console.log("Can't start the game.");
