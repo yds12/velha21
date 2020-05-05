@@ -97,13 +97,14 @@ class Game {
         return;
       this.status = FINISHED;
       for (let i = this.players.length - 1; i >= 0; i--) {
-        this.players[i].message(`Player ${this.players[winner].name} won!`);
         if (i === (winner - 1)){
           this.players[i].message('Congratulations, you won!');
         }
-        else{
-          if (this.getRole(this.players[i]) !== OBSERVER)
-            this.players[i].message('You lost!');
+        else if (this.getRole(this.players[i]) !== OBSERVER){
+          this.players[i].message('You lost!');
+        } else{
+          this.players[i].message(
+            `Player ${this.players[winner - 1].name} won!`);
         }
       }
     }
