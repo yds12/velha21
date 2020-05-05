@@ -36,6 +36,10 @@ function setupRoutes(){
     res.sendFile(path.join(__dirname, '..', config.publicDir, 'ttt.html'));
   });
 
+  app.get('/blackjack', (req, res) => {
+    res.sendFile(path.join(__dirname, '..', config.publicDir, 'bj.html'));
+  });
+
   app.get('/js/config.js', (req, res) => {
     res.set('Content-Type', 'application/javascript');
     res.send(`const PORT = ${config.port};`);
