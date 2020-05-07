@@ -5,28 +5,26 @@ class Table{
   constructor(){
     this.players = [];
     this.id = Math.floor(Math.random() * 10000);
-    this.welcome();
     this.waitingOpponents = true;
   }
 
-  welcome(){
-    //console.log('Creating a table for ', this.match.name);
-  }
 
   addPlayer(player){
     this.players.push(player);
     console.log(`Player ${player.name} joined the table.`);
     this.messagePlayers(`Player ${player.name} joined the table.`);
     player.setTable(this);
-
-    if(!this.match) this.tryToStartGame();
-    else player.message('Game already started. You are an observer.');
+    this.tryToStartGame();
   }
 
   removePlayer(player){
     this.players.splice(this.players.indexOf(player), 1);
     console.log('Player', player.name, 'left table', this.id);
-    player.message(`You left table ${this.id}.`);
+    this.messagePlayers(`${player.name} left table ${this.id}.`);
+    if (!Game.canStartWith(this.players)){
+      this.messagePlayers(`Not enough players to keep continue.`);
+      if (this.match) this.match.finish();
+    }
     if (!this.players)
       console.log('Table empty.');
     else
@@ -34,7 +32,6 @@ class Table{
   }
 
   tryToStartGame(){
-    if(this.match) return;
     console.log('Trying to start game...');
 
     if (Game.canStartWith(this.players)){

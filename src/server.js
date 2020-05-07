@@ -71,7 +71,7 @@ function setupSockets(){
       if(player.table.match) player.table.match.update(player, pos);
     });
     socket.on('clear', () => {
-      if(player.table.match) player.table.match.reset();
+      player.table.tryToStartGame();
     });
 
     // Handle other socket events:

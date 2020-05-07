@@ -84,8 +84,6 @@ class Game {
 
   checkEnd(){
     const winner = this.getWinner();
-    console.log('Winner ', winner);
-
     if(this.turn === 8 && winner <= 0){
       for (let i = this.players.length - 1; i >= 0; i--) {
         this.players[i].message('Draw!');
@@ -131,7 +129,9 @@ class Game {
 
   finish(){
     // return to table | start again | return to server
+    this.table.messagePlayers("End of the game");
     console.log('End of the game', this.name);
+    this.status = FINISHED;
   }
 
   getRole(player){
