@@ -17,6 +17,13 @@ const server = http.createServer(app);
 const sioServer = socketIo(server);
 let config;
 
+
+const sioServerTTT = sioServer.of('/tictactoe');
+const sioServerBlackJack = sioServer.of('/blackjack');
+const sioServerIndex = sioServer.of('/index');
+
+
+
 function start(configurations){
   config = configurations;
   server.listen(config.port, () =>
@@ -51,31 +58,37 @@ function setupRoutes(){
   });
 }
 
+function gameSockets(socket){
+  console.log(`Client ${socket.id} connected.`);
+  player = new Player(socket.id, socket);
+  socketPlayer[socket.id] = player;
+  allocatePlayer(player);
+  if(player.table.match) player.table.match.sendState();
+
+  socket.on('disconnect', () => {
+    console.log(`Client ${socket.id} has disconnected.`);
+    socketPlayer[socket.id].leave();
+    delete socketPlayer[socket.id];
+  });
+
+  socket.on('click', pos => {
+    player = socketPlayer[socket.id];
+    console.log(`Player ${socket.id} clicked on quadrant ${pos.x}, ${pos.y}`);
+    if(player.table.match) player.table.match.update(player, pos);
+  });
+  socket.on('clear', () => {
+    player.table.tryToStartGame();
+  });
+}
+
 function setupSockets(){
-  sioServer.on('connection', (socket) => {
-    console.log(`Client ${socket.id} connected.`);
-    player = new Player(socket.id, socket);
-    allocatePlayer(player);
-    socketPlayer[socket.id] = player;
-    if(player.table.match) player.table.match.sendState();
-
-    socket.on('disconnect', () => {
-      console.log(`Client ${socket.id} has disconnected.`);
-      socketPlayer[socket.id].leave();
-      delete socketPlayer[socket.id];
+  sioServerTTT.on('connection', gameSockets);
+  // sioServerBlackJack.on('connection', gameSockets);
+  sioServerBlackJack.on('connection', function(socket){
+      console.log('someone wants to play black jack');
     });
-
-    socket.on('click', pos => {
-      player = socketPlayer[socket.id];
-      console.log(`Player ${socket.id} clicked on quadrant ${pos.x}, ${pos.y}`);
-      if(player.table.match) player.table.match.update(player, pos);
-    });
-    socket.on('clear', () => {
-      player.table.tryToStartGame();
-    });
-
-    // Handle other socket events:
-    // ...
+  sioServerIndex.on('connection', function(socket){
+    console.log('someone joined the main page');
   });
 }
 
@@ -88,8 +101,8 @@ function allocatePlayer(player){
     }
   }
   if (!table){
-   table = new Table();
-   tables.push(table);
+    table = new Table();
+    tables.push(table);
   }
   table.addPlayer(player);
 }
