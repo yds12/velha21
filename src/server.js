@@ -2,12 +2,7 @@ const express = require('express');
 const http = require('http');
 const socketIo = require('socket.io');
 const path = require('path');
-
-const Player = require('./player.js');
-const Table = require('./table.js');
-
-let tables = [];
-let socketPlayer = {};
+const controller = require('./controller');
 
 // Server setup
 const app = express();
@@ -54,44 +49,17 @@ function setupRoutes(){
 function setupSockets(){
   sioServer.on('connection', (socket) => {
     console.log(`Client ${socket.id} connected.`);
-    player = new Player(socket.id, socket);
-    allocatePlayer(player);
-    socketPlayer[socket.id] = player;
-    if(player.table.match) player.table.match.sendState();
+    let player = controller.createPlayer(socket);
 
     socket.on('disconnect', () => {
       console.log(`Client ${socket.id} has disconnected.`);
-      socketPlayer[socket.id].leave();
-      delete socketPlayer[socket.id];
+      controller.handleDisconnect(player);
     });
 
-    socket.on('click', pos => {
-      player = socketPlayer[socket.id];
-      console.log(`Player ${socket.id} clicked on quadrant ${pos.x}, ${pos.y}`);
-      if(player.table.match) player.table.match.update(player, pos);
-    });
-    socket.on('clear', () => {
-      player.table.tryToStartGame();
-    });
-
-    // Handle other socket events:
-    // ...
+    socket.on('click', (pos) => controller.handleClick(player, pos));
+    socket.on('clear', () => controller.handleClear(player));
+    socket.on('start', () => controller.handleStart(player));
   });
-}
-
-function allocatePlayer(player){
-  let table;
-  for (let i = tables.length - 1; i >= 0; i--) {
-    if (tables[i].waitingOpponents) {
-      table = tables[i];
-      break;
-    }
-  }
-  if (!table){
-   table = new Table();
-   tables.push(table);
-  }
-  table.addPlayer(player);
 }
 
 module.exports.start = start;

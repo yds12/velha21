@@ -8,7 +8,6 @@ class Table{
     this.waitingOpponents = true;
   }
 
-
   addPlayer(player){
     this.players.push(player);
     console.log(`Player ${player.name} joined the table.`);
@@ -46,7 +45,7 @@ class Table{
   }
 
   messagePlayers(message){
-    for(player of this.players){
+    for(let player of this.players){
       player.message(message);
     }
   }

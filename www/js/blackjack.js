@@ -6,6 +6,7 @@ let socket = io(connectTo);
 // Screen elements
 let divMsg = document.getElementById('messages');
 let btnClear = document.getElementById('clear');
+let btnStart = document.getElementById('start');
 let canvas = document.getElementById('screen');
 canvas.width = 800;
 canvas.height = 600;
@@ -144,6 +145,10 @@ canvas.onmousemove = (event) => {
 
 canvas.onclick = (event) => {
   // socket.emit('click', {});
+};
+
+btnStart.onclick = (event) => {
+  socket.emit('start');
 };
 
 btnClear.onclick = (event) => {
