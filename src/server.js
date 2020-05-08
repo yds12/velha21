@@ -12,6 +12,11 @@ const server = http.createServer(app);
 const sioServer = socketIo(server);
 let config;
 
+const sioServerTTT = sioServer.of('/tictactoe');
+const sioServerBlackJack = sioServer.of('/blackjack');
+const sioServerIndex = sioServer.of('/index');
+
+
 function start(configurations){
   config = configurations;
   server.listen(config.port, () =>
@@ -46,19 +51,28 @@ function setupRoutes(){
   });
 }
 
+function gameListening(socket){
+  console.log(`Client ${socket.id} connected.`);
+  let player = controller.createPlayer(socket);
+
+  socket.on('disconnect', () => {
+    console.log(`Client ${socket.id} has disconnected.`);
+    controller.handleDisconnect(player);
+  });
+
+  socket.on('click', (pos) => controller.handleClick(player, pos));
+  socket.on('clear', () => controller.handleClear(player));
+  socket.on('start', () => controller.handleStart(player));
+}
+
 function setupSockets(){
-  sioServer.on('connection', (socket) => {
-    console.log(`Client ${socket.id} connected.`);
-    let player = controller.createPlayer(socket);
-
-    socket.on('disconnect', () => {
-      console.log(`Client ${socket.id} has disconnected.`);
-      controller.handleDisconnect(player);
+  sioServerTTT.on('connection', gameListening);
+  // sioServerBlackJack.on('connection', gameSockets);
+  sioServerBlackJack.on('connection', function(socket){
+      console.log('someone wants to play black jack');
     });
-
-    socket.on('click', (pos) => controller.handleClick(player, pos));
-    socket.on('clear', () => controller.handleClear(player));
-    socket.on('start', () => controller.handleStart(player));
+  sioServerIndex.on('connection', function(socket){
+    console.log('someone joined the main page');
   });
 }
 

@@ -1,7 +1,7 @@
 // Socket setup
 const HOST = window.location.hostname;
 const connectTo = (HOST === 'localhost')? `${HOST}:${PORT}`: HOST;
-let socket = io(connectTo);
+let socket = io(connectTo + '/tictactoe');
 
 // Screen elements
 let divMsg = document.getElementById('messages');
