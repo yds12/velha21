@@ -13,11 +13,11 @@ function updateTables (tables) {
   let result = ''
   if (tables) {
     result += '<p>Tables:</p><ul>'
-    for (table of tables) {
+    for (const table of tables) {
       result += `<li><a href="">${table.id}</a></li>`
     }
     result += '</ul>'
   }
-  console.log("result")
+  console.log('result')
   ulTables.innerHTML = result
 }

@@ -15,7 +15,6 @@ let config
 const sioServerTTT = sioServer.of('/tictactoe')
 const sioServerBlackJack = sioServer.of('/blackjack')
 const sioServerIndex = sioServer.of('/index')
-controller.setSioServerIndex(sioServerIndex)
 
 function start (configurations) {
   config = configurations
@@ -51,9 +50,10 @@ function setupRoutes () {
   })
 }
 
-function gameListening (socket) {
+function handleGameConnection (socket) {
   console.log(`Client ${socket.id} connected.`)
   const player = controller.createPlayer(socket)
+  updateTables()
 
   socket.on('disconnect', () => {
     console.log(`Client ${socket.id} has disconnected.`)
@@ -66,16 +66,23 @@ function gameListening (socket) {
 }
 
 function setupSockets () {
-  sioServerTTT.on('connection', gameListening)
+  sioServerTTT.on('connection', handleGameConnection)
   // sioServerBlackJack.on('connection', gameSockets);
-  sioServerBlackJack.on('connection', function (socket) {
+  sioServerBlackJack.on('connection', (socket) => {
     console.log('someone wants to play black jack')
   })
-  sioServerIndex.on('connection', function (socket) {
-    socket.join('indexRoom');
-    console.log('someone joined the main page')
-    controller.updateTables()
+  sioServer.on('connection', (socket) => {
+    console.log('new connection')
   })
+  sioServerIndex.on('connection', (socket) => {
+    socket.join('indexRoom')
+    console.log('someone joined the main page')
+    socket.emit('updateTables', controller.getTables())
+  })
+}
+
+function updateTables () {
+  sioServerIndex.to('indexRoom').emit('updateTables', controller.getTables())
 }
 
 module.exports.start = start
