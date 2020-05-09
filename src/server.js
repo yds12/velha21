@@ -1,79 +1,78 @@
-const express = require('express');
-const http = require('http');
-const socketIo = require('socket.io');
-const path = require('path');
-const controller = require('./controller');
+const express = require('express')
+const http = require('http')
+const socketIo = require('socket.io')
+const path = require('path')
+const controller = require('./controller')
 
 // Server setup
-const app = express();
-app.disable('x-powered-by');
+const app = express()
+app.disable('x-powered-by')
 
-const server = http.createServer(app);
-const sioServer = socketIo(server);
-let config;
+const server = http.createServer(app)
+const sioServer = socketIo(server)
+let config
 
-const sioServerTTT = sioServer.of('/tictactoe');
-const sioServerBlackJack = sioServer.of('/blackjack');
-const sioServerIndex = sioServer.of('/index');
+const sioServerTTT = sioServer.of('/tictactoe')
+const sioServerBlackJack = sioServer.of('/blackjack')
+const sioServerIndex = sioServer.of('/index')
 
-
-function start(configurations){
-  config = configurations;
+function start (configurations) {
+  config = configurations
   server.listen(config.port, () =>
-    console.log(`Express server listening on port ${config.port}...`));
-  setupRoutes();
-  setupSockets();
+    console.log(`Express server listening on port ${config.port}...`))
+  setupRoutes()
+  setupSockets()
 }
 
-function setupRoutes(){
-  app.use(express.static(config.publicDir));
+function setupRoutes () {
+  app.use(express.static(config.publicDir))
 
   app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, '..', config.publicDir, 'index.html'));
-  });
+    res.sendFile(path.join(__dirname, '..', config.publicDir, 'index.html'))
+  })
 
   app.get('/tictactoe', (req, res) => {
-    res.sendFile(path.join(__dirname, '..', config.publicDir, 'ttt.html'));
-  });
+    res.sendFile(path.join(__dirname, '..', config.publicDir, 'ttt.html'))
+  })
 
   app.get('/blackjack', (req, res) => {
-    res.sendFile(path.join(__dirname, '..', config.publicDir, 'bj.html'));
-  });
+    res.sendFile(path.join(__dirname, '..', config.publicDir, 'bj.html'))
+  })
 
   app.get('/js/config.js', (req, res) => {
-    res.set('Content-Type', 'application/javascript');
-    res.send(`const PORT = ${config.port};`);
-  });
+    res.set('Content-Type', 'application/javascript')
+    res.send(`const PORT = ${config.port};`)
+  })
 
   app.get('*', (req, res) => {
-    console.log('Requested URL: ', req.url);
-    res.status(404).send('Error 404: Not found.');
-  });
+    console.log('Requested URL: ', req.url)
+    res.status(404).send('Error 404: Not found.')
+  })
 }
 
-function gameListening(socket){
-  console.log(`Client ${socket.id} connected.`);
-  let player = controller.createPlayer(socket);
+function gameListening (socket) {
+  console.log(`Client ${socket.id} connected.`)
+  const player = controller.createPlayer(socket)
 
   socket.on('disconnect', () => {
-    console.log(`Client ${socket.id} has disconnected.`);
-    controller.handleDisconnect(player);
-  });
+    console.log(`Client ${socket.id} has disconnected.`)
+    controller.handleDisconnect(player)
+  })
 
-  socket.on('click', (pos) => controller.handleClick(player, pos));
-  socket.on('clear', () => controller.handleClear(player));
-  socket.on('start', () => controller.handleStart(player));
+  socket.on('click', (pos) => controller.handleClick(player, pos))
+  socket.on('clear', () => controller.handleClear(player))
+  socket.on('start', () => controller.handleStart(player))
 }
 
-function setupSockets(){
-  sioServerTTT.on('connection', gameListening);
+function setupSockets () {
+  sioServerTTT.on('connection', gameListening)
   // sioServerBlackJack.on('connection', gameSockets);
-  sioServerBlackJack.on('connection', function(socket){
-      console.log('someone wants to play black jack');
-    });
-  sioServerIndex.on('connection', function(socket){
-    console.log('someone joined the main page');
-  });
+  sioServerBlackJack.on('connection', function (socket) {
+    console.log('someone wants to play black jack')
+  })
+  sioServerIndex.on('connection', function (socket) {
+    console.log('someone joined the main page')
+  })
 }
 
-module.exports.start = start;
+module.exports.start = start
