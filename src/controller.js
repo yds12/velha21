@@ -3,30 +3,33 @@ const Table = require('./table')
 
 const tables = []
 
-function createPlayer (socket) {
+function createPlayer (socket, Game) {
   const player = new Player(socket.id, socket)
-  allocatePlayer(player)
+  allocatePlayer(player, Game)
   if (player.table.match) player.table.match.sendState()
   return player
 }
 
-function allocatePlayer (player) {
+function allocatePlayer (player, Game) {
   let table
   for (const t of tables) {
-    if (t.waitingOpponents) {
+    if (t.waitingOpponents && t.Game === Game) {
       table = t
       break
     }
   }
   if (!table) {
-    table = new Table()
+    table = new Table(Game)
     tables.push(table)
   }
   table.addPlayer(player)
 }
 
-function handleDisconnect (player) {  
-  player.leave()
+function handleDisconnect (player) {
+  player.table.removePlayer(player)
+  if (player.table.empty()) {
+    tables.splice(player.table, 1)
+  }
 }
 
 function handleClick (player, pos) {
@@ -42,13 +45,9 @@ function handleStart (player) {
 }
 
 function getTables () {
-  const result = []
-  for (const table of tables) {
-    result.push({
-      id: table.id
-    })
-  }
-  return result
+  return tables
+    .filter(table => table.waitingOpponents)
+    .map(table => ({ id: table.id, game: table.Game.name }))
 }
 
 module.exports.createPlayer = createPlayer

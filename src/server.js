@@ -3,6 +3,7 @@ const http = require('http')
 const socketIo = require('socket.io')
 const path = require('path')
 const controller = require('./controller')
+const TicTacToeGame = require('./game')
 
 // Server setup
 const app = express()
@@ -31,7 +32,11 @@ function setupRoutes () {
     res.sendFile(path.join(__dirname, '..', config.publicDir, 'index.html'))
   })
 
-  app.get('/tictactoe', (req, res) => {
+  app.get('/tic-tac-toe/\\d+', (req, res) => {
+    res.redirect('/tic-tac-toe')
+  })
+
+  app.get('/tic-tac-toe', (req, res) => {
     res.sendFile(path.join(__dirname, '..', config.publicDir, 'ttt.html'))
   })
 
@@ -50,24 +55,27 @@ function setupRoutes () {
   })
 }
 
-function handleGameConnection (socket) {
-  console.log(`Client ${socket.id} connected.`)
-  const player = controller.createPlayer(socket)
-  updateTables()
+function handleGameConnection (Game) {
+  return (socket) => {
+    console.log(`Client ${socket.id} connected.`)
+    const player = controller.createPlayer(socket, Game)
+    updateTables()
 
-  socket.on('disconnect', () => {
-    console.log(`Client ${socket.id} has disconnected.`)
-    controller.handleDisconnect(player)
-  })
+    socket.on('disconnect', () => {
+      console.log(`Client ${socket.id} has disconnected.`)
+      controller.handleDisconnect(player)
+      updateTables()
+    })
 
-  socket.on('click', (pos) => controller.handleClick(player, pos))
-  socket.on('clear', () => controller.handleClear(player))
-  socket.on('start', () => controller.handleStart(player))
+    socket.on('click', (pos) => controller.handleClick(player, pos))
+    socket.on('clear', () => controller.handleClear(player))
+    socket.on('start', () => controller.handleStart(player))
+  }
 }
 
 function setupSockets () {
-  sioServerTTT.on('connection', handleGameConnection)
-  // sioServerBlackJack.on('connection', gameSockets);
+  sioServerTTT.on('connection', handleGameConnection(TicTacToeGame))
+  // sioServerBlackJack.on('connection', handleGameConnection(BlackJackGame));
   sioServerBlackJack.on('connection', (socket) => {
     console.log('someone wants to play black jack')
   })

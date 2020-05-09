@@ -1,12 +1,12 @@
-const Game = require('./game.js')
 const util = require('./util.js')
 
 // a table manages players joining a game
 class Table {
-  constructor () {
+  constructor (Game) {
     this.players = []
     this.id = Math.floor(Math.random() * 10000)
     this.waitingOpponents = true
+    this.Game = Game
   }
 
   addPlayer (player) {
@@ -21,25 +21,29 @@ class Table {
     this.players.splice(this.players.indexOf(player), 1)
     console.log('Player', player.name, 'left table', this.id)
     this.messagePlayers(`${player.name} left table ${this.id}.`)
-    if (!Game.canStartWith(this.players)) {
-      this.messagePlayers('Not enough players to keep continue.')
+    if (!this.Game.canStartWith(this.players)) {
+      this.messagePlayers('Not enough players to continue.')
       if (this.match) this.match.finish()
     }
-    if (!this.players) { console.log('Table empty.') } else { this.waitingOpponents = true }
+    if (!this.empty()) { this.waitingOpponents = true }
   }
 
   tryToStartGame () {
     console.log('Trying to start game...')
 
-    if (Game.canStartWith(this.players)) {
+    if (this.Game.canStartWith(this.players)) {
       console.log('Starting game...')
       this.shufflePlayers()
-      this.match = new Game(this.players, this)
+      this.match = new this.Game(this.players, this)
       this.waitingOpponents = false
     } else {
       console.log("Can't start the game.")
       this.messagePlayers('Waiting for opponents...')
     }
+  }
+
+  empty () {
+    return this.players.length === 0
   }
 
   shufflePlayers () {

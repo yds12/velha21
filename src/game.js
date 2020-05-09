@@ -6,12 +6,12 @@ const PLAYER1 = 1
 const PLAYER2 = 2
 
 class Game {
+  static name = 'tic-tac-toe'
   static canStartWith (players) {
     return players.length === 2
   }
 
   constructor (players, table) {
-    this.name = 'tic-tac-toe'
     this.players = players
     this.table = table
     this.reset()
