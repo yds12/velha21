@@ -1,4 +1,5 @@
 const Game = require('./game.js')
+const util = require('./util.js')
 
 // a table manages players joining a game
 class Table {
@@ -32,12 +33,17 @@ class Table {
 
     if (Game.canStartWith(this.players)) {
       console.log('Starting game...')
+      this.shufflePlayers()
       this.match = new Game(this.players, this)
       this.waitingOpponents = false
     } else {
       console.log("Can't start the game.")
       this.messagePlayers('Waiting for opponents...')
     }
+  }
+
+  shufflePlayers () {
+    util.shuffle(this.players)
   }
 
   messagePlayers (message) {
