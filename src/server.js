@@ -15,6 +15,7 @@ let config
 const sioServerTTT = sioServer.of('/tictactoe')
 const sioServerBlackJack = sioServer.of('/blackjack')
 const sioServerIndex = sioServer.of('/index')
+controller.setSioServerIndex(sioServerIndex)
 
 function start (configurations) {
   config = configurations
@@ -71,7 +72,9 @@ function setupSockets () {
     console.log('someone wants to play black jack')
   })
   sioServerIndex.on('connection', function (socket) {
+    socket.join('indexRoom');
     console.log('someone joined the main page')
+    controller.updateTables()
   })
 }
 
