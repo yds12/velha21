@@ -33,11 +33,13 @@ function setupRoutes () {
     res.sendFile(path.join(__dirname, '..', config.publicDir, 'index.html'))
   })
 
-  app.get('/tic-tac-toe/\\d+', (req, res) => {
-    res.redirect('/tic-tac-toe')
+  app.get('/tic-tac-toe', (req, res) => {
+    const tableId = Math.floor(Math.random() * 10000)
+    res.redirect('/tic-tac-toe/'+tableId)
   })
 
-  app.get('/tic-tac-toe', (req, res) => {
+  app.get('/tic-tac-toe/:tableId', (req, res) => {
+    console.log(`joining table ${req.params['tableId']}`)
     res.sendFile(path.join(__dirname, '..', config.publicDir, 'ttt.html'))
   })
 
@@ -56,10 +58,19 @@ function setupRoutes () {
   })
 }
 
+function getTableId (socket) {
+  // TODO figure out better way to get table ID
+  const x = socket.handshake.headers.referer.split('/')
+  return x[x.length - 1]
+}
+
 function handleGameConnection (gameName) {
   return (socket) => {
+    const tableId = getTableId(socket)
+    console.log("tableId: " + tableId)
+
     console.log(`Client ${socket.id} connected.`)
-    const player = controller.createPlayer(socket, gameName)
+    const player = controller.createPlayer(socket, gameName, tableId)
     updateTables()
 
     socket.on('disconnect', () => {

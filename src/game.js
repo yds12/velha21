@@ -2,14 +2,12 @@ class Game {
   static ONGOING = 0
   static FINISHED = 1
 
-  static OBSERVER = -1
   static PLAYER1 = 1
   static PLAYER2 = 2
 
   constructor (table) {
     this.table = table
     this.players = table.players
-    this.reset()
   }
 
   canStart () {
