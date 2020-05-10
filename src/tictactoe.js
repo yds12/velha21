@@ -11,16 +11,12 @@ class Tictactoe extends Game {
   }
 
   start () {
-    for (let i = this.players.length - 1; i >= 0; i--) {
-      this.players[i].message(
-        `The game is starting. You are player ${i + 1}.`)
-    }
-    console.log('A match of', this.name, 'is starting on table', this.table.id)
+    Game.prototype.start.call(this) // call the method in the parent
   }
 
   reset () {
     this.state = [0, 0, 0, 0, 0, 0, 0, 0, 0]
-    Game.prototype.reset.call(this) // call the method in the parent
+    Game.prototype.reset.call(this)
   }
 
   update (player, move) {
@@ -36,7 +32,7 @@ class Tictactoe extends Game {
   }
 
   moveIsValid (player, move) {
-    if (this.getRole(player) === Game.OBSERVER) {
+    if (player.isObserver === Game.OBSERVER) {
       player.message('You are not playing!')
       return false
     }
