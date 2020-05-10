@@ -33,8 +33,7 @@ class Game {
   }
 
   update (player, move) {
-    console.log(
-        `Player ${player.socket.id} clicked on quadrant ${move.x}, ${move.y}`)
+    this.logMove(player, move)
     if (!this.moveIsValid(player, move)) {
       return
     }
@@ -42,6 +41,10 @@ class Game {
     this.sendState()
     this.checkEnd()
     this.turn++
+  }
+
+  logMove (player, move) {
+    return
   }
 
   executeMove (player, move) {

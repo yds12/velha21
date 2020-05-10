@@ -19,6 +19,11 @@ class TicTacToe extends Game {
     Game.prototype.reset.call(this)
   }
 
+  logMove (player, move) {
+    console.log(
+      `Player ${player.name} clicked on quadrant ${move.x}, ${move.y}`)
+  }
+
   executeMove (player, move) {
     this.fill(move.x, move.y, player)
   }
