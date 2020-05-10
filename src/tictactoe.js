@@ -7,6 +7,7 @@ class TicTacToe extends Game {
 
   constructor (table) {
     super(table)
+    this.state = [0, 0, 0, 0, 0, 0, 0, 0, 0]
     this.name = 'tic-tac-toe'
   }
 
@@ -29,7 +30,7 @@ class TicTacToe extends Game {
   }
 
   moveIsValid (player, move) {
-    if (player.isObserver === Game.OBSERVER) {
+    if (player.isObserver) {
       player.message('You are not playing!')
       return false
     }
@@ -80,7 +81,7 @@ class TicTacToe extends Game {
       for (let i = this.players.length - 1; i >= 0; i--) {
         if (i === (winner - 1)) {
           this.players[i].message('Congratulations, you won!')
-        } else if (this.getRole(this.players[i]) !== Game.OBSERVER) {
+        } else if (!this.players[i].isObserver) {
           this.players[i].message('You lost!')
         } else {
           this.players[i].message(

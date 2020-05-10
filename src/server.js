@@ -12,7 +12,6 @@ const server = http.createServer(app)
 const sioServer = socketIo(server)
 let config
 
-// const sioServerTTT = sioServer.of('/tictactoe?table=abc')
 const sioServerTTT = sioServer.of('/tictactoe')
 const sioServerBlackJack = sioServer.of('/blackjack')
 const sioServerIndex = sioServer.of('/index')
@@ -60,6 +59,7 @@ function setupRoutes () {
 function handleGameConnection (gameName) {
   return (socket) => {
     console.log(`Client ${socket.id} connected.`)
+    // console.log(socket)
     const player = controller.createPlayer(socket, gameName)
     updateTables()
 
