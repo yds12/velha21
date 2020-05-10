@@ -3,15 +3,18 @@ const Tictactoe = require('./tictactoe')
 
 // a table manages players joining a game
 class Table {
-  constructor (gameName) {
+  constructor (gameName, tableId) {
     this.players = []
-    this.id = Math.floor(Math.random() * 10000)
+    this.id = tableId
     this.waitingOpponents = true
     const Game = getGame(gameName)
     this.game = new Game(this)
   }
 
   addPlayer (player) {
+    if (!this.waitingOpponents){
+      player.isObserver = true
+    }
     this.players.push(player)
     console.log(`Player ${player.name} joined the table.`)
     this.messagePlayers(`Player ${player.name} joined the table.`)
