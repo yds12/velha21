@@ -60,8 +60,12 @@ function setupRoutes () {
 
 function getTableId (socket) {
   // TODO figure out better way to get table ID
-  const x = socket.handshake.headers.referer.split('/')
-  return x[x.length - 1]
+  try {
+    const x = socket.handshake.headers.referer.split('/')
+    return x[x.length - 1]
+  } catch (e) {
+    return 42
+  }
 }
 
 function handleGameConnection (gameName) {
