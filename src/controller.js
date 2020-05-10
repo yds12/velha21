@@ -49,7 +49,7 @@ function getTables () {
     .map(table => ({
       id: table.id,
       game: table.game.name,
-      status: "status"
+      status: (table.waitingOpponents) ? 'waitingOpponents' : 'full'
     }))
 }
 
