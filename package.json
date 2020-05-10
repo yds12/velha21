@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node index.js",
     "startd": "nodemon",
-    "test": "nodemon --exec mocha"
+    "test": "npx standard; nodemon --exec mocha"
   },
   "keywords": [],
   "author": "",

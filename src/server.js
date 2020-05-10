@@ -22,6 +22,8 @@ function start (configurations) {
     console.log(`Express server listening on port ${config.port}...`))
   setupRoutes()
   setupSockets()
+
+  return server
 }
 
 function setupRoutes () {
