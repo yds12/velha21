@@ -1,12 +1,12 @@
 const Game = require('./game')
 
-class Tictactoe extends Game {
+class TicTacToe extends Game {
   static canStartWith (players) {
     return players.length === 2
   }
 
-  constructor (players, table) {
-    super(players, table)
+  constructor (players) {
+    super(players)
     this.name = 'tic-tac-toe'
   }
 
@@ -19,16 +19,13 @@ class Tictactoe extends Game {
     Game.prototype.reset.call(this)
   }
 
-  update (player, move) {
+  logMove (player, move) {
     console.log(
-        `Player ${player.socket.id} clicked on quadrant ${move.x}, ${move.y}`)
-    if (!this.moveIsValid(player, move)) {
-      return
-    }
+      `Player ${player.name} clicked on quadrant ${move.x}, ${move.y}`)
+  }
+
+  executeMove (player, move) {
     this.fill(move.x, move.y, player)
-    this.sendState()
-    this.checkEnd()
-    this.turn++
   }
 
   moveIsValid (player, move) {
@@ -109,4 +106,4 @@ class Tictactoe extends Game {
   }
 }
 
-module.exports = Tictactoe
+module.exports = TicTacToe

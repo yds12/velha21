@@ -6,14 +6,14 @@ class Game {
   static PLAYER1 = 1
   static PLAYER2 = 2
 
-  static canStartWith (players) {
-    return players.length === 2
+  constructor (table) {
+    this.table = table
+    this.players = table.players
+    this.reset()
   }
 
-  constructor (players, table) {
-    this.players = players
-    this.table = table
-    this.reset()
+  canStart () {
+    return this.players.length === 2
   }
 
   start () {
@@ -21,7 +21,7 @@ class Game {
       this.players[i].message(
         `The game is starting. You are player ${i + 1}.`)
     }
-    console.log('A match of', this.name, 'is starting on table', this.table.id)
+    console.log('A game of', this.name, 'is starting on table', this.table.id)
   }
 
   reset () {
@@ -33,15 +33,22 @@ class Game {
   }
 
   update (player, move) {
-    console.log(
-        `Player ${player.socket.id} clicked on quadrant ${move.x}, ${move.y}`)
+    this.logMove(player, move)
     if (!this.moveIsValid(player, move)) {
       return
     }
-    this.fill(move.x, move.y, player)
+    this.executeMove(player, move)
     this.sendState()
     this.checkEnd()
     this.turn++
+  }
+
+  logMove (player, move) {
+    return
+  }
+
+  executeMove (player, move) {
+    return
   }
 
   moveIsValid (player, move) {
@@ -50,10 +57,6 @@ class Game {
 
   isPlayerTurn (player) {
     return (this.players.indexOf(player) === this.turn % 2)
-  }
-
-  isFree (x, y) {
-    return this.state[y * 3 + x] === 0
   }
 
   fill (x, y, player) {

@@ -14,7 +14,7 @@ function updateTables (tables) {
   if (tables.length > 0) {
     result += '<p>Tables:</p><ul>'
     for (const table of tables) {
-      result += `<li><a href="${table.game}/${table.id}">${table.game}:${table.id}</a></li>`
+      result += `<li><a href="${table.game}/${table.id}">${table.game}:${table.id} (${table.status})</a></li>`
     }
     result += '</ul>'
   }

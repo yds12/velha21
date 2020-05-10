@@ -73,7 +73,7 @@ function handleGameConnection (gameName) {
 }
 
 function setupSockets () {
-  sioServerTTT.on('connection', handleGameConnection('tictactoe'))
+  sioServerTTT.on('connection', handleGameConnection('tic-tac-toe'))
   // sioServerBlackJack.on('connection', handleGameConnection(BlackJackGame));
   sioServerBlackJack.on('connection', (socket) => {
     console.log('someone wants to play black jack')
