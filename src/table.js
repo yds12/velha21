@@ -1,12 +1,14 @@
 const util = require('./util.js')
+const Tictactoe = require('./tictactoe')
 
 // a table manages players joining a game
 class Table {
-  constructor (Game) {
+  constructor (gameName) {
     this.players = []
     this.id = Math.floor(Math.random() * 10000)
     this.waitingOpponents = true
-    this.Game = Game
+    const Game = getGame(gameName)
+    this.game = new Game(this)
   }
 
   addPlayer (player) {
@@ -21,9 +23,9 @@ class Table {
     this.players.splice(this.players.indexOf(player), 1)
     console.log('Player', player.name, 'left table', this.id)
     this.messagePlayers(`${player.name} left table ${this.id}.`)
-    if (!this.Game.canStartWith(this.players)) {
+    if (!this.game.canStart()) {
       this.messagePlayers('Not enough players to continue.')
-      if (this.match) this.match.finish()
+      this.game.finish()
     }
     if (!this.empty()) { this.waitingOpponents = true }
   }
@@ -31,10 +33,11 @@ class Table {
   tryToStartGame () {
     console.log('Trying to start game...')
 
-    if (this.Game.canStartWith(this.players)) {
+    if (this.game.canStart()) {
       console.log('Starting game...')
       this.shufflePlayers()
-      this.match = new this.Game(this.players, this)
+      // TODO use
+      this.game.start()
       this.waitingOpponents = false
     } else {
       console.log("Can't start the game.")
@@ -55,6 +58,19 @@ class Table {
       player.message(message)
     }
   }
+}
+
+const games = {}
+function getGame (gameName) {
+  if (!games[gameName]) {
+    switch (gameName.toLowerCase()) {
+      case 'tic-tac-toe': games[gameName] = Tictactoe
+        break
+      case 'blackjack': games[gameName] = null
+        break
+    }
+  }
+  return games[gameName]
 }
 
 module.exports = Table

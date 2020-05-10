@@ -1,39 +1,25 @@
 const Player = require('./player')
 const Table = require('./table')
-const Tictactoe = require('./tictactoe')
 
 const tables = []
-const games = {} 
 
 function createPlayer (socket, gameName) {
   const player = new Player(socket.id, socket)
-  allocatePlayer(player, getGame(gameName))
-  if (player.table.match) player.table.match.sendState()
+  allocatePlayer(player, gameName)
+  player.table.game.sendState()
   return player
 }
 
-function getGame(gameName){
-  if(!games[gameName]) {
-    switch(gameName.toLowerCase()) {
-      case 'tictactoe': games[gameName] = Tictactoe
-        break
-      case 'blackjack': games[gameName] = null
-        break
-    }
-  }
-  return games[gameName]
-}
-
-function allocatePlayer (player, Game) {
+function allocatePlayer (player, gameName) {
   let table
   for (const t of tables) {
-    if (t.waitingOpponents && t.Game === Game) {
+    if (t.waitingOpponents && (t.game.name === gameName)) {
       table = t
       break
     }
   }
   if (!table) {
-    table = new Table(Game)
+    table = new Table(gameName)
     tables.push(table)
   }
   table.addPlayer(player)
@@ -47,7 +33,7 @@ function handleDisconnect (player) {
 }
 
 function handleClick (player, pos) {
-  if (player.table.match) player.table.match.update(player, pos)
+  player.table.game.update(player, pos)
 }
 
 function handleClear (player) {
@@ -61,7 +47,7 @@ function handleStart (player) {
 function getTables () {
   return tables
     .filter(table => table.waitingOpponents)
-    .map(table => ({ id: table.id, game: table.Game.name }))
+    .map(table => ({ id: table.id, game: table.game.name }))
 }
 
 module.exports.createPlayer = createPlayer
