@@ -3,7 +3,6 @@ const http = require('http')
 const socketIo = require('socket.io')
 const path = require('path')
 const controller = require('./controller')
-const TicTacToeGame = require('./game')
 
 // Server setup
 const app = express()
@@ -55,10 +54,10 @@ function setupRoutes () {
   })
 }
 
-function handleGameConnection (Game) {
+function handleGameConnection (gameName) {
   return (socket) => {
     console.log(`Client ${socket.id} connected.`)
-    const player = controller.createPlayer(socket, Game)
+    const player = controller.createPlayer(socket, gameName)
     updateTables()
 
     socket.on('disconnect', () => {
@@ -74,7 +73,7 @@ function handleGameConnection (Game) {
 }
 
 function setupSockets () {
-  sioServerTTT.on('connection', handleGameConnection(TicTacToeGame))
+  sioServerTTT.on('connection', handleGameConnection('tictactoe'))
   // sioServerBlackJack.on('connection', handleGameConnection(BlackJackGame));
   sioServerBlackJack.on('connection', (socket) => {
     console.log('someone wants to play black jack')

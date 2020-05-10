@@ -22,7 +22,7 @@ class Game {
       this.players[i].message(
         `The game is starting. You are player ${i + 1}.`)
     }
-    console.log('A match of', this.name, 'is starting on table', this.table.id)
+    console.log('A match of', Game.name, 'is starting on table', this.table.id)
   }
 
   reset () {
@@ -125,7 +125,7 @@ class Game {
   finish () {
     // return to table | start again | return to server
     this.table.messagePlayers('End of the game')
-    console.log('End of the game', this.name)
+    console.log('End of the game', Game.name)
     this.status = FINISHED
   }
 

@@ -1,13 +1,27 @@
 const Player = require('./player')
 const Table = require('./table')
+const Game = require('./game')
 
 const tables = []
+const games = {} 
 
-function createPlayer (socket, Game) {
+function createPlayer (socket, gameName) {
   const player = new Player(socket.id, socket)
-  allocatePlayer(player, Game)
+  allocatePlayer(player, getGame(gameName))
   if (player.table.match) player.table.match.sendState()
   return player
+}
+
+function getGame(gameName){
+  if(!games[gameName]) {
+    switch(gameName.toLowerCase()) {
+      case 'tictactoe': games[gameName] = Game
+        break
+      case 'blackjack': games[gameName] = null
+        break
+    }
+  }
+  return games[gameName]
 }
 
 function allocatePlayer (player, Game) {
