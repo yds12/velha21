@@ -62,6 +62,8 @@ describe('server', () => {
   })
 
   describe('on tic-tac-toe', () => {
+    let playerSocket, opponentSocket
+
     it('should respond to socket connections with a message', 
       (done) => {
       let socket = connectSocket('/tictactoe')
@@ -73,21 +75,25 @@ describe('server', () => {
 
     it('should message the player when an opponent joins the table', 
       (done) => {
-      let playerSocket = connectSocket('/tictactoe')
-      let opponentSocket
+      playerSocket = connectSocket('/tictactoe')
+      opponentSocket
 
       playerSocket.on('connect', () => {
         opponentSocket = connectSocket('/tictactoe')
 
         opponentSocket.on('connect', () => {
-          playerSocket.on('message', () => {
+          playerSocket.on('message', (msg) => {
+            console.log('message received:', msg)
             playerSocket.disconnect()
             done()
           })
-          opponentSocket.disconnect()
         })
       })
+    })
 
+    after(() => {
+      if(playerSocket && playerSocket.connected) playerSocket.disconnect()
+      if(opponentSocket && opponentSocket.connected) opponentSocket.disconnect()
     })
   })
 
