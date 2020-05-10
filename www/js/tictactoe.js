@@ -13,8 +13,8 @@ canvas.style = 'border: solid 1px black;'
 const ctx = canvas.getContext('2d')
 const imgCircle = document.createElement('img')
 const imgCross = document.createElement('img')
-imgCircle.src = 'res/img/circle.png'
-imgCross.src = 'res/img/cross.png'
+imgCircle.src = '../res/img/circle.png'
+imgCross.src = '../res/img/cross.png'
 
 // Game variables
 let gameState = [0, 0, 0, 0, 0, 0, 0, 0, 0]

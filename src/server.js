@@ -12,6 +12,7 @@ const server = http.createServer(app)
 const sioServer = socketIo(server)
 let config
 
+// const sioServerTTT = sioServer.of('/tictactoe?table=abc')
 const sioServerTTT = sioServer.of('/tictactoe')
 const sioServerBlackJack = sioServer.of('/blackjack')
 const sioServerIndex = sioServer.of('/index')
@@ -31,11 +32,13 @@ function setupRoutes () {
     res.sendFile(path.join(__dirname, '..', config.publicDir, 'index.html'))
   })
 
-  app.get('/tic-tac-toe/\\d+', (req, res) => {
-    res.redirect('/tic-tac-toe')
+  app.get('/tic-tac-toe', (req, res) => {
+    const tableId = Math.floor(Math.random() * 10000)
+    res.redirect('/tic-tac-toe/'+tableId)
   })
 
-  app.get('/tic-tac-toe', (req, res) => {
+  app.get('/tic-tac-toe/:tableId', (req, res) => {
+    console.log("Req Query: ", req.query);
     res.sendFile(path.join(__dirname, '..', config.publicDir, 'ttt.html'))
   })
 

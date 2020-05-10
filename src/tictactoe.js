@@ -5,8 +5,8 @@ class TicTacToe extends Game {
     return players.length === 2
   }
 
-  constructor (players) {
-    super(players)
+  constructor (table) {
+    super(table)
     this.name = 'tic-tac-toe'
   }
 
