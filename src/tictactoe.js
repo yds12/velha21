@@ -1,19 +1,13 @@
-class Game {
-  static ONGOING = 0
-  static FINISHED = 1
+const Game = require('./game')
 
-  static OBSERVER = -1
-  static PLAYER1 = 1
-  static PLAYER2 = 2
-
+class Tictactoe extends Game {
   static canStartWith (players) {
     return players.length === 2
   }
 
   constructor (players, table) {
-    this.players = players
-    this.table = table
-    this.reset()
+    super(players, table)
+    this.name = 'tic-tac-toe'
   }
 
   start () {
@@ -25,11 +19,8 @@ class Game {
   }
 
   reset () {
-    this.status = Game.ONGOING
     this.state = [0, 0, 0, 0, 0, 0, 0, 0, 0]
-    this.turn = 0
-    this.start()
-    this.sendState()
+    Game.prototype.reset.call(this) // call the method in the parent
   }
 
   update (player, move) {
@@ -50,7 +41,7 @@ class Game {
       return false
     }
 
-    if (this.status !== ONGOING) {
+    if (this.status !== Game.ONGOING) {
       player.message('Game finished.')
       return false
     }
@@ -120,23 +111,6 @@ class Game {
     if (gs[2] === gs[4] && gs[4] === gs[6] && gs[2] > 0) { return gs[2] }
     return 0
   }
-
-  finish () {
-    // return to table | start again | return to server
-    this.table.messagePlayers('End of the game')
-    console.log('End of the game', this.name)
-    this.status = Game.FINISHED
-  }
-
-  getRole (player) {
-    const idx = this.players.findIndex(pl => pl.id === player.id)
-
-    switch (idx) {
-      case 0: return Game.PLAYER1
-      case 1: return Game.PLAYER2
-      default: return Game.OBSERVER
-    }
-  }
 }
 
-module.exports = Game
+module.exports = Tictactoe

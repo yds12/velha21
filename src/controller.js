@@ -1,6 +1,6 @@
 const Player = require('./player')
 const Table = require('./table')
-const Game = require('./game')
+const Tictactoe = require('./tictactoe')
 
 const tables = []
 const games = {} 
@@ -15,7 +15,7 @@ function createPlayer (socket, gameName) {
 function getGame(gameName){
   if(!games[gameName]) {
     switch(gameName.toLowerCase()) {
-      case 'tictactoe': games[gameName] = Game
+      case 'tictactoe': games[gameName] = Tictactoe
         break
       case 'blackjack': games[gameName] = null
         break
