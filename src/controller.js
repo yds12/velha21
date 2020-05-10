@@ -47,7 +47,11 @@ function handleStart (player) {
 function getTables () {
   return tables
     .filter(table => table.waitingOpponents)
-    .map(table => ({ id: table.id, game: table.game.name }))
+    .map(table => ({
+      id: table.id,
+      game: table.game.name,
+      status: "status"
+    }))
 }
 
 module.exports.createPlayer = createPlayer
