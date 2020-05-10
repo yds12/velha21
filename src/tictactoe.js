@@ -1,6 +1,6 @@
 const Game = require('./game')
 
-class Tictactoe extends Game {
+class TicTacToe extends Game {
   static canStartWith (players) {
     return players.length === 2
   }
@@ -101,4 +101,4 @@ class Tictactoe extends Game {
   }
 }
 
-module.exports = Tictactoe
+module.exports = TicTacToe
