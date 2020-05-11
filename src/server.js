@@ -58,14 +58,21 @@ function setupRoutes () {
   })
 }
 
-function getTableId (socket) {
-  // TODO figure out better way to get table ID
-  try {
-    const x = socket.handshake.headers.referer.split('/')
-    return x[x.length - 1]
-  } catch (e) {
-    return 42
-  }
+function setupSockets () {
+  sioServerTTT.on('connection', (socket) =>
+    handleGameConnection(socket, 'tictactoe'))
+
+  sioServerBlackJack.on('connection', (socket) =>
+    handleGameConnection(socket, 'blackjack'));
+
+  sioServer.on('connection', (socket) => {
+    console.log('new connection')
+  })
+  sioServerIndex.on('connection', (socket) => {
+    socket.join('indexRoom')
+    console.log('someone joined the main page')
+    socket.emit('updateTables', controller.getTables())
+  })
 }
 
 function handleGameConnection (socket, gameName) {
@@ -87,21 +94,14 @@ function handleGameConnection (socket, gameName) {
   socket.on('start', () => controller.handleStart(player))
 }
 
-function setupSockets () {
-  sioServerTTT.on('connection', (socket) =>
-    handleGameConnection(socket, 'tictactoe'))
-
-  sioServerBlackJack.on('connection', (socket) =>
-    handleGameConnection(socket, 'blackjack'));
-
-  sioServer.on('connection', (socket) => {
-    console.log('new connection')
-  })
-  sioServerIndex.on('connection', (socket) => {
-    socket.join('indexRoom')
-    console.log('someone joined the main page')
-    socket.emit('updateTables', controller.getTables())
-  })
+function getTableId (socket) {
+  // TODO figure out better way to get table ID
+  try {
+    const x = socket.handshake.headers.referer.split('/')
+    return x[x.length - 1]
+  } catch (e) {
+    return 42
+  }
 }
 
 function updateTables () {
