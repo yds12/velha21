@@ -13,12 +13,12 @@ class TicTacToe extends Game {
   }
 
   start () {
-    Game.prototype.start.call(this) // call the method in the parent
+    super.start()
   }
 
   reset () {
     this.state = [0, 0, 0, 0, 0, 0, 0, 0, 0]
-    Game.prototype.reset.call(this)
+    super.reset()
   }
 
   logMove (player, move) {

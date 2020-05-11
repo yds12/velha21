@@ -1,5 +1,6 @@
 const util = require('./util.js')
 const Tictactoe = require('./tictactoe')
+const Blackjack = require('./blackjack')
 
 // a table manages players joining a game
 class Table {
@@ -63,7 +64,7 @@ class Table {
   createNewGame (gameType) {
     switch (gameType.toLowerCase()) {
       case 'tictactoe': return new Tictactoe(this)
-      case 'blackjack': return null
+      case 'blackjack': return new Blackjack(this)
     }
   }
 }

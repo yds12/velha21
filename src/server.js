@@ -33,23 +33,29 @@ function setupRoutes () {
     res.sendFile(path.join(__dirname, '..', config.publicDir, 'index.html'))
   })
 
-  app.get('/tic-tac-toe', (req, res) => {
-    const tableId = Math.floor(Math.random() * 10000)
-    res.redirect('/tic-tac-toe/'+tableId)
-  })
-
-  app.get('/tic-tac-toe/:tableId', (req, res) => {
-    console.log(`joining table ${req.params['tableId']}`)
-    res.sendFile(path.join(__dirname, '..', config.publicDir, 'ttt.html'))
-  })
-
-  app.get('/blackjack', (req, res) => {
-    res.sendFile(path.join(__dirname, '..', config.publicDir, 'bj.html'))
-  })
-
   app.get('/js/config.js', (req, res) => {
     res.set('Content-Type', 'application/javascript')
     res.send(`const PORT = ${config.port};`)
+  })
+
+  app.get('/:gameType', (req, res) => {
+    let gameType = req.params['gameType']
+
+    if(controller.isValidGame(gameType)) {
+      const tableId = controller.getNewTableId()
+      res.redirect(`/${gameType}/${tableId}`)
+    } else {
+      res.status(404).send('Error 404: Not found.')
+    }
+  })
+
+  app.get('/:gameType/:tableId', (req, res) => {
+    let gameType = req.params['gameType']
+    let tableId = req.params['tableId']
+
+    console.log(`Player is joining table ${tableId}.`)
+    res.sendFile(
+      path.join(__dirname, '..', config.publicDir, gameType + '.html'))
   })
 
   app.get('*', (req, res) => {

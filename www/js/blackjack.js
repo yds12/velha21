@@ -45,9 +45,9 @@ function loadImages () {
   imgCards = document.createElement('img')
   imgBack = document.createElement('img')
   imgBg = document.createElement('img')
-  imgCards.src = 'res/img/cards.png'
-  imgBack.src = 'res/img/back.png'
-  imgBg.src = 'res/img/bg.png'
+  imgCards.src = '../res/img/cards.png'
+  imgBack.src = '../res/img/back.png'
+  imgBg.src = '../res/img/bg.png'
 
   const f = () => {
     loaded++
