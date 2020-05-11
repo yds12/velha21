@@ -72,10 +72,6 @@ class Game {
     return (this.players.indexOf(player) === this.turn % 2)
   }
 
-  fill (x, y, player) {
-    this.state[y * 3 + x] = this.players.indexOf(player) + 1
-  }
-
   sendState () {
     for (let i = this.players.length - 1; i >= 0; i--) {
       this.players[i].updateGameState(this.state)
