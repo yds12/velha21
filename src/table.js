@@ -3,12 +3,11 @@ const Tictactoe = require('./tictactoe')
 
 // a table manages players joining a game
 class Table {
-  constructor (gameName, tableId) {
+  constructor (gameType, tableId) {
     this.players = []
     this.id = tableId
     this.waitingOpponents = true
-    const Game = getGame(gameName)
-    this.game = new Game(this)
+    this.game = this.createNewGame(gameType)
   }
 
   addPlayer (player) {
@@ -60,19 +59,13 @@ class Table {
       player.message(message)
     }
   }
-}
 
-const games = {}
-function getGame (gameName) {
-  if (!games[gameName]) {
-    switch (gameName.toLowerCase()) {
-      case 'tic-tac-toe': games[gameName] = Tictactoe
-        break
-      case 'blackjack': games[gameName] = null
-        break
+  createNewGame (gameType) {
+    switch (gameType.toLowerCase()) {
+      case 'tictactoe': return new Tictactoe(this)
+      case 'blackjack': return null
     }
   }
-  return games[gameName]
 }
 
 module.exports = Table

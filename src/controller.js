@@ -3,23 +3,23 @@ const Table = require('./table')
 
 const tables = []
 
-function createPlayer (socket, gameName, tableId) {
+function createPlayer (socket, gameType, tableId) {
   const player = new Player(socket.id, socket)
-  allocatePlayer(player, gameName, tableId)
+  allocatePlayer(player, gameType, tableId)
   player.table.game.sendState()
   return player
 }
 
-function allocatePlayer (player, gameName, tableId) {
+function allocatePlayer (player, gameType, tableId) {
   let table
   for (const t of tables) {
-    if (t.id === tableId && (t.game.name === gameName)) {
+    if (t.id === tableId && (t.game.type === gameType)) {
       table = t
       break
     }
   }
   if (!table) {
-    table = new Table(gameName, tableId)
+    table = new Table(gameType, tableId)
     tables.push(table)
   }
   table.addPlayer(player)

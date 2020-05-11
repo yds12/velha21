@@ -68,33 +68,32 @@ function getTableId (socket) {
   }
 }
 
-function handleGameConnection (gameName) {
-  return (socket) => {
-    const tableId = getTableId(socket)
-    console.log("tableId: " + tableId)
+function handleGameConnection (socket, gameName) {
+  const tableId = getTableId(socket)
+  console.log("tableId: " + tableId)
 
-    console.log(`Client ${socket.id} connected.`)
-    const player = controller.createPlayer(socket, gameName, tableId)
+  console.log(`Client ${socket.id} connected.`)
+  const player = controller.createPlayer(socket, gameName, tableId)
+  updateTables()
+
+  socket.on('disconnect', () => {
+    console.log(`Client ${socket.id} has disconnected.`)
+    controller.handleDisconnect(player)
     updateTables()
+  })
 
-    socket.on('disconnect', () => {
-      console.log(`Client ${socket.id} has disconnected.`)
-      controller.handleDisconnect(player)
-      updateTables()
-    })
-
-    socket.on('click', (pos) => controller.handleClick(player, pos))
-    socket.on('clear', () => controller.handleClear(player))
-    socket.on('start', () => controller.handleStart(player))
-  }
+  socket.on('click', (pos) => controller.handleClick(player, pos))
+  socket.on('clear', () => controller.handleClear(player))
+  socket.on('start', () => controller.handleStart(player))
 }
 
 function setupSockets () {
-  sioServerTTT.on('connection', handleGameConnection('tic-tac-toe'))
-  // sioServerBlackJack.on('connection', handleGameConnection(BlackJackGame));
-  sioServerBlackJack.on('connection', (socket) => {
-    console.log('someone wants to play black jack')
-  })
+  sioServerTTT.on('connection', (socket) =>
+    handleGameConnection(socket, 'tictactoe'))
+
+  sioServerBlackJack.on('connection', (socket) =>
+    handleGameConnection(socket, 'blackjack'));
+
   sioServer.on('connection', (socket) => {
     console.log('new connection')
   })

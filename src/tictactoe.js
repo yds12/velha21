@@ -8,7 +8,8 @@ class TicTacToe extends Game {
   constructor (table) {
     super(table)
     this.state = [0, 0, 0, 0, 0, 0, 0, 0, 0]
-    this.name = 'tic-tac-toe'
+    this.type = 'tictactoe'
+    this.name = 'Tic-tac-toe'
   }
 
   start () {

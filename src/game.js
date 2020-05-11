@@ -6,6 +6,8 @@ class Game {
   static PLAYER2 = 2
 
   constructor (table) {
+    this.name = 'Game'
+    this.type = 'game'
     this.table = table
     this.players = table.players
   }
@@ -19,7 +21,8 @@ class Game {
       this.players[i].message(
         `The game is starting. You are player ${i + 1}.`)
     }
-    console.log('A game of', this.name, 'is starting on table', this.table.id)
+    console.log(
+      `A game of ${this.name} is starting on table ${this.table.id}.`)
   }
 
   reset () {
