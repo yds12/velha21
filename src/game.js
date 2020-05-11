@@ -44,13 +44,9 @@ class Game {
     this.turn++
   }
 
-  logMove (player, move) {
-    return
-  }
+  logMove (player, move) {}
 
-  executeMove (player, move) {
-    return
-  }
+  executeMove (player, move) {}
 
   moveIsValid (player, move) {
     if (player.isObserver) {
@@ -69,7 +65,7 @@ class Game {
   }
 
   isPlayerTurn (player) {
-    return (this.players.indexOf(player) === this.turn % 2)
+    return (this.players.indexOf(player) === this.turn % this.getNumPlayers())
   }
 
   sendState () {
