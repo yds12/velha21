@@ -13,7 +13,7 @@ class TicTacToe extends Game {
   }
 
   canStart () {
-    return this.players.length === 2
+    return this.getNumPlayers() === 2
   }
 
   start () {
