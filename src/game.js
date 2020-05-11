@@ -2,9 +2,6 @@ class Game {
   static ONGOING = 0
   static FINISHED = 1
 
-  static PLAYER1 = 1
-  static PLAYER2 = 2
-
   constructor (table) {
     this.name = 'Game'
     this.type = 'game'
