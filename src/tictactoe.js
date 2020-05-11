@@ -12,6 +12,10 @@ class TicTacToe extends Game {
     this.name = 'Tic-tac-toe'
   }
 
+  canStart () {
+    return this.players.length === 2
+  }
+
   start () {
     super.start()
   }
@@ -31,21 +35,11 @@ class TicTacToe extends Game {
   }
 
   moveIsValid (player, move) {
-    if (player.isObserver) {
-      player.message('You are not playing!')
-      return false
-    }
-
-    if (this.status !== Game.ONGOING) {
-      player.message('Game finished.')
+    if (!super.moveIsValid(player, move)) {
       return false
     }
     if (!this.isFree(move.x, move.y)) {
       player.message('This square is already filled.')
-      return false
-    }
-    if (!this.isPlayerTurn(player)) {
-      player.message('It is not your turn.')
       return false
     }
     return true

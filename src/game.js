@@ -13,7 +13,7 @@ class Game {
   }
 
   canStart () {
-    return this.players.length === 2
+    return true
   }
 
   start () {
@@ -53,7 +53,19 @@ class Game {
   }
 
   moveIsValid (player, move) {
-    return true
+    if (player.isObserver) {
+      player.message('You are not playing!')
+      return false
+    }
+
+    if (this.status !== Game.ONGOING) {
+      player.message('Game finished.')
+      return false
+    }
+    if (!this.isPlayerTurn(player)) {
+      player.message('It is not your turn.')
+      return false
+    }
   }
 
   isPlayerTurn (player) {
