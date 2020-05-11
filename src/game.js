@@ -92,6 +92,14 @@ class Game {
     console.log('End of the game', this.name)
     this.status = Game.FINISHED
   }
+
+  getNumPlayers() {
+    let n = 0
+    for(let player of this.players) {
+      if(!player.isObserver) n++;
+    }
+    return n
+  }
 }
 
 module.exports = Game

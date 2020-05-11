@@ -15,13 +15,6 @@ class Blackjack extends Game {
     super.reset()
   }
 
-  getNumPlayers() {
-    let n = 0
-    for(let player of this.players) {
-      if(!player.isObserver) n++;
-    }
-    return n
-  }
 }
 
 module.exports = Blackjack
