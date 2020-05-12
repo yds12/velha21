@@ -5,6 +5,7 @@ const socket = io(connectTo + '/tictactoe')
 
 // Screen elements
 const divMsg = document.getElementById('messages')
+const ulPlayers = document.getElementById('players')
 const btnClear = document.getElementById('clear')
 const canvas = document.getElementById('screen')
 canvas.width = 400
@@ -41,6 +42,19 @@ socket.on('state', (state) => {
   console.log(`State ${JSON.stringify(state)} received`)
   gameState = state
   drawBoard()
+})
+
+socket.on('updatePlayers', (players) => {
+  let result = ''
+  if (players.length > 0) {
+    result += '<p>Players:</p><ul>'
+    for (const player of players) {
+      result += `<li>${player.name} (${player.role})</a></li>`
+    }
+    result += '</ul>'
+  }
+  console.log('result')
+  ulPlayers.innerHTML = result
 })
 
 // Game functions
