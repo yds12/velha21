@@ -100,7 +100,10 @@ function handleGameConnection (socket, gameName) {
 
   socket.on('click', (pos) => controller.handleClick(player, pos))
   socket.on('clear', () => controller.handleClear(player))
-  socket.on('start', () => controller.handleStart(player))
+  socket.on('start', () => {
+    controller.handleStart(player)
+    updateTables()
+  })
 }
 
 function getTableId (socket) {
