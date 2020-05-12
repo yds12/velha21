@@ -6,45 +6,85 @@ const OriginalPlayer = require(path.join(__dirname, '../src/player'))
 const Table = require(path.join(__dirname, '../src/table'))
 
 class Player extends OriginalPlayer {
-  constructor () {
-    super('name', null)
+  constructor (name) {
+    super(name, null)
   }
 
   message (message) {
     console.log(message)
   }
+
+  updateGameState (state) {
+    console.log('updateGameState ', state)
+  }
 }
 
-describe('TicTacToe', function () {
+describe('TicTacToe', () => {
   let table = null
   let game = null
-  beforeEach(function () {
+  let player1 = null
+  let player2 = null
+  let observer = null
+  beforeEach(() => {
     table = new Table('tictactoe', 42)
-    game = new TicTacToe(table)
+    game = table.game
+    player1 = new Player('player1')
+    player2 = new Player('player2')
+    observer = new Player('observer')
+    observer.isObserver = true
   })
 
-  afterEach(function () {
+  afterEach(() => {
     table = null
     game = null
+    player1 = null
+    player2 = null
+    observer = null
   })
 
-  describe('#getNumPlayers()', function () {
-    it('should return 0 if there are no players', function () {
+  it('should return true', () => {
+    table.addPlayer(player1)
+    table.addPlayer(player2)
+    assert.strictEqual(game.status, TicTacToe.ONGOING)
+  })
+
+  it('should return true', () => {
+    table.addPlayer(player1)
+    assert.strictEqual(game.status, TicTacToe.FINISHED)
+  })
+
+  describe('getNumPlayers', () => {
+    it('should return 0 if there are no players', () => {
       assert.strictEqual(game.getNumPlayers(), 0)
     })
-  })
-  describe('#getNumPlayers()', function () {
-    it('should return 1 if there is one player', function () {
-      table.addPlayer(new Player())
+    it('should return 1 if there is one player', () => {
+      table.addPlayer(player1)
       assert.strictEqual(game.getNumPlayers(), 1)
     })
-  })
-  describe('#getNumPlayers()', function () {
-    it('should return 0 if there are only observers', function () {
-      const player = new Player()
-      player.isObserver = true
-      table.addPlayer(player)
+    it('should return 0 if there are only observers', () => {
+      table.addPlayer(observer)
       assert.strictEqual(game.getNumPlayers(), 0)
+    })
+  })
+
+  describe('moveIsValid', () => {
+    it('should return true', () => {
+      table.addPlayer(player1)
+      table.addPlayer(player2)
+      assert.strictEqual(game.moveIsValid(table.players[0], { x: 0, y: 0 }), true)
+    })
+    it('should return false if game did not start', () => {
+      assert.strictEqual(game.moveIsValid(player1, null), false)
+    })
+    it('should return false if cell if filled', () => {
+      table.addPlayer(player1)
+      table.addPlayer(player2)
+      game.update(table.players[0], { x: 0, y: 0 })
+      assert.strictEqual(game.moveIsValid(table.players[0], { x: 0, y: 0 }), false)
+    })
+    it('should return false for any moves from the observer', () => {
+      table.addPlayer(player1); table.addPlayer(player2); table.addPlayer(observer)
+      assert.strictEqual(game.moveIsValid(observer, { x: 0, y: 0 }), false)
     })
   })
 })
