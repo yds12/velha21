@@ -39,9 +39,9 @@ function setupRoutes () {
   })
 
   app.get('/:gameType', (req, res) => {
-    let gameType = req.params['gameType']
+    const gameType = req.params.gameType
 
-    if(controller.isValidGame(gameType)) {
+    if (controller.isValidGame(gameType)) {
       const tableId = controller.getNewTableId()
       res.redirect(`/${gameType}/${tableId}`)
     } else {
@@ -50,8 +50,8 @@ function setupRoutes () {
   })
 
   app.get('/:gameType/:tableId', (req, res) => {
-    let gameType = req.params['gameType']
-    let tableId = req.params['tableId']
+    const gameType = req.params.gameType
+    const tableId = req.params.tableId
 
     console.log(`Player is joining table ${tableId}.`)
     res.sendFile(
@@ -69,7 +69,7 @@ function setupSockets () {
     handleGameConnection(socket, 'tictactoe'))
 
   sioServerBlackJack.on('connection', (socket) =>
-    handleGameConnection(socket, 'blackjack'));
+    handleGameConnection(socket, 'blackjack'))
 
   sioServer.on('connection', (socket) => {
     console.log('new connection')
@@ -83,15 +83,18 @@ function setupSockets () {
 
 function handleGameConnection (socket, gameName) {
   const tableId = getTableId(socket)
-  console.log("tableId: " + tableId)
+  console.log('tableId: ' + tableId)
+  socket.join(tableId)
 
   console.log(`Client ${socket.id} connected.`)
   const player = controller.createPlayer(socket, gameName, tableId)
   updateTables()
+  updatePlayers(gameName, player.table)
 
   socket.on('disconnect', () => {
     console.log(`Client ${socket.id} has disconnected.`)
     controller.handleDisconnect(player)
+    updatePlayers(gameName, player.table)
     updateTables()
   })
 
@@ -112,6 +115,10 @@ function getTableId (socket) {
 
 function updateTables () {
   sioServerIndex.to('indexRoom').emit('updateTables', controller.getTables())
+}
+
+function updatePlayers (gameName, table) {
+  sioServerTTT.to(table.id).emit('updatePlayers', table.getPlayers())
 }
 
 module.exports.start = start

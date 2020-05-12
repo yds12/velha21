@@ -12,7 +12,7 @@ class Table {
   }
 
   addPlayer (player) {
-    if (!this.waitingOpponents){
+    if (!this.waitingOpponents) {
       player.isObserver = true
     }
     this.players.push(player)
@@ -66,6 +66,14 @@ class Table {
       case 'tictactoe': return new Tictactoe(this)
       case 'blackjack': return new Blackjack(this)
     }
+  }
+
+  getPlayers () {
+    return this.players
+      .map(player => ({
+        name: player.name,
+        role: (player.isObserver) ? 'observer' : 'player'
+      }))
   }
 }
 
