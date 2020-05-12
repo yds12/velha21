@@ -37,7 +37,8 @@ function handleClick (player, pos) {
 }
 
 function handleClear (player) {
-  player.table.tryToStartGame()
+  if (!player.isObserver) player.table.tryToStartGame()
+  else player.message("Nice try, but you cannot restart other people's games!")
 }
 
 function handleStart (player) {
