@@ -91,6 +91,36 @@ describe('server', () => {
       })
     })
 
+    // Need to find a way to connect both to the same room
+    /*it('should send an updated game state after two players connect and ' +
+      'one of them makes a move', (done) => {
+      playerSocket = connectSocket('/tictactoe')
+      opponentSocket = connectSocket('/tictactoe')
+      let stateReceived = false
+
+      playerSocket.on('connect', () => {
+        playerSocket.emit('click', { x: 0, y: 0 })
+
+        playerSocket.on('state', (state) => {
+          if(!stateReceived && state[0] !== 0) {
+            stateReceived = true
+            done()
+          }
+        })
+      })
+
+      opponentSocket.on('connect', () => {
+        opponentSocket.emit('click', { x: 0, y: 0 })
+
+        opponentSocket.on('state', (state) => {
+          if(!stateReceived && state[0] !== 0) {
+            stateReceived = true
+            done()
+          }
+        })
+      })
+    });*/
+
     after(() => {
       if(playerSocket && playerSocket.connected) playerSocket.disconnect()
       if(opponentSocket && opponentSocket.connected) opponentSocket.disconnect()

@@ -41,7 +41,8 @@ function handleClear (player) {
 }
 
 function handleStart (player) {
-  player.message('You asked to start a game... Nice.')
+  player.table.game.start()
+  player.table.waitingOpponents = false
 }
 
 function getTables () {

@@ -5,6 +5,11 @@ class Blackjack extends Game {
     super(table)
     this.type = 'blackjack'
     this.name = 'Blackjack'
+    this.started = false
+  }
+
+  canStart() {
+    return this.started
   }
 
   start() {
