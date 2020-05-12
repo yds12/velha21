@@ -16,7 +16,7 @@ class Table {
       player.isObserver = true
     }
     this.players.push(player)
-    console.log(`Player ${player.name} joined the table.`)
+    //console.log(`Player ${player.name} joined the table.`)
     this.messagePlayers(`Player ${player.name} joined the table.`)
     player.setTable(this)
 
@@ -25,7 +25,7 @@ class Table {
 
   removePlayer (player) {
     this.players.splice(this.players.indexOf(player), 1)
-    console.log('Player', player.name, 'left table', this.id)
+    //console.log('Player', player.name, 'left table', this.id)
     this.messagePlayers(`${player.name} left table ${this.id}.`)
     if (!this.game.canStart()) {
       this.messagePlayers('Not enough players to continue.')
@@ -35,15 +35,15 @@ class Table {
   }
 
   tryToStartGame () {
-    console.log('Trying to start game...')
+    //console.log('Trying to start game...')
 
     if (this.game.canStart()) {
-      console.log('Starting game...')
+      //console.log('Starting game...')
       this.shufflePlayers()
       this.game.reset()
       this.waitingOpponents = false
     } else {
-      console.log("Can't start the game.")
+      //console.log("Can't start the game.")
       this.messagePlayers('Waiting for opponents...')
     }
   }
