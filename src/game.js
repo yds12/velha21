@@ -7,6 +7,7 @@ class Game {
     this.type = 'game'
     this.table = table
     this.players = table.players
+    this.status = Game.FINISHED
   }
 
   canStart () {
