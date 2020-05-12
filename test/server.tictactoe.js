@@ -25,6 +25,7 @@ describe('TicTacToe', () => {
   let player1 = null
   let player2 = null
   let observer = null
+
   beforeEach(() => {
     table = new Table('tictactoe', 42)
     game = table.game
@@ -42,15 +43,18 @@ describe('TicTacToe', () => {
     observer = null
   })
 
-  it('should return true', () => {
-    table.addPlayer(player1)
-    table.addPlayer(player2)
-    assert.strictEqual(game.status, TicTacToe.ONGOING)
-  })
 
-  it('should return true', () => {
-    table.addPlayer(player1)
-    assert.strictEqual(game.status, TicTacToe.FINISHED)
+  describe('game.status', () => {
+    it('should be ONGOING after game starts', () => {
+      table.addPlayer(player1)
+      table.addPlayer(player2)
+      assert.strictEqual(game.status, TicTacToe.ONGOING)
+    })
+
+    it('should be FINISHED before game starts', () => {
+      table.addPlayer(player1)
+      assert.strictEqual(game.status, TicTacToe.FINISHED)
+    })
   })
 
   describe('getNumPlayers', () => {
