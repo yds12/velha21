@@ -1,9 +1,6 @@
 const Game = require('./game')
 
 class TicTacToe extends Game {
-  static canStartWith (players) {
-    return players.length === 2
-  }
 
   constructor (table) {
     super(table)
@@ -17,7 +14,21 @@ class TicTacToe extends Game {
   }
 
   start () {
+    this.putPlayersAtFront()
     super.start()
+  }
+
+  putPlayersAtFront () {
+    for (let i = 0; i < 2; i++)
+      if (this.players[i].isObserver)
+        for (let j = i + 1; j <= this.players.length; j++)
+          if (!this.players[j].isObserver) {
+            const x = this.players[i]
+            this.players[i] = this.players[j]
+            this.players[j] = x
+            break
+          }
+
   }
 
   reset () {
