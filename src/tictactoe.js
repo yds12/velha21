@@ -26,8 +26,8 @@ class TicTacToe extends Game {
   }
 
   logMove (player, move) {
-    console.log(
-      `Player ${player.name} clicked on quadrant ${move.x}, ${move.y}`)
+    //console.log(
+    //  `Player ${player.name} clicked on quadrant ${move.x}, ${move.y}`)
   }
 
   executeMove (player, move) {

@@ -11,11 +11,11 @@ class Player extends OriginalPlayer {
   }
 
   message (message) {
-    console.log(message)
+    //console.log(message)
   }
 
   updateGameState (state) {
-    console.log('updateGameState ', state)
+    //console.log('updateGameState ', state)
   }
 }
 
@@ -44,7 +44,7 @@ describe('TicTacToe', () => {
   })
 
 
-  describe('game.status', () => {
+  describe('status', () => {
     it('should be ONGOING after game starts', () => {
       table.addPlayer(player1)
       table.addPlayer(player2)
@@ -57,7 +57,7 @@ describe('TicTacToe', () => {
     })
   })
 
-  describe('getNumPlayers', () => {
+  describe('getNumPlayers()', () => {
     it('should return 0 if there are no players', () => {
       assert.strictEqual(game.getNumPlayers(), 0)
     })
@@ -71,7 +71,7 @@ describe('TicTacToe', () => {
     })
   })
 
-  describe('moveIsValid', () => {
+  describe('moveIsValid()', () => {
     it('should return true', () => {
       table.addPlayer(player1)
       table.addPlayer(player2)

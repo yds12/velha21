@@ -83,7 +83,6 @@ describe('server', () => {
 
         opponentSocket.on('connect', () => {
           playerSocket.on('message', (msg) => {
-            console.log('message received:', msg)
             playerSocket.disconnect()
             done()
           })
