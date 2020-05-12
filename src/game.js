@@ -59,6 +59,7 @@ class Game {
       player.message('It is not your turn.')
       return false
     }
+    return true
   }
 
   isPlayerTurn (player) {
