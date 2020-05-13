@@ -38,10 +38,6 @@ class Game {
     this.turn++
   }
 
-  logMove (player, move) {}
-
-  executeMove (player, move) {}
-
   moveIsValid (player, move) {
     if (player.isObserver) {
       player.message('You are not playing!')
@@ -69,6 +65,23 @@ class Game {
     }
   }
 
+  finish () {
+    // return to table | start again | return to server
+    this.table.messagePlayers('End of the game')
+    //console.log('End of the game', this.name)
+    this.status = Game.FINISHED
+  }
+
+  // Just the non-observers
+  getPlayers() {
+    return this.players.filter(pl => !pl.isObserver);
+  }
+
+  // Just the non-observers
+  getNumPlayers() {
+    return this.getPlayers().length
+  }
+
   checkEnd () {
     return false
   }
@@ -77,20 +90,9 @@ class Game {
     return 0
   }
 
-  finish () {
-    // return to table | start again | return to server
-    this.table.messagePlayers('End of the game')
-    //console.log('End of the game', this.name)
-    this.status = Game.FINISHED
-  }
+  logMove (player, move) {}
 
-  getNumPlayers() {
-    let n = 0
-    for(let player of this.players) {
-      if(!player.isObserver) n++;
-    }
-    return n
-  }
+  executeMove (player, move) {}
 }
 
 module.exports = Game

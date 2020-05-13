@@ -2,6 +2,9 @@ const Game = require('./game')
 const util = require('./util')
 const cardUtil = require('./card-util')
 
+const PLAYING = 0
+const BUST = 1
+
 class Blackjack extends Game {
   constructor (table) {
     super(table)
@@ -16,10 +19,23 @@ class Blackjack extends Game {
   }
 
   start() {
-    super.start()
     this.deck = cardUtil.createDeck()
     util.shuffle(this.deck)
-    console.log(this.deck)
+    this.createPlayerStates()
+    this.createPlayerHands()
+    this.currentPlayer = 0
+    this.lastCard = null
+    this.state = this.getGameState()
+    super.start()
+  }
+
+  createPlayerStates() {
+    this.playerStates = this.getPlayers().map(player => PLAYING)
+  }
+
+  createPlayerHands() {
+    this.hands = this.getPlayers().map(player => [])
+    this.hands.push([]) // dealer
   }
 
   /*
