@@ -3,7 +3,11 @@ const util = require('./util')
 const cardUtil = require('./card-util')
 
 const PLAYING = 0
-const BUST = 1
+const BUSTED = 1
+const STOPPED = 2
+
+const HIT = 0
+const STAND = 1
 
 class Blackjack extends Game {
   constructor (table) {
@@ -38,6 +42,53 @@ class Blackjack extends Game {
     this.hands.push([]) // dealer
   }
 
+  moveIsValid (player, move) {
+    if (!super.moveIsValid(player, move)) {
+      return false
+    }
+    if ((move === HIT) && (this.getPlayerState(player) === BUSTED)) {
+      player.message('You were busted already.')
+      return false
+    }
+    return true
+  }
+
+  getPlayerState(player) {
+    // todo check actual player state
+    return this.playerStates[player]
+  }
+
+  executeMove (player, move) {
+    switch (move) {
+      case HIT: {
+        this.buyCard(player)
+        break
+      }
+      case STAND: {
+        this.playerStates[player] = STOPPED
+        break
+      }
+    }
+  }
+
+  buyCard (player) {
+
+    if (this.handSum(player) > 21) {
+      this.playerStates[player] = BUSTED
+    }
+    if (this.handSum(player) === 21) {
+      this.playerStates[player] = BUSTED
+    }
+  }
+
+  handSum (player) {
+    return 0
+  }
+
+  checkEnd () {
+    return this.noPlayerPlaying() || (this.getWinner() !== -1)
+  }
+
   /*
    * The public game state (which will be sent to players)
    * should have the following information:
@@ -55,6 +106,14 @@ class Blackjack extends Game {
       hands: this.hands,
       lastCard: this.lastCard
     }
+  }
+
+  noPlayerPlaying () {
+    for (let player of this.players){
+      if (this.playerStates[player] === PLAYING)
+        return false
+    }
+    return true
   }
 }
 
