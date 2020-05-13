@@ -1,6 +1,7 @@
 function createDeck() {
   let cards = []
   for(let i = 1; i <= 52; i++) cards.push(i)
+  return cards
 }
 
 // Cards will be just numbers from 1 to 52 (better for sockets). This 

@@ -1,4 +1,5 @@
 class Game {
+  static WAITING = 2
   static ONGOING = 0
   static FINISHED = 1
 
@@ -7,7 +8,7 @@ class Game {
     this.type = 'game'
     this.table = table
     this.players = table.players
-    this.status = Game.FINISHED
+    this.status = Game.WAITING
   }
 
   canStart () {
@@ -15,18 +16,14 @@ class Game {
   }
 
   start () {
+    this.status = Game.ONGOING
+    this.turn = 0
     for (let i = this.players.length - 1; i >= 0; i--) {
       this.players[i].message(
         `The game is starting. You are player ${i + 1}.`)
     }
     //console.log(
     //  `A game of ${this.name} is starting on table ${this.table.id}.`)
-  }
-
-  reset () {
-    this.status = Game.ONGOING
-    this.turn = 0
-    this.start()
     this.sendState()
   }
 

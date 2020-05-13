@@ -51,9 +51,9 @@ describe('TicTacToe', () => {
       assert.strictEqual(game.status, TicTacToe.ONGOING)
     })
 
-    it('should be FINISHED before game starts', () => {
+    it('should be WAITING before game starts', () => {
       table.addPlayer(player1)
-      assert.strictEqual(game.status, TicTacToe.FINISHED)
+      assert.strictEqual(game.status, TicTacToe.WAITING)
     })
   })
 

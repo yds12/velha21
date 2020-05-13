@@ -40,7 +40,7 @@ class Table {
     if (this.game.canStart()) {
       //console.log('Starting game...')
       this.shufflePlayers()
-      this.game.reset()
+      this.game.start()
       this.waitingOpponents = false
     } else {
       //console.log("Can't start the game.")

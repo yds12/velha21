@@ -14,6 +14,7 @@ class TicTacToe extends Game {
   }
 
   start () {
+    this.state = [0, 0, 0, 0, 0, 0, 0, 0, 0]
     this.putPlayersAtFront()
     super.start()
   }
@@ -29,11 +30,6 @@ class TicTacToe extends Game {
             break
           }
 
-  }
-
-  reset () {
-    this.state = [0, 0, 0, 0, 0, 0, 0, 0, 0]
-    super.reset()
   }
 
   logMove (player, move) {
