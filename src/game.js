@@ -16,6 +16,7 @@ class Game {
   }
 
   start () {
+    this.putPlayersAtFront()
     this.status = Game.ONGOING
     this.turn = 0
     for (let i = this.players.length - 1; i >= 0; i--) {
@@ -25,6 +26,19 @@ class Game {
     //console.log(
     //  `A game of ${this.name} is starting on table ${this.table.id}.`)
     this.sendState()
+  }
+
+  putPlayersAtFront () {
+    for (let i = 0; i < this.getNumPlayers(); i++)
+      if (this.players[i].isObserver)
+        for (let j = i + 1; j <= this.players.length; j++)
+          if (!this.players[j].isObserver) {
+            const x = this.players[i]
+            this.players[i] = this.players[j]
+            this.players[j] = x
+            break
+          }
+
   }
 
   update (player, move) {

@@ -18,11 +18,11 @@ class Blackjack extends Game {
     this.deck = []
   }
 
-  canStart() {
+  canStart () {
     return this.started
   }
 
-  start() {
+  start () {
     this.deck = cardUtil.createDeck()
     util.shuffle(this.deck)
     this.createPlayerStates()
@@ -33,29 +33,30 @@ class Blackjack extends Game {
     super.start()
   }
 
-  createPlayerStates() {
-    this.playerStates = this.getPlayers().map(player => PLAYING)
+  createPlayerStates () {
+    this.playerStates = this.getPlayers().reduce((states, player) => {
+      if (!player.isObserver) states[player.id] = PLAYING
+      return states
+    }, {})
   }
 
-  createPlayerHands() {
-    this.hands = this.getPlayers().map(player => [])
-    this.hands.push([]) // dealer
+  createPlayerHands () {
+    this.hands = this.getPlayers().reduce((states, player) => {
+      if (!player.isObserver) states[player.id] = [this.deck.pop(), this.deck.pop()]
+      return states
+    }, {})
+    this.hands.dealer = [this.deck.pop(), this.deck.pop()]
   }
 
   moveIsValid (player, move) {
     if (!super.moveIsValid(player, move)) {
       return false
     }
-    if ((move === HIT) && (this.getPlayerState(player) === BUSTED)) {
-      player.message('You were busted already.')
+    if ((move === HIT) && (this.playerStates[player.id] !== BUSTED)) {
+      player.message('You are not playing anymore.')
       return false
     }
     return true
-  }
-
-  getPlayerState(player) {
-    // todo check actual player state
-    return this.playerStates[player]
   }
 
   executeMove (player, move) {
@@ -65,24 +66,34 @@ class Blackjack extends Game {
         break
       }
       case STAND: {
-        this.playerStates[player] = STOPPED
+        this.playerStates[player.id] = STOPPED
         break
       }
     }
   }
 
   buyCard (player) {
-
+    this.hands[player.id].push(this.deck.pop())
     if (this.handSum(player) > 21) {
-      this.playerStates[player] = BUSTED
-    }
-    if (this.handSum(player) === 21) {
-      this.playerStates[player] = BUSTED
+      this.playerStates[player.id] = BUSTED
     }
   }
 
+  cardPoint (card) {
+    const v = cardUtil.decodeCard(card).value
+    if (v === 1) { return 11 } else if (v < 11) { return v } else if (v <= 13) { return 10 }
+  }
+
   handSum (player) {
-    return 0
+    const initialSum = this.hands[player.id].reduce((sum, card) => sum + this.cardPoint(card), 0)
+    if ((initialSum > 21) && this.hasAceOn(this.hands[player.id])) { return initialSum - 10 } else { return initialSum }
+  }
+
+  hasAceOn (hand) {
+    for (const card of hand) {
+      if (cardUtil.decodeCard(card).value === 1) { return true }
+    }
+    return false
   }
 
   checkEnd () {
@@ -98,7 +109,7 @@ class Blackjack extends Game {
    * - set of cards of each player
    * - last drawn card
    */
-  getGameState() {
+  getGameState () {
     return {
       numPlayers: this.getNumPlayers(),
       playerStates: this.playerStates,
@@ -109,9 +120,8 @@ class Blackjack extends Game {
   }
 
   noPlayerPlaying () {
-    for (let player of this.players){
-      if (this.playerStates[player] === PLAYING)
-        return false
+    for (const player of this.players) {
+      if (this.playerStates[player.id] === PLAYING) { return false }
     }
     return true
   }

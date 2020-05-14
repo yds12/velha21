@@ -44,7 +44,6 @@ describe('Blackjack', () => {
     observer = null
   })
 
-
   describe('status', () => {
     it('should be ONGOING after game starts', () => {
       table.addPlayer(player1)
@@ -74,26 +73,65 @@ describe('Blackjack', () => {
   })
 
   describe('moveIsValid()', () => {
-    it('should return true', () => {
+    it('only player1 can move', () => {
       table.addPlayer(player1)
       table.addPlayer(player2)
+      table.addPlayer(observer)
       game.start()
-      assert.strictEqual(game.moveIsValid(table.players[0], Blackjack.STAND), true)
+      assert.strictEqual(game.moveIsValid(player1, Blackjack.STAND), true)
+      assert.strictEqual(game.moveIsValid(player1, Blackjack.HIT), true)
+      assert.strictEqual(game.moveIsValid(player2, Blackjack.STAND), false)
+      assert.strictEqual(game.moveIsValid(player2, Blackjack.HIT), false)
+      assert.strictEqual(game.moveIsValid(observer, Blackjack.STAND), false)
+      assert.strictEqual(game.moveIsValid(observer, Blackjack.HIT), false)
+    })
+
+    it('only player1 can move independent of the order', () => {
+      table.addPlayer(player1)
+      table.addPlayer(observer)
+      table.addPlayer(player2)
+      game.start()
+      assert.strictEqual(game.moveIsValid(player1, Blackjack.STAND), true)
+      assert.strictEqual(game.moveIsValid(player1, Blackjack.HIT), true)
+      assert.strictEqual(game.moveIsValid(player2, Blackjack.STAND), false)
+      assert.strictEqual(game.moveIsValid(player2, Blackjack.HIT), false)
+      assert.strictEqual(game.moveIsValid(observer, Blackjack.STAND), false)
+      assert.strictEqual(game.moveIsValid(observer, Blackjack.HIT), false)
     })
 
     it('should return false if game did not start', () => {
       assert.strictEqual(game.moveIsValid(player1, null), false)
     })
 
-    it('should return false if cell if filled', () => {
-      table.addPlayer(player1)
-      table.addPlayer(player2)
-      game.update(table.players[0], { x: 0, y: 0 })
-      assert.strictEqual(game.moveIsValid(table.players[0], { x: 0, y: 0 }), false)
-    })
     it('should return false for any moves from the observer', () => {
       table.addPlayer(player1); table.addPlayer(player2); table.addPlayer(observer)
       assert.strictEqual(game.moveIsValid(observer, { x: 0, y: 0 }), false)
+    })
+  })
+
+  describe('handsum', () => {
+    it('should start with more than 1 and at most 21', () => {
+      table.addPlayer(player1)
+      table.addPlayer(player2)
+      game.start()
+      assert.strictEqual(game.handSum(player1) < 22, true)
+      assert.strictEqual(game.handSum(player1) > 1, true)
+      assert.strictEqual(game.handSum(player2) < 22, true)
+      assert.strictEqual(game.handSum(player2) > 1, true)
+    })
+    it('should start with more than 1 and at most 21', () => {
+      table.addPlayer(player1)
+      game.start()
+      game.hands[player1.id] = [3, 4]
+      assert.strictEqual(game.handSum(player1), 7)
+      game.hands[player1.id] = [1, 11]
+      assert.strictEqual(game.handSum(player1), 21)
+      game.hands[player1.id] = [1, 12]
+      assert.strictEqual(game.handSum(player1), 21)
+      game.hands[player1.id] = [1, 13]
+      assert.strictEqual(game.handSum(player1), 21)
+      game.hands[player1.id] = [1, 1]
+      assert.strictEqual(game.handSum(player1), 12)
     })
   })
 })
