@@ -23,8 +23,8 @@ function updateTables (tables) {
   ulTables.innerHTML = result
 }
 
-function getTableStatus(table) {
-  switch(table.status) {
+function getTableStatus (table) {
+  switch (table.status) {
     case 'waitingOpponents': return 'waiting opponents...'
     default: return table.status
   }

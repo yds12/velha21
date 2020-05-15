@@ -11,11 +11,11 @@ class Player extends OriginalPlayer {
   }
 
   message (message) {
-    //console.log(message)
+    // console.log(message)
   }
 
   updateGameState (state) {
-    //console.log('updateGameState ', state)
+    // console.log('updateGameState ', state)
   }
 }
 
@@ -42,7 +42,6 @@ describe('TicTacToe', () => {
     player2 = null
     observer = null
   })
-
 
   describe('status', () => {
     it('should be ONGOING after game starts', () => {
