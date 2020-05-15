@@ -8,6 +8,7 @@ class Blackjack extends Game {
   static PLAYING = 0
   static BUSTED = 1
   static STOPPED = 2
+  static VICTORIOUS = 3
 
   static HIT = 0
   static STAND = 1
@@ -43,10 +44,13 @@ class Blackjack extends Game {
   }
 
   createPlayerHands () {
-    this.hands = this.getPlayers().reduce((states, player) => {
-      if (!player.isObserver) states[player.id] = [this.deck.pop(), this.deck.pop()]
-      return states
+    this.hands = this.getPlayers().reduce((hand, player) => {
+      hand[player.id] = [this.deck.pop(), this.deck.pop()]
+      return hand
     }, {})
+    for (let player of this.getPlayers())
+      this.updatePlayerState(player)
+
     this.hands.dealer = [this.deck.pop(), this.deck.pop()]
   }
 
@@ -61,10 +65,15 @@ class Blackjack extends Game {
     return true
   }
 
+  isPlayerTurn (player) {
+    return this.playerStates[player.id] === Blackjack.PLAYING
+  }
+
   executeMove (player, move) {
     switch (move) {
       case Blackjack.HIT: {
         this.buyCard(player)
+        this.updatePlayerState(player)
         break
       }
       case Blackjack.STAND: {
@@ -75,11 +84,22 @@ class Blackjack extends Game {
     this.state = this.getGameState()
   }
 
+  updatePlayerState (player) {
+    const handTotal = this.handSum(player)
+    if (handTotal > 21) {
+      this.playerStates[player.id] = Blackjack.BUSTED
+      player.message("You are busted!")
+    }
+    else if (this.handSum(player) === 21) {
+      this.playerStates[player.id] = Blackjack.VICTORIOUS
+      player.message('You win!')
+    }
+    else
+      player.message("You may keep playing!")
+  }
+
   buyCard (player) {
     this.hands[player.id].push(this.deck.pop())
-    if (this.handSum(player) > 21) {
-      this.playerStates[player.id] = Blackjack.BUSTED
-    }
   }
 
   cardPoint (card) {
@@ -100,7 +120,12 @@ class Blackjack extends Game {
   }
 
   checkEnd () {
-    return this.noPlayerPlaying() || (this.getWinner() !== -1)
+    if (this.noPlayerPlaying()) {
+      this.status = Game.FINISHED
+      return true
+    }
+    else
+      return false
   }
 
   /*
@@ -138,7 +163,7 @@ class Blackjack extends Game {
   
 
   noPlayerPlaying () {
-    for (const player of this.players)
+    for (const player of this.getPlayers())
       if (this.playerStates[player.id] === Blackjack.PLAYING)
         return false
     return true

@@ -73,28 +73,28 @@ describe('Blackjack', () => {
   })
 
   describe('moveIsValid()', () => {
-    it('only player1 can move', () => {
+    it('only players can move', () => {
       table.addPlayer(player1)
       table.addPlayer(player2)
       table.addPlayer(observer)
       game.start()
       assert.strictEqual(game.moveIsValid(player1, Blackjack.STAND), true)
       assert.strictEqual(game.moveIsValid(player1, Blackjack.HIT), true)
-      assert.strictEqual(game.moveIsValid(player2, Blackjack.STAND), false)
-      assert.strictEqual(game.moveIsValid(player2, Blackjack.HIT), false)
+      assert.strictEqual(game.moveIsValid(player2, Blackjack.STAND), true)
+      assert.strictEqual(game.moveIsValid(player2, Blackjack.HIT), true)
       assert.strictEqual(game.moveIsValid(observer, Blackjack.STAND), false)
       assert.strictEqual(game.moveIsValid(observer, Blackjack.HIT), false)
     })
 
-    it('only player1 can move independent of the order', () => {
+    it('only players can move independent of the order', () => {
       table.addPlayer(player1)
       table.addPlayer(observer)
       table.addPlayer(player2)
       game.start()
       assert.strictEqual(game.moveIsValid(player1, Blackjack.STAND), true)
       assert.strictEqual(game.moveIsValid(player1, Blackjack.HIT), true)
-      assert.strictEqual(game.moveIsValid(player2, Blackjack.STAND), false)
-      assert.strictEqual(game.moveIsValid(player2, Blackjack.HIT), false)
+      assert.strictEqual(game.moveIsValid(player2, Blackjack.STAND), true)
+      assert.strictEqual(game.moveIsValid(player2, Blackjack.HIT), true)
       assert.strictEqual(game.moveIsValid(observer, Blackjack.STAND), false)
       assert.strictEqual(game.moveIsValid(observer, Blackjack.HIT), false)
     })
@@ -177,6 +177,7 @@ describe('Blackjack', () => {
       table.addPlayer(player1)
       game.start()
       game.hands[player1.id] = [1, 11]
+      game.updatePlayerState(player1)
       assert.strictEqual(game.checkEnd(), true)
     })
     it('should return true if all players are busted', () => {
