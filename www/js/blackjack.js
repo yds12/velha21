@@ -7,6 +7,8 @@ const socket = io(connectTo + '/blackjack')
 const divMsg = document.getElementById('messages')
 const btnClear = document.getElementById('clear')
 const btnStart = document.getElementById('start')
+const btnHit = document.getElementById('hit')
+const btnStand = document.getElementById('stand')
 const canvas = document.getElementById('screen')
 canvas.width = 800
 canvas.height = 600
@@ -22,6 +24,9 @@ const CARD_H = 112
 const HAND_SEP = 36
 
 let HANDS, OPPONENTS, TABLE, DECK
+
+const HIT = 0
+const STAND = 1
 
 // Event Handling (sockets)
 socket.on('connect', () => {
@@ -132,6 +137,15 @@ canvas.onmousemove = (event) => {
 
 canvas.onclick = (event) => {
   // socket.emit('click', {});
+}
+// hit
+btnHit.onclick = (event) => {
+  socket.emit('click', HIT)
+}
+
+// hit
+btnStand.onclick = (event) => {
+  socket.emit('click',STAND)
 }
 
 btnStart.onclick = (event) => {
