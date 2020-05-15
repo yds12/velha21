@@ -109,7 +109,7 @@ describe('Blackjack', () => {
     })
   })
 
-  describe('handsum', () => {
+  describe('handSum', () => {
     it('should start with more than 1 and at most 21', () => {
       table.addPlayer(player1)
       table.addPlayer(player2)
@@ -166,7 +166,6 @@ describe('Blackjack', () => {
     })
   })
 
-
   describe('checkEnd', () => {
     it('should return false if no player has 21', () => {
       table.addPlayer(player1)
@@ -195,6 +194,23 @@ describe('Blackjack', () => {
       game.playerStates[player1.id] = Blackjack.STOPPED
       game.playerStates[player2.id] = Blackjack.STOPPED
       assert.strictEqual(game.checkEnd(), true)
+    })
+  })
+
+  describe('greedyPlayer', () => {
+    it('should end in 11 turns or less', () => {
+      table.addPlayer(player1)
+      game.start()
+      game.hands[player1.id] = [3, 4]
+      let numberOfTurns = 0
+      for (let i = 0; i <= 11; i++) {
+        game.update(player1, 0)
+        numberOfTurns += 1
+        console.log(`TOTAL NUMBER OF TURNS: ${numberOfTurns}`)
+        if (game.checkEnd()) { break }
+      }
+      console.log(`TOTAL NUMBER OF TURNS: ${numberOfTurns}`)
+      assert.strictEqual(numberOfTurns > 11, false, 'it should not have more than 11 turns')
     })
   })
 })

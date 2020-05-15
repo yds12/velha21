@@ -2,14 +2,16 @@ const Game = require('./game')
 const util = require('./util')
 const cardUtil = require('./card-util')
 
-const PLAYING = 0
-const BUSTED = 1
-const STOPPED = 2
-
-const HIT = 0
-const STAND = 1
 
 class Blackjack extends Game {
+
+  static PLAYING = 0
+  static BUSTED = 1
+  static STOPPED = 2
+
+  static HIT = 0
+  static STAND = 1
+
   constructor (table) {
     super(table)
     this.type = 'blackjack'
@@ -35,7 +37,7 @@ class Blackjack extends Game {
 
   createPlayerStates () {
     this.playerStates = this.getPlayers().reduce((states, player) => {
-      if (!player.isObserver) states[player.id] = PLAYING
+      if (!player.isObserver) states[player.id] = Blackjack.PLAYING
       return states
     }, {})
   }
@@ -52,7 +54,7 @@ class Blackjack extends Game {
     if (!super.moveIsValid(player, move)) {
       return false
     }
-    if ((move === HIT) && (this.playerStates[player.id] !== BUSTED)) {
+    if ((move === Blackjack.HIT) && (this.playerStates[player.id] !== Blackjack.PLAYING)) {
       player.message('You are not playing anymore.')
       return false
     }
@@ -61,12 +63,12 @@ class Blackjack extends Game {
 
   executeMove (player, move) {
     switch (move) {
-      case HIT: {
+      case Blackjack.HIT: {
         this.buyCard(player)
         break
       }
-      case STAND: {
-        this.playerStates[player.id] = STOPPED
+      case Blackjack.STAND: {
+        this.playerStates[player.id] = Blackjack.STOPPED
         break
       }
     }
@@ -75,7 +77,7 @@ class Blackjack extends Game {
   buyCard (player) {
     this.hands[player.id].push(this.deck.pop())
     if (this.handSum(player) > 21) {
-      this.playerStates[player.id] = BUSTED
+      this.playerStates[player.id] = Blackjack.BUSTED
     }
   }
 
@@ -121,7 +123,7 @@ class Blackjack extends Game {
 
   noPlayerPlaying () {
     for (const player of this.players)
-      if (this.playerStates[player.id] === PLAYING)
+      if (this.playerStates[player.id] === Blackjack.PLAYING)
         return false
     return true
   }
