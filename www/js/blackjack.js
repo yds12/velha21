@@ -23,7 +23,8 @@ const CARD_W = 77
 const CARD_H = 112
 const HAND_SEP = 36
 
-let HANDS, OPPONENTS, TABLE, DECK
+let HANDS = []
+let OPPONENTS, TABLE, DECK
 
 const HIT = 0
 const STAND = 1
@@ -41,6 +42,9 @@ socket.on('message', (msg) => {
 socket.on('state', (state) => {
   console.log(`State ${JSON.stringify(state)} received`)
   //  gameState = state;
+  if (state !== null) {
+    HANDS = state.hands
+  }
   draw()
 })
 
@@ -69,18 +73,7 @@ function start () {
 
 function drawCard (card, pos) {
   const xpos = card.value - 1
-  let ypos
-
-  switch (card.suit) {
-    case 'd': ypos = 0
-      break
-    case 'h': ypos = 1
-      break
-    case 's': ypos = 2
-      break
-    case 'c': ypos = 3
-      break
-  }
+  const ypos = card.suit
 
   ctx.drawImage(imgCards, xpos * CARD_W, ypos * CARD_H, CARD_W, CARD_H,
     pos.x, pos.y, CARD_W, CARD_H)
@@ -90,16 +83,19 @@ function drawBg () {
 }
 
 function drawTable () {
-  // temporary/test
-  drawCard({ value: 1, suit: 's' }, { x: 2, y: 2 })
-  drawCard({ value: 11, suit: 'h' }, { x: 200, y: 20 })
-  drawCard({ value: 12, suit: 'c' }, { x: 200 + HAND_SEP * 1, y: 20 })
-  drawCard({ value: 13, suit: 'd' }, { x: 200 + HAND_SEP * 2, y: 20 })
-  drawCard({ value: 7, suit: 's' }, { x: 200 + HAND_SEP * 3, y: 20 })
-  drawCard({ value: 10, suit: 'd' }, { x: 200 + HAND_SEP * 4, y: 20 })
 }
 
 function drawHands () {
+  let x = 10
+  let y = 10
+  for (const hand of HANDS) {
+    for (const card of hand) {
+      drawCard(card, { x: x, y: y })
+      x += CARD_W + HAND_SEP
+    }
+    x = 10
+    y += CARD_H + 2 * HAND_SEP
+  }
 }
 
 function drawDeck () {
@@ -145,7 +141,7 @@ btnHit.onclick = (event) => {
 
 // hit
 btnStand.onclick = (event) => {
-  socket.emit('click',STAND)
+  socket.emit('click', STAND)
 }
 
 btnStart.onclick = (event) => {

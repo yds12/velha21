@@ -72,6 +72,7 @@ class Blackjack extends Game {
         break
       }
     }
+    this.state = this.getGameState()
   }
 
   buyCard (player) {
@@ -116,10 +117,25 @@ class Blackjack extends Game {
       numPlayers: this.getNumPlayers(),
       playerStates: this.playerStates,
       currentPlayer: this.currentPlayer,
-      hands: this.hands,
+      hands: this.getListOfHands(),
       lastCard: this.lastCard
     }
   }
+
+  getListOfHands () {
+    const listOfHands = []
+    for (let player of this.getPlayers())
+      listOfHands.push(this.getPlayerCards(player.id))
+    listOfHands.push(this.getPlayerCards('dealer'))
+    return listOfHands
+  }
+  getPlayerCards (playerId) {
+    return this.hands[playerId].reduce((cards, cardNumber) => {
+      cards.push(cardUtil.decodeCard(cardNumber))
+      return cards
+    }, [])
+  }
+  
 
   noPlayerPlaying () {
     for (const player of this.players)
