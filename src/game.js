@@ -20,8 +20,10 @@ class Game {
     this.status = Game.ONGOING
     this.turn = 0
     for (let i = this.players.length - 1; i >= 0; i--) {
-      this.players[i].message(
-        `The game is starting. You are player ${i + 1}.`)
+      if (i < this.getNumPlayers())
+        this.players[i].message(`The game is starting. You are player ${i + 1}.`)
+      else
+        this.players[i].message('The game is starting. You are an observer.')
     }
     //console.log(
     //  `A game of ${this.name} is starting on table ${this.table.id}.`)
