@@ -120,10 +120,17 @@ class Blackjack extends Game {
   }
 
   noPlayerPlaying () {
-    for (const player of this.players) {
-      if (this.playerStates[player.id] === PLAYING) { return false }
-    }
+    for (const player of this.players)
+      if (this.playerStates[player.id] === PLAYING)
+        return false
     return true
+  }
+
+  getWinner () {
+    for (const player of this.players)
+      if (this.handSum(player) === 21)
+        return this.players.indexOf(player)
+    return -1
   }
 }
 

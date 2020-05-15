@@ -134,4 +134,35 @@ describe('Blackjack', () => {
       assert.strictEqual(game.handSum(player1), 12)
     })
   })
+
+  describe('getWinner', () => {
+    it('should return -1 if no player has 21', () => {
+      table.addPlayer(player1)
+      game.start()
+      game.hands[player1.id] = [3, 4]
+      assert.strictEqual(game.getWinner(), -1)
+    })
+    it('should return 0 if first player has 21', () => {
+      table.addPlayer(player1)
+      game.start()
+      game.hands[player1.id] = [1, 11]
+      assert.strictEqual(game.getWinner(), 0)
+    })
+    it('should return 1 if first player has 21', () => {
+      table.addPlayer(player1)
+      table.addPlayer(player2)
+      game.start()
+      game.hands[player1.id] = [1, 1]
+      game.hands[player2.id] = [1, 11]
+      assert.strictEqual(game.getWinner(), 1)
+    })
+    it('should not let observer change winner', () => {
+      table.addPlayer(player1)
+      table.addPlayer(observer)
+      table.addPlayer(player2)
+      game.start()
+      game.hands[player2.id] = [1, 11]
+      assert.strictEqual(game.getWinner(), 1)
+    })
+  })
 })
