@@ -165,4 +165,36 @@ describe('Blackjack', () => {
       assert.strictEqual(game.getWinner(), 1)
     })
   })
+
+
+  describe('checkEnd', () => {
+    it('should return false if no player has 21', () => {
+      table.addPlayer(player1)
+      game.start()
+      game.hands[player1.id] = [3, 4]
+      assert.strictEqual(game.checkEnd(), false)
+    })
+    it('should return true if a player has 21', () => {
+      table.addPlayer(player1)
+      game.start()
+      game.hands[player1.id] = [1, 11]
+      assert.strictEqual(game.checkEnd(), true)
+    })
+    it('should return true if all players are busted', () => {
+      table.addPlayer(player1)
+      table.addPlayer(player2)
+      game.start()
+      game.playerStates[player1.id] = Blackjack.BUSTED
+      game.playerStates[player2.id] = Blackjack.BUSTED
+      assert.strictEqual(game.checkEnd(), true)
+    })
+    it('should return true if all players stopped', () => {
+      table.addPlayer(player1)
+      table.addPlayer(player2)
+      game.start()
+      game.playerStates[player1.id] = Blackjack.STOPPED
+      game.playerStates[player2.id] = Blackjack.STOPPED
+      assert.strictEqual(game.checkEnd(), true)
+    })
+  })
 })
