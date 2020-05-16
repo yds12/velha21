@@ -109,15 +109,22 @@ class Blackjack extends Game {
   }
 
   handSum (player) {
-    const initialSum = this.hands[player.id].reduce((sum, card) => sum + this.cardPoint(card), 0)
-    if ((initialSum > 21) && this.hasAceOn(this.hands[player.id])) { return initialSum - 10 } else { return initialSum }
+    let total = this.hands[player.id].reduce((sum, card) => sum + this.cardPoint(card), 0)
+    let usableAces = this.numberOfAces(this.hands[player.id])
+    while ((total > 21) && (usableAces > 0)){
+      total -= 10
+      usableAces -= 1
+    }
+    return total
   }
 
-  hasAceOn (hand) {
+  numberOfAces (hand) {
+    let total = 0
     for (const card of hand) {
-      if (cardUtil.decodeCard(card).value === 1) { return true }
+      if (cardUtil.decodeCard(card).value === 1)
+        total += 1
     }
-    return false
+    return total
   }
 
   checkEnd () {

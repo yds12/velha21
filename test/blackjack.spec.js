@@ -104,19 +104,35 @@ describe('Blackjack', () => {
       assert.strictEqual(game.handSum(player2) < 22, true)
       assert.strictEqual(game.handSum(player2) > 1, true)
     })
-    it('should start with more than 1 and at most 21', () => {
+    it('cards from 2 to 10 have a regular value', () => {
       table.addPlayer(player1)
       game.start()
       game.hands[player1.id] = [3, 4]
       assert.strictEqual(game.handSum(player1), 7)
+    })
+    it('cards from 11 to 13 are worth 10', () => {
+      table.addPlayer(player1)
+      game.start()
       game.hands[player1.id] = [1, 11]
       assert.strictEqual(game.handSum(player1), 21)
       game.hands[player1.id] = [1, 12]
       assert.strictEqual(game.handSum(player1), 21)
       game.hands[player1.id] = [1, 13]
       assert.strictEqual(game.handSum(player1), 21)
+    })
+    it('aces might be worth 1 if total is above 21', () => {
+      table.addPlayer(player1)
+      game.start()
       game.hands[player1.id] = [1, 1]
       assert.strictEqual(game.handSum(player1), 12)
+      game.hands[player1.id] = [1, 1, 10]
+      assert.strictEqual(game.handSum(player1), 12)
+      game.hands[player1.id] = [1, 1, 1, 10]
+      assert.strictEqual(game.handSum(player1), 13)
+      game.hands[player1.id] = [1, 1, 1, 1, 10]
+      assert.strictEqual(game.handSum(player1), 14)
+      game.hands[player1.id] = [1, 1, 1, 1, 10, 10]
+      assert.strictEqual(game.handSum(player1), 24)
     })
   })
 
