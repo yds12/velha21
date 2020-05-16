@@ -2,11 +2,10 @@ const path = require('path')
 const assert = require('assert')
 
 const Blackjack = require(path.join(__dirname, '../src/blackjack'))
-const OriginalPlayer = require(path.join(__dirname, '../src/player'))
+const Player = require(path.join(__dirname, '../src/player'))
 const Table = require(path.join(__dirname, '../src/table'))
 
-class Player extends OriginalPlayer {
-  // todo this class is repeated in two files
+class MockPlayer extends Player {
   constructor (name) {
     super(name, null)
   }

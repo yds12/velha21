@@ -21,7 +21,8 @@ const SCREEN_W = canvas.width
 const SCREEN_H = canvas.height
 const CARD_W = 77
 const CARD_H = 112
-const HAND_SEP = 36
+const HAND_SEP = 40
+const DEALT_SEP = CARD_W + 20
 
 let HANDS = []
 let OPPONENTS, TABLE, DECK
@@ -72,11 +73,15 @@ function start () {
 }
 
 function drawCard (card, pos) {
-  const xpos = card.value - 1
-  const ypos = card.suit
+  if(card !== -1) {
+    const spriteXpos = card.value - 1
+    const spriteYpos = card.suit
 
-  ctx.drawImage(imgCards, xpos * CARD_W, ypos * CARD_H, CARD_W, CARD_H,
-    pos.x, pos.y, CARD_W, CARD_H)
+    ctx.drawImage(imgCards, spriteXpos * CARD_W, spriteYpos * CARD_H, 
+      CARD_W, CARD_H, pos.x, pos.y, CARD_W, CARD_H)
+  } else {
+    ctx.drawImage(imgBack, 0, 0, CARD_W, CARD_H, pos.x, pos.y, CARD_W, CARD_H)
+  }
 }
 
 function drawBg () {
@@ -89,9 +94,12 @@ function drawHands () {
   let x = 10
   let y = 10
   for (const hand of HANDS) {
-    for (const card of hand) {
+    for (let i = 0; i < hand.length; i++) {
+      let card = hand[i]
       drawCard(card, { x: x, y: y })
-      x += CARD_W + HAND_SEP
+
+      if(i === 0) x += HAND_SEP
+      else x += DEALT_SEP
     }
     x = 10
     y += CARD_H + 2 * HAND_SEP

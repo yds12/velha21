@@ -58,7 +58,8 @@ class Blackjack extends Game {
     if (!super.moveIsValid(player, move)) {
       return false
     }
-    if ((move === Blackjack.HIT) && (this.playerStates[player.id] !== Blackjack.PLAYING)) {
+    if ((move === Blackjack.HIT) && 
+      (this.playerStates[player.id] !== Blackjack.PLAYING)) {
       player.message('You are not playing anymore.')
       return false
     }
@@ -151,9 +152,15 @@ class Blackjack extends Game {
     const listOfHands = []
     for (let player of this.getPlayers())
       listOfHands.push(this.getPlayerCards(player.id))
-    listOfHands.push(this.getPlayerCards('dealer'))
+
+    let dealerCards = this.getPlayerCards('dealer')
+    dealerCards.pop()
+    dealerCards.push(-1)  // only show 1 card of dealer
+    listOfHands.push(dealerCards)
+//    listOfHands.push(this.getPlayerCards('dealer'))
     return listOfHands
   }
+
   getPlayerCards (playerId) {
     return this.hands[playerId].reduce((cards, cardNumber) => {
       cards.push(cardUtil.decodeCard(cardNumber))
