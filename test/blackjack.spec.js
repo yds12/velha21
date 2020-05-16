@@ -5,6 +5,17 @@ const Blackjack = require(path.join(__dirname, '../src/blackjack'))
 const MockPlayer = require(path.join(__dirname, '../test/mock-player'))
 const Table = require(path.join(__dirname, '../src/table'))
 
+Blackjack.createPlayerHands = () => {
+  this.hands = this.getPlayers().reduce((hand, player) => {
+    hand[player.id] = [3, 3]
+    return hand
+  }, {})
+  for (let player of this.getPlayers())
+    this.updatePlayerState(player)
+
+  this.hands.dealer = [2,2]
+}
+
 describe('Blackjack', () => {
   let table = null
   let game = null
@@ -200,19 +211,16 @@ describe('Blackjack', () => {
   })
 
   describe('greedyPlayer', () => {
-    it('should end in 11 turns or less', () => {
+    it('should end in 11 plays or less', () => {
       table.addPlayer(player1)
       game.start()
-      game.hands[player1.id] = [3, 4]
-      let numberOfTurns = 0
+      let numberOfPlays = 0
       for (let i = 0; i <= 11; i++) {
         game.update(player1, 0)
-        numberOfTurns += 1
-        console.log(`TOTAL NUMBER OF TURNS: ${numberOfTurns}`)
+        numberOfPlays += 1
         if (game.checkEnd()) { break }
       }
-      console.log(`TOTAL NUMBER OF TURNS: ${numberOfTurns}`)
-      assert.strictEqual(numberOfTurns > 11, false, 'it should not have more than 11 turns')
+      assert.strictEqual(numberOfPlays > 11, false, 'it should not have more than 11 plays')
     })
   })
 })
