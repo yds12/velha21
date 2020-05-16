@@ -5,15 +5,14 @@ const Blackjack = require(path.join(__dirname, '../src/blackjack'))
 const MockPlayer = require(path.join(__dirname, '../test/mock-player'))
 const Table = require(path.join(__dirname, '../src/table'))
 
-Blackjack.createPlayerHands = () => {
+function createPlayerHands() {
   this.hands = this.getPlayers().reduce((hand, player) => {
     hand[player.id] = [3, 3]
     return hand
   }, {})
   for (let player of this.getPlayers())
     this.updatePlayerState(player)
-
-  this.hands.dealer = [2,2]
+  this.hands.dealer = [2, 2]
 }
 
 describe('Blackjack', () => {
@@ -26,6 +25,7 @@ describe('Blackjack', () => {
   beforeEach(() => {
     table = new Table('blackjack', 42)
     game = table.game
+    game.createPlayerHands = createPlayerHands
     player1 = new MockPlayer('player1')
     player2 = new MockPlayer('player2')
     observer = new MockPlayer('observer')
