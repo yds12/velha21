@@ -2,22 +2,8 @@ const path = require('path')
 const assert = require('assert')
 
 const Blackjack = require(path.join(__dirname, '../src/blackjack'))
-const Player = require(path.join(__dirname, '../src/player'))
+const MockPlayer = require(path.join(__dirname, '../test/mock-player'))
 const Table = require(path.join(__dirname, '../src/table'))
-
-class MockPlayer extends Player {
-  constructor (name) {
-    super(name, null)
-  }
-
-  message (message) {
-    console.log(message)
-  }
-
-  updateGameState (state) {
-    console.log('updateGameState ', state)
-  }
-}
 
 describe('Blackjack', () => {
   let table = null
@@ -29,9 +15,9 @@ describe('Blackjack', () => {
   beforeEach(() => {
     table = new Table('blackjack', 42)
     game = table.game
-    player1 = new Player('player1')
-    player2 = new Player('player2')
-    observer = new Player('observer')
+    player1 = new MockPlayer('player1')
+    player2 = new MockPlayer('player2')
+    observer = new MockPlayer('observer')
     observer.isObserver = true
   })
 
