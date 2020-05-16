@@ -40,7 +40,6 @@ class Game {
             this.players[j] = x
             break
           }
-
   }
 
   update (player, move) {
@@ -51,7 +50,8 @@ class Game {
     this.executeMove(player, move)
     this.sendState()
     this.checkEnd()
-    this.turn++
+    if (this.isNextPlayer(player))
+      this.turn++
   }
 
   moveIsValid (player, move) {
@@ -73,6 +73,10 @@ class Game {
 
   isPlayerTurn (player) {
     return (this.players.indexOf(player) === this.turn % this.getPlayers().length)
+  }
+
+  isNextPlayer (player) {
+    return true
   }
 
   sendState () {

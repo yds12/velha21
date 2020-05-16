@@ -5,13 +5,12 @@ const Blackjack = require(path.join(__dirname, '../src/blackjack'))
 const MockPlayer = require(path.join(__dirname, '../test/mock-player'))
 const Table = require(path.join(__dirname, '../src/table'))
 
-function createPlayerHands() {
+function createPlayerHands () {
   this.hands = this.getPlayers().reduce((hand, player) => {
     hand[player.id] = [3, 3]
     return hand
   }, {})
-  for (let player of this.getPlayers())
-    this.updatePlayerState(player)
+  for (const player of this.getPlayers()) { this.updatePlayerState(player) }
   this.hands.dealer = [2, 2]
 }
 
@@ -221,6 +220,42 @@ describe('Blackjack', () => {
         if (game.checkEnd()) { break }
       }
       assert.strictEqual(numberOfPlays > 11, false, 'it should not have more than 11 plays')
+    })
+  })
+
+  describe('turn', () => {
+    beforeEach(() => {
+      table.addPlayer(player1)
+      table.addPlayer(player2)
+      game.start()
+    })
+
+    afterEach(() => {
+      game.players = []
+      game.finish()
+    })
+
+    it('should increase after stand', () => {
+      assert.strictEqual(game.turn, 0)
+      game.update(player1, Blackjack.STAND)
+      assert.strictEqual(game.turn, 1)
+    })
+    it('should not increase after buy without busting', () => {
+      assert.strictEqual(game.turn, 0)
+      game.hands[player1.id] = [2, 2]
+      game.update(player1, Blackjack.HIT)
+      assert.strictEqual(game.turn, 0)
+    })
+    it('should increase after hit with a hand of 20, since it either bust or win', () => {
+      assert.strictEqual(game.turn, 0)
+      game.hands[player1.id] = [10, 9, 1]
+      game.update(player1, Blackjack.HIT)
+      assert.strictEqual(game.turn, 1)
+    })
+    it('should not increase after invalid move', () => {
+      assert.strictEqual(game.turn, 0)
+      game.update(player2, Blackjack.STAND)
+      assert.strictEqual(game.turn, 0)
     })
   })
 })

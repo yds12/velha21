@@ -123,6 +123,10 @@ class Blackjack extends Game {
     return total
   }
 
+  isNextPlayer (player) {
+    return  this.playerStates[player.id] !== Blackjack.PLAYING
+  }
+
   checkEnd () {
     if (this.noPlayerPlaying()) {
       this.status = Game.FINISHED
@@ -166,7 +170,8 @@ class Blackjack extends Game {
 
   getPlayerCards (playerId) {
     return this.hands[playerId].reduce((cards, cardNumber) => {
-      cards.push(cardUtil.decodeCard(cardNumber))
+      const card = cardUtil.decodeCard(cardNumber)
+      cards.push(card.value)
       return cards
     }, [])
   }
