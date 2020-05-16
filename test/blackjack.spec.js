@@ -58,28 +58,28 @@ describe('Blackjack', () => {
   })
 
   describe('moveIsValid()', () => {
-    it('only players can move', () => {
+    it('only player 1 can move', () => {
       table.addPlayer(player1)
       table.addPlayer(player2)
       table.addPlayer(observer)
       game.start()
       assert.strictEqual(game.moveIsValid(player1, Blackjack.STAND), true)
       assert.strictEqual(game.moveIsValid(player1, Blackjack.HIT), true)
-      assert.strictEqual(game.moveIsValid(player2, Blackjack.STAND), true)
-      assert.strictEqual(game.moveIsValid(player2, Blackjack.HIT), true)
+      assert.strictEqual(game.moveIsValid(player2, Blackjack.STAND), false)
+      assert.strictEqual(game.moveIsValid(player2, Blackjack.HIT), false)
       assert.strictEqual(game.moveIsValid(observer, Blackjack.STAND), false)
       assert.strictEqual(game.moveIsValid(observer, Blackjack.HIT), false)
     })
 
-    it('only players can move independent of the order', () => {
+    it('only player 1 can move independent of the order the observer entered the game', () => {
       table.addPlayer(player1)
       table.addPlayer(observer)
       table.addPlayer(player2)
       game.start()
       assert.strictEqual(game.moveIsValid(player1, Blackjack.STAND), true)
       assert.strictEqual(game.moveIsValid(player1, Blackjack.HIT), true)
-      assert.strictEqual(game.moveIsValid(player2, Blackjack.STAND), true)
-      assert.strictEqual(game.moveIsValid(player2, Blackjack.HIT), true)
+      assert.strictEqual(game.moveIsValid(player2, Blackjack.STAND), false)
+      assert.strictEqual(game.moveIsValid(player2, Blackjack.HIT), false)
       assert.strictEqual(game.moveIsValid(observer, Blackjack.STAND), false)
       assert.strictEqual(game.moveIsValid(observer, Blackjack.HIT), false)
     })

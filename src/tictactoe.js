@@ -37,10 +37,6 @@ class TicTacToe extends Game {
     return true
   }
 
-  isPlayerTurn (player) {
-    return (this.players.indexOf(player) === this.turn % 2)
-  }
-
   isFree (x, y) {
     return this.state[y * 3 + x] === 0
   }

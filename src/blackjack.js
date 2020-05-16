@@ -66,10 +66,6 @@ class Blackjack extends Game {
     return true
   }
 
-  isPlayerTurn (player) {
-    return this.playerStates[player.id] === Blackjack.PLAYING
-  }
-
   executeMove (player, move) {
     switch (move) {
       case Blackjack.HIT: {

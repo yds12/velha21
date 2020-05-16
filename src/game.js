@@ -72,7 +72,7 @@ class Game {
   }
 
   isPlayerTurn (player) {
-    return true
+    return (this.players.indexOf(player) === this.turn % this.getPlayers().length)
   }
 
   sendState () {
