@@ -226,6 +226,13 @@ class Blackjack extends Game {
     }
     return this.handSum(this.dealer)
   }
+
+  logMove (player, move) {
+    if (move === Blackjack.HIT)
+      this.table.messagePlayers(`Player ${player.name} hit`)
+    if (move === Blackjack.STAND)
+      this.table.messagePlayers(`Player ${player.name} stand`)
+  }
 }
 
 module.exports = Blackjack
