@@ -57,6 +57,7 @@ class Game {
       if (this.playerRoundComplete(player)) {
         this.turn++
         this.updateCurrentPlayer()
+        this.players[this.currentPlayer].message("It is your turn!")
       }
     }
     this.sendState()
