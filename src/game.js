@@ -98,9 +98,9 @@ class Game {
   }
 
   finish () {
-    this.sendResults()
     this.table.messagePlayers('End of the game')
     this.status = Game.FINISHED
+    this.sendResults()
   }
 
   sendResults () {

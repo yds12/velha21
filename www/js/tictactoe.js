@@ -7,6 +7,7 @@ const socket = io(connectTo + '/tictactoe')
 const divMsg = document.getElementById('messages')
 const ulPlayers = document.getElementById('players')
 const btnClear = document.getElementById('clear')
+const btnStart = document.getElementById('start')
 const canvas = document.getElementById('screen')
 canvas.width = 400
 canvas.height = 400
@@ -129,6 +130,10 @@ canvas.onclick = (event) => {
   const quad = findQuadrant(event.clientX, event.clientY)
 
   if (quad) socket.emit('click', quad)
+}
+
+btnStart.onclick = (event) => {
+  socket.emit('start')
 }
 
 btnClear.onclick = (event) => {

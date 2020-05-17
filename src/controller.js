@@ -37,7 +37,7 @@ function handleClick (player, pos) {
 }
 
 function handleClear (player) {
-  if (!player.isObserver) player.table.tryToStartGame()
+  if (!player.isObserver) player.table.clear()
   else player.message("Nice try, but you cannot restart other people's games!")
 }
 
@@ -55,11 +55,11 @@ function getTables () {
     }))
 }
 
-function getNewTableId() {
+function getNewTableId () {
   return Math.floor(Math.random() * 10000)
 }
 
-function isValidGame(type) {
+function isValidGame (type) {
   return ['tictactoe', 'blackjack'].indexOf(type) >= 0
 }
 

@@ -45,6 +45,8 @@ socket.on('state', (state) => {
   //  gameState = state;
   if (state !== null) {
     HANDS = state.hands
+  } else {
+    HANDS = []
   }
   draw()
 })
@@ -73,11 +75,11 @@ function start () {
 }
 
 function drawCard (card, pos) {
-  if(card !== -1) {
+  if (card !== -1) {
     const spriteXpos = card.value - 1
     const spriteYpos = card.suit
 
-    ctx.drawImage(imgCards, spriteXpos * CARD_W, spriteYpos * CARD_H, 
+    ctx.drawImage(imgCards, spriteXpos * CARD_W, spriteYpos * CARD_H,
       CARD_W, CARD_H, pos.x, pos.y, CARD_W, CARD_H)
   } else {
     ctx.drawImage(imgBack, 0, 0, CARD_W, CARD_H, pos.x, pos.y, CARD_W, CARD_H)
@@ -95,10 +97,10 @@ function drawHands () {
   let y = 10
   for (const hand of HANDS) {
     for (let i = 0; i < hand.length; i++) {
-      let card = hand[i]
+      const card = hand[i]
       drawCard(card, { x: x, y: y })
 
-      if(i === 0) x += HAND_SEP
+      if (i === 0) x += HAND_SEP
       else x += DEALT_SEP
     }
     x = 10

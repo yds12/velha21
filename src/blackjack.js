@@ -1,4 +1,5 @@
 const Game = require('./game')
+const Player = require('./player')
 const util = require('./util')
 const cardUtil = require('./card-util')
 
@@ -19,6 +20,7 @@ class Blackjack extends Game {
     this.name = 'Blackjack'
     this.started = false
     this.deck = []
+    this.dealer = new Player('dealer', null)
   }
 
   canStart () {
@@ -50,7 +52,7 @@ class Blackjack extends Game {
     for (let player of this.getPlayers())
       this.updatePlayerState(player)
 
-    this.hands.dealer = [this.deck.pop(), this.deck.pop()]
+    this.hands[this.dealer.id] = [this.deck.pop(), this.deck.pop()]
   }
 
   moveIsValid (player, move) {
@@ -128,7 +130,6 @@ class Blackjack extends Game {
 
   checkEnd () {
     if (this.noPlayerPlaying()) {
-      this.status = Game.FINISHED
       return true
     }
     else
@@ -157,19 +158,21 @@ class Blackjack extends Game {
   getListOfHands () {
     const listOfHands = []
     for (let player of this.getPlayers())
-      listOfHands.push(this.getPlayerCards(player.id))
+      listOfHands.push(this.getPlayerCards(player))
 
-    let dealerCards = this.getPlayerCards('dealer')
-    dealerCards.pop()
-    dealerCards.push(-1)  // only show 1 card of dealer
+    let dealerCards = this.getPlayerCards(this.dealer)
+    if (this.status !== Game.FINISHED) {
+      dealerCards.pop()
+      dealerCards.push(-1)  // only show 1 card of dealer
+    }
     listOfHands.push(dealerCards)
     return listOfHands
   }
 
-  getPlayerCards (playerId) {
-    return this.hands[playerId].reduce((cards, cardNumber) => {
+  getPlayerCards (player) {
+    return this.hands[player.id].reduce((cards, cardNumber) => {
       const card = cardUtil.decodeCard(cardNumber)
-      cards.push(card.value)
+      cards.push(card)
       return cards
     }, [])
   }
@@ -188,6 +191,40 @@ class Blackjack extends Game {
       if (this.handSum(player) === 21)
         result.push(this.players.indexOf(player))
     return result
+  }
+
+  sendResults () {
+    this.state = this.getGameState()
+    this.sendState()
+    const dealersScore = this.computeDealerScore()
+    for (let player of this.getPlayers()){
+      const playerScore = this.handSum(player)
+      if (playerScore > 21)
+        player.message("you lost")
+      else if (playerScore === 21 )
+        player.message("you won")
+      else {
+        if (dealersScore > 21) {
+          player.message('you won')
+        }
+        else{
+          if (playerScore > dealersScore)
+            player.message('you won')
+          else
+            player.message("you lost")
+        }
+      }
+
+    }
+  }
+
+  computeDealerScore () {
+    while (this.handSum(this.dealer) < 17) {
+      this.buyCard(this.dealer)
+      this.state = this.getGameState()
+      this.sendState()
+    }
+    return this.handSum(this.dealer)
   }
 }
 

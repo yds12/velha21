@@ -5,6 +5,7 @@ const Blackjack = require('./blackjack')
 // a table manages players joining a game
 class Table {
   constructor (gameType, tableId) {
+    this.gameType = gameType
     this.players = []
     this.id = tableId
     this.waitingOpponents = true
@@ -16,36 +17,24 @@ class Table {
       player.isObserver = true
     }
     this.players.push(player)
-    //console.log(`Player ${player.name} joined the table.`)
+    // console.log(`Player ${player.name} joined the table.`)
     this.messagePlayers(`Player ${player.name} joined the table.`)
     player.setTable(this)
 
-    if (this.waitingOpponents) this.tryToStartGame()
+    if (this.waitingOpponents) this.clear()
   }
 
   removePlayer (player) {
     this.players.splice(this.players.indexOf(player), 1)
-    //console.log('Player', player.name, 'left table', this.id)
+    // console.log('Player', player.name, 'left table', this.id)
     this.messagePlayers(`${player.name} left table ${this.id}.`)
-    if (!this.game.canStart()) {
-      this.messagePlayers('Not enough players to continue.')
-      this.game.finish()
-    }
-    if (!this.empty()) { this.waitingOpponents = true }
+    this.waitingOpponents = true
   }
 
-  tryToStartGame () {
-    //console.log('Trying to start game...')
-
-    if (this.game.canStart()) {
-      //console.log('Starting game...')
-      this.shufflePlayers()
-      this.game.start()
-      this.waitingOpponents = false
-    } else {
-      //console.log("Can't start the game.")
-      this.messagePlayers('Waiting for opponents...')
-    }
+  clear () {
+    this.waitingOpponents = true
+    this.game = this.createNewGame(this.gameType)
+    this.game.sendState()
   }
 
   empty () {

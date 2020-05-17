@@ -11,7 +11,7 @@ function createPlayerHands () {
     return hand
   }, {})
   for (const player of this.getPlayers()) { this.updatePlayerState(player) }
-  this.hands.dealer = [2, 2]
+  this.hands[this.dealer.id] = [2, 2]
 }
 
 describe('Blackjack', () => {

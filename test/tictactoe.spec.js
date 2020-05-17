@@ -5,8 +5,6 @@ const TicTacToe = require(path.join(__dirname, '../src/tictactoe'))
 const MockPlayer = require(path.join(__dirname, '../test/mock-player'))
 const Table = require(path.join(__dirname, '../src/table'))
 
-
-
 describe('TicTacToe', () => {
   let table = null
   let game = null
@@ -35,6 +33,7 @@ describe('TicTacToe', () => {
     it('should be ONGOING after game starts', () => {
       table.addPlayer(player1)
       table.addPlayer(player2)
+      game.start()
       assert.strictEqual(game.status, TicTacToe.ONGOING)
     })
 
@@ -62,6 +61,7 @@ describe('TicTacToe', () => {
     it('should return true', () => {
       table.addPlayer(player1)
       table.addPlayer(player2)
+      game.start()
       assert.strictEqual(game.moveIsValid(table.players[0], { x: 0, y: 0 }), true)
     })
     it('should return false if game did not start', () => {
