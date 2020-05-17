@@ -22,9 +22,12 @@ const SCREEN_H = canvas.height
 const CARD_W = 77
 const CARD_H = 112
 const HAND_SEP = 40
-const DEALT_SEP = CARD_W + 20
+const DEALT_SEP = CARD_W + 5
+const HANDS_X_OFFSET = 10
+const HANDS_Y_OFFSET = 10
 
 let HANDS = []
+let handPositions = []
 let OPPONENTS, TABLE, DECK
 
 const HIT = 0
@@ -45,11 +48,21 @@ socket.on('state', (state) => {
   //  gameState = state;
   if (state !== null) {
     HANDS = state.hands
+    setHandPositions()
   } else {
     HANDS = []
   }
   draw()
 })
+
+function setHandPositions() {
+  handPositions = []
+  for(let i = 0; i < HANDS.length; i++) {
+    let x = (i % 2 === 0) ? HANDS_X_OFFSET : HANDS_X_OFFSET + SCREEN_W / 2
+    let y = HANDS_Y_OFFSET + Math.floor(i / 2.0) * (CARD_H + HAND_SEP)
+    handPositions.push({ x: x, y: y })
+  }
+}
 
 // Game functions
 function loadImages () {
@@ -93,18 +106,18 @@ function drawTable () {
 }
 
 function drawHands () {
-  let x = 10
-  let y = 10
-  for (const hand of HANDS) {
+  for (let j = 0; j < HANDS.length; j++) {
+    let hand = HANDS[j]
+    let x = handPositions[j].x
+    let y = handPositions[j].y
+
     for (let i = 0; i < hand.length; i++) {
       const card = hand[i]
       drawCard(card, { x: x, y: y })
 
-      if (i === 0) x += HAND_SEP
-      else x += DEALT_SEP
+      if (i === 1) x += DEALT_SEP 
+      else x += HAND_SEP
     }
-    x = 10
-    y += CARD_H + 2 * HAND_SEP
   }
 }
 
@@ -133,16 +146,9 @@ function clearMessages () {
 // Event handling (window)
 canvas.onmousemove = (event) => {
   draw()
-
-/*  if(quad){
-    ctx.fillStyle = '#33333388';
-    ctx.fillRect(BOARD.x + quad.x * BOARD.tile,
-      BOARD.y + quad.y * BOARD.tile, BOARD.tile, BOARD.tile);
-  } */
 }
 
 canvas.onclick = (event) => {
-  // socket.emit('click', {});
 }
 // hit
 btnHit.onclick = (event) => {
