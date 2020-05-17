@@ -49,8 +49,11 @@ class Game {
     }
     this.executeMove(player, move)
     this.sendState()
-    this.checkEnd()
-    if (this.isNextPlayer(player))
+    if (this.checkEnd()) {
+      const winners = this.getWinners()
+      this.finish(winners)
+    }
+    if (this.playerRoundComplete(player))
       this.turn++
   }
 
@@ -75,7 +78,7 @@ class Game {
     return (this.players.indexOf(player) === this.turn % this.getPlayers().length)
   }
 
-  isNextPlayer (player) {
+  playerRoundComplete (player) {
     return true
   }
 
@@ -85,10 +88,8 @@ class Game {
     }
   }
 
-  finish () {
-    // return to table | start again | return to server
+  finish (winners) {
     this.table.messagePlayers('End of the game')
-    //console.log('End of the game', this.name)
     this.status = Game.FINISHED
   }
 
@@ -106,8 +107,8 @@ class Game {
     return false
   }
 
-  getWinner () {
-    return 0
+  getWinners () {
+    return []
   }
 
   logMove (player, move) {}

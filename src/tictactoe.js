@@ -52,41 +52,47 @@ class TicTacToe extends Game {
   }
 
   checkEnd () {
-    const winner = this.getWinner()
-    if (this.turn === 8 && winner <= 0) {
-      for (let i = this.players.length - 1; i >= 0; i--) {
-        this.players[i].message('Draw!')
-      }
+    const winners = this.getWinners()
+    if (this.turn === 8 && winners.length === 0) {
+      this.table.message('Draw!')
       this.status = Game.FINISHED
+      return true
     } else {
-      if (winner <= 0) { return }
+      if (winners.length === 0) { return false }
       this.status = Game.FINISHED
       for (let i = this.players.length - 1; i >= 0; i--) {
-        if (i === (winner - 1)) {
+        if (winners.includes(i + 1)) {
           this.players[i].message('Congratulations, you won!')
         } else if (!this.players[i].isObserver) {
           this.players[i].message('You lost!')
         } else {
-          this.players[i].message(
-            `Player ${this.players[winner - 1].name} won!`)
+          const winnersNames = winners.map(x => x.name)
+          this.players[i].message(`Players ${winnersNames.join(' ')} won!`)
         }
       }
+      return true
     }
   }
 
-  getWinner () {
-    if (this.turn < 4) return 0
+  getWinners () {
+    if (this.turn < 4) return []
     const gs = this.state
 
     for (let i = 0; i < 3; i++) {
-      if (gs[i * 3] === gs[i * 3 + 1] && gs[i * 3 + 1] === gs[i * 3 + 2] &&
-        gs[i * 3] > 0) { return gs[i * 3] }
-      if (gs[i] === gs[i + 3] && gs[i + 3] === gs[i + 6] &&
-        gs[i] > 0) { return gs[i] }
+      if (gs[i * 3] === gs[i * 3 + 1] &&
+          gs[i * 3 + 1] === gs[i * 3 + 2] &&
+          gs[i * 3] > 0) {
+        return [gs[i * 3]]
+      }
+      if (gs[i] === gs[i + 3] &&
+          gs[i + 3] === gs[i + 6] &&
+          gs[i] > 0) {
+        return [gs[i]]
+      }
     }
-    if (gs[0] === gs[4] && gs[4] === gs[8] && gs[0] > 0) { return gs[0] }
-    if (gs[2] === gs[4] && gs[4] === gs[6] && gs[2] > 0) { return gs[2] }
-    return 0
+    if (gs[0] === gs[4] && gs[4] === gs[8] && gs[0] > 0) { return [gs[0]] }
+    if (gs[2] === gs[4] && gs[4] === gs[6] && gs[2] > 0) { return [gs[2]] }
+    return [0]
   }
 }
 

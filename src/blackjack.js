@@ -123,7 +123,7 @@ class Blackjack extends Game {
     return total
   }
 
-  isNextPlayer (player) {
+  playerRoundComplete (player) {
     return  this.playerStates[player.id] !== Blackjack.PLAYING
   }
 
@@ -184,11 +184,12 @@ class Blackjack extends Game {
     return true
   }
 
-  getWinner () {
-    for (const player of this.players)
+  getWinners () {
+    const result = []
+    for (const player of this.getPlayers())
       if (this.handSum(player) === 21)
-        return this.players.indexOf(player)
-    return -1
+        result.push(this.players.indexOf(player))
+    return result
   }
 }
 
