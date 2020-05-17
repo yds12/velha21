@@ -3,7 +3,7 @@ const Game = require('./game')
 class TicTacToe extends Game {
   constructor (table) {
     super(table)
-    this.state = [0, 0, 0, 0, 0, 0, 0, 0, 0]
+    this.board = [0, 0, 0, 0, 0, 0, 0, 0, 0]
     this.type = 'tictactoe'
     this.name = 'Tic-tac-toe'
   }
@@ -13,13 +13,30 @@ class TicTacToe extends Game {
   }
 
   start () {
-    this.state = [0, 0, 0, 0, 0, 0, 0, 0, 0]
-    super.start()
+    this.board = [0, 0, 0, 0, 0, 0, 0, 0, 0]
+    if (this.getNumPlayers() < 2) {
+      this.table.messagePlayers('not enough players')
+      return false
+    }
+    this.makeExtraPlayersObservers()
+    return super.start()
+  }
+
+  getGameState () {
+    return this.board
+  }
+
+  makeExtraPlayersObservers () {
+    const currentPlayers = this.getPlayers()
+    if (currentPlayers.length > 2) {
+      for (let i = 2; i < currentPlayers.length; i++) {
+        currentPlayers[i].turnIntoObserver()
+      }
+    }
   }
 
   logMove (player, move) {
-    // console.log(
-    //  `Player ${player.name} clicked on quadrant ${move.x}, ${move.y}`)
+    this.table.messagePlayers(`Player ${player.name} clicked on quadrant ${move.x}, ${move.y}`)
   }
 
   executeMove (player, move) {
@@ -38,16 +55,16 @@ class TicTacToe extends Game {
   }
 
   isFree (x, y) {
-    return this.state[y * 3 + x] === 0
+    return this.board[y * 3 + x] === 0
   }
 
   fill (x, y, player) {
-    this.state[y * 3 + x] = this.players.indexOf(player) + 1
+    this.board[y * 3 + x] = this.players.indexOf(player) + 1
   }
 
   sendState () {
     for (let i = this.players.length - 1; i >= 0; i--) {
-      this.players[i].updateGameState(this.state)
+      this.players[i].updateGameState(this.board)
     }
   }
 
@@ -76,7 +93,7 @@ class TicTacToe extends Game {
 
   getWinners () {
     if (this.turn < 4) return []
-    const gs = this.state
+    const gs = this.board
 
     for (let i = 0; i < 3; i++) {
       if (gs[i * 3] === gs[i * 3 + 1] &&

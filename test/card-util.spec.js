@@ -3,10 +3,10 @@ const assert = require('assert')
 
 describe('card-util', () => {
   it('should encode cards correctly', (done) => {
-    let aceSpades = { suit: 0, value: 1 }
-    let fiveHearts = { suit: 1, value: 5 }
-    let kingDiamond = { suit: 2, value: 13 }
-    let sevenClubs = { suit: 3, value: 7 }
+    const aceSpades = { suit: 0, value: 1 }
+    const fiveHearts = { suit: 1, value: 5 }
+    const kingDiamond = { suit: 2, value: 13 }
+    const sevenClubs = { suit: 3, value: 7 }
 
     assert.equal(cardUtil.encodeCard(aceSpades), 13 * 0 + 1)
     assert.equal(cardUtil.encodeCard(fiveHearts), 13 * 1 + 5)
@@ -16,11 +16,11 @@ describe('card-util', () => {
   })
 
   it('should decode cards correctly', (done) => {
-    let threeSpades = 13 * 0 + 3
-    let blackJack = 13 * 0 + 11
-    let tenHearts = 13 * 1 + 10
-    let aceDiamonds = 13 * 2 + 1
-    let queenClubs = 13 * 3 + 12
+    const threeSpades = 13 * 0 + 3
+    const blackJack = 13 * 0 + 11
+    const tenHearts = 13 * 1 + 10
+    const aceDiamonds = 13 * 2 + 1
+    const queenClubs = 13 * 3 + 12
 
     decoded3Spades = cardUtil.decodeCard(threeSpades)
     decoded11Spades = cardUtil.decodeCard(blackJack)

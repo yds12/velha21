@@ -20,8 +20,6 @@ class Table {
     // console.log(`Player ${player.name} joined the table.`)
     this.messagePlayers(`Player ${player.name} joined the table.`)
     player.setTable(this)
-
-    if (this.waitingOpponents) this.clear()
   }
 
   removePlayer (player) {

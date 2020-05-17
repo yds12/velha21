@@ -15,5 +15,4 @@ class MockPlayer extends Player {
   }
 }
 
-
 module.exports = MockPlayer

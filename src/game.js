@@ -30,6 +30,7 @@ class Game {
     //console.log(
     //  `A game of ${this.name} is starting on table ${this.table.id}.`)
     this.sendState()
+    return true
   }
 
   putPlayersAtFront () {
@@ -94,8 +95,12 @@ class Game {
 
   sendState () {
     for (let i = this.players.length - 1; i >= 0; i--) {
-      this.players[i].updateGameState(this.state)
+      this.players[i].updateGameState(this.getGameState())
     }
+  }
+
+  getGameState () {
+    return null
   }
 
   finish () {

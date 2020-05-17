@@ -1,10 +1,11 @@
 const Player = require('./player')
 const Table = require('./table')
+const faker = require('faker')
 
 const tables = []
 
 function createPlayer (socket, gameType, tableId) {
-  const player = new Player(socket.id, socket)
+  const player = new Player(faker.name.firstName(), socket)
   allocatePlayer(player, gameType, tableId)
   player.table.game.sendState()
   return player
@@ -42,8 +43,8 @@ function handleClear (player) {
 }
 
 function handleStart (player) {
-  player.table.game.start()
-  player.table.waitingOpponents = false
+  const gameStarted = player.table.game.start()
+  if (gameStarted) { player.table.waitingOpponents = false } else { player.table.messagePlayers('could not start game') }
 }
 
 function getTables () {

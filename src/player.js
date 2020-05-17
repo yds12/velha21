@@ -18,6 +18,10 @@ class Player {
     this.table = table
     this.message(`You joined table ${table.id}.`)
   }
+
+  turnIntoObserver () {
+    this.isObserver = true
+  }
 }
 
 module.exports = Player

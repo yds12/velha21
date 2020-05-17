@@ -25,13 +25,19 @@ const HAND_SEP = 40
 const DEALT_SEP = CARD_W + 5
 const HANDS_X_OFFSET = 10
 const HANDS_Y_OFFSET = 10
+const NAME_H = 40
 
+let NAMES = []
 let HANDS = []
 let handPositions = []
 let OPPONENTS, TABLE, DECK
 
 const HIT = 0
 const STAND = 1
+
+const WAITING = 2
+const ONGOING = 0
+const FINISHED = 1
 
 // Event Handling (sockets)
 socket.on('connect', () => {
@@ -46,7 +52,16 @@ socket.on('message', (msg) => {
 socket.on('state', (state) => {
   console.log(`State ${JSON.stringify(state)} received`)
   //  gameState = state;
-  if (state !== null) {
+  NAMES = state.playerNames
+  if (state.gameStatus === WAITING) {
+    console.log('turn clear off')
+    btnClear.hidden = true
+    btnStart.hidden = false
+  } else {
+    btnClear.hidden = false
+    btnStart.hidden = true
+  }
+  if (state) {
     HANDS = state.hands
     setHandPositions()
   } else {
@@ -55,11 +70,11 @@ socket.on('state', (state) => {
   draw()
 })
 
-function setHandPositions() {
+function setHandPositions () {
   handPositions = []
-  for(let i = 0; i < HANDS.length; i++) {
-    let x = (i % 2 === 0) ? HANDS_X_OFFSET : HANDS_X_OFFSET + SCREEN_W / 2
-    let y = HANDS_Y_OFFSET + Math.floor(i / 2.0) * (CARD_H + HAND_SEP)
+  for (let i = 0; i < HANDS.length; i++) {
+    const x = (i % 2 === 0) ? HANDS_X_OFFSET : HANDS_X_OFFSET + SCREEN_W / 2
+    const y = NAME_H + HANDS_Y_OFFSET + Math.floor(i / 2.0) * (CARD_H + HAND_SEP)
     handPositions.push({ x: x, y: y })
   }
 }
@@ -99,6 +114,11 @@ function drawCard (card, pos) {
   }
 }
 
+function drawName (name, pos) {
+  ctx.font = '30px Arial'
+  ctx.fillText(name, pos.x, pos.y - 10)
+}
+
 function drawBg () {
 }
 
@@ -107,15 +127,15 @@ function drawTable () {
 
 function drawHands () {
   for (let j = 0; j < HANDS.length; j++) {
-    let hand = HANDS[j]
+    const hand = HANDS[j]
     let x = handPositions[j].x
-    let y = handPositions[j].y
-
+    const y = handPositions[j].y
+    drawName(NAMES[j], { x: x, y: y })
     for (let i = 0; i < hand.length; i++) {
       const card = hand[i]
       drawCard(card, { x: x, y: y })
 
-      if (i === 1) x += DEALT_SEP 
+      if (i === 1) x += DEALT_SEP
       else x += HAND_SEP
     }
   }

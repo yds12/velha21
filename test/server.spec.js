@@ -7,13 +7,12 @@ const server = require(path.join(__dirname, '../src/server'))
 
 const port = CONFIG.port
 
-function connectSocket(path){
-  let socketPath = 'http://localhost:' + CONFIG.port + path 
+function connectSocket (path) {
+  const socketPath = 'http://localhost:' + CONFIG.port + path
   return socketIoClient.connect(socketPath)
 }
 
 describe('server', () => {
-
   let httpServer, socket
 
   before((done) => {
@@ -46,7 +45,7 @@ describe('server', () => {
   })
 
   it('should accept socket connections', (done) => {
-    let socket = connectSocket('/index')
+    const socket = connectSocket('/index')
     socket.on('connect', () => {
       socket.disconnect()
       done()
@@ -54,7 +53,7 @@ describe('server', () => {
   })
 
   it('should send an updateTables event to sockets on index', (done) => {
-    let socket = connectSocket('/index')
+    const socket = connectSocket('/index')
     socket.on('updateTables', () => {
       socket.disconnect()
       done()
@@ -64,34 +63,34 @@ describe('server', () => {
   describe('on tic-tac-toe', () => {
     let playerSocket, opponentSocket
 
-    it('should respond to socket connections with a message', 
+    it('should respond to socket connections with a message',
       (done) => {
-      let socket = connectSocket('/tictactoe')
-      socket.on('message', () => {
-        socket.disconnect()
-        done()
+        const socket = connectSocket('/tictactoe')
+        socket.on('message', () => {
+          socket.disconnect()
+          done()
+        })
       })
-    })
 
-    it('should message the player when an opponent joins the table', 
+    it('should message the player when an opponent joins the table',
       (done) => {
-      playerSocket = connectSocket('/tictactoe')
-      opponentSocket
+        playerSocket = connectSocket('/tictactoe')
+        opponentSocket
 
-      playerSocket.on('connect', () => {
-        opponentSocket = connectSocket('/tictactoe')
+        playerSocket.on('connect', () => {
+          opponentSocket = connectSocket('/tictactoe')
 
-        opponentSocket.on('connect', () => {
-          playerSocket.on('message', (msg) => {
-            playerSocket.disconnect()
-            done()
+          opponentSocket.on('connect', () => {
+            playerSocket.on('message', (msg) => {
+              playerSocket.disconnect()
+              done()
+            })
           })
         })
       })
-    })
 
     // Need to find a way to connect both to the same room
-    /*it('should send an updated game state after two players connect and ' +
+    /* it('should send an updated game state after two players connect and ' +
       'one of them makes a move', (done) => {
       playerSocket = connectSocket('/tictactoe')
       opponentSocket = connectSocket('/tictactoe')
@@ -118,15 +117,15 @@ describe('server', () => {
           }
         })
       })
-    });*/
+    }); */
 
     after(() => {
-      if(playerSocket && playerSocket.connected) playerSocket.disconnect()
-      if(opponentSocket && opponentSocket.connected) opponentSocket.disconnect()
+      if (playerSocket && playerSocket.connected) playerSocket.disconnect()
+      if (opponentSocket && opponentSocket.connected) opponentSocket.disconnect()
     })
   })
 
   after(() => {
-    if(httpServer) httpServer.close()
+    if (httpServer) httpServer.close()
   })
 })

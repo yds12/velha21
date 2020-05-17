@@ -99,10 +99,15 @@ function handleGameConnection (socket, gameName) {
   })
 
   socket.on('click', (pos) => controller.handleClick(player, pos))
-  socket.on('clear', () => controller.handleClear(player))
+  socket.on('clear', () => {
+    controller.handleClear(player)
+    updateTables()
+    updatePlayers(gameName, player.table)
+  })
   socket.on('start', () => {
     controller.handleStart(player)
     updateTables()
+    updatePlayers(gameName, player.table)
   })
 }
 

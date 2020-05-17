@@ -21,6 +21,7 @@ class Blackjack extends Game {
     this.started = false
     this.deck = []
     this.dealer = new Player('dealer', null)
+    this.hands = {}
   }
 
   canStart () {
@@ -33,8 +34,7 @@ class Blackjack extends Game {
     this.createPlayerStates()
     this.createPlayerHands()
     this.lastCard = null
-    this.state = this.getGameState()
-    super.start()
+    return super.start()
   }
 
   createPlayerStates () {
@@ -148,11 +148,19 @@ class Blackjack extends Game {
   getGameState () {
     return {
       numPlayers: this.getNumPlayers(),
+      playerNames: this.getPlayerNames(),
       playerStates: this.playerStates,
       currentPlayer: this.currentPlayer,
-      hands: this.getListOfHands(),
-      lastCard: this.lastCard
+      hands: this.status === Game.WAITING ? []: this.getListOfHands(),
+      lastCard: this.lastCard,
+      gameStatus: this.status
     }
+  }
+
+  getPlayerNames () {
+    const  res = this.getPlayers().map((player) => player.name)
+    res.push('Dealer')
+    return res
   }
 
   getListOfHands () {
@@ -170,7 +178,10 @@ class Blackjack extends Game {
   }
 
   getPlayerCards (player) {
-    return this.hands[player.id].reduce((cards, cardNumber) => {
+    const hand = this.hands[player.id]
+    if (hand === undefined)
+      return []
+    return hand.reduce((cards, cardNumber) => {
       const card = cardUtil.decodeCard(cardNumber)
       cards.push(card)
       return cards
@@ -200,18 +211,18 @@ class Blackjack extends Game {
     for (let player of this.getPlayers()){
       const playerScore = this.handSum(player)
       if (playerScore > 21)
-        player.message("you lost")
+        player.message("You lost because you got busted.")
       else if (playerScore === 21 )
-        player.message("you won")
+        player.message("You won with 21 points.")
       else {
         if (dealersScore > 21) {
-          player.message('you won')
+          player.message('You won, dealer got busted.')
         }
         else{
           if (playerScore > dealersScore)
-            player.message('you won')
+            player.message('You won with a score larger than the dealer.')
           else
-            player.message("you lost")
+            player.message("You lost, the dealer got more points than you.")
         }
       }
 
