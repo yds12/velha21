@@ -48,11 +48,10 @@ class Game {
       return
     }
     this.executeMove(player, move)
-    this.sendState()
     if (this.checkEnd()) {
-      const winners = this.getWinners()
-      this.finish(winners)
+      this.finish()
     }
+    this.sendState()
     if (this.playerRoundComplete(player))
       this.turn++
   }
@@ -88,9 +87,13 @@ class Game {
     }
   }
 
-  finish (winners) {
+  finish () {
+    this.sendResults()
     this.table.messagePlayers('End of the game')
     this.status = Game.FINISHED
+  }
+
+  sendResults () {
   }
 
   // Just the non-observers

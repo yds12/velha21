@@ -53,13 +53,14 @@ class TicTacToe extends Game {
 
   checkEnd () {
     const winners = this.getWinners()
-    if (this.turn === 8 && winners.length === 0) {
-      this.table.message('Draw!')
-      this.status = Game.FINISHED
-      return true
+    return (this.turn === 8) || (winners.length !== 0)
+  }
+
+  sendResults () {
+    const winners = this.getWinners()
+    if (winners.length === 0) {
+      this.table.messagePlayers('Draw!')
     } else {
-      if (winners.length === 0) { return false }
-      this.status = Game.FINISHED
       for (let i = this.players.length - 1; i >= 0; i--) {
         if (winners.includes(i + 1)) {
           this.players[i].message('Congratulations, you won!')
@@ -67,10 +68,9 @@ class TicTacToe extends Game {
           this.players[i].message('You lost!')
         } else {
           const winnersNames = winners.map(x => x.name)
-          this.players[i].message(`Players ${winnersNames.join(' ')} won!`)
+          this.players[i].message(`Player ${winnersNames.join(' ')} won!`)
         }
       }
-      return true
     }
   }
 
@@ -92,7 +92,7 @@ class TicTacToe extends Game {
     }
     if (gs[0] === gs[4] && gs[4] === gs[8] && gs[0] > 0) { return [gs[0]] }
     if (gs[2] === gs[4] && gs[4] === gs[6] && gs[2] > 0) { return [gs[2]] }
-    return [0]
+    return []
   }
 }
 
