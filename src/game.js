@@ -9,6 +9,7 @@ class Game {
     this.table = table
     this.players = table.players
     this.status = Game.WAITING
+    this.currentPlayer = -1
   }
 
   canStart () {
@@ -19,6 +20,7 @@ class Game {
     this.putPlayersAtFront()
     this.status = Game.ONGOING
     this.turn = 0
+    this.updateCurrentPlayer()
     for (let i = this.players.length - 1; i >= 0; i--) {
       if (i < this.getNumPlayers())
         this.players[i].message(`The game is starting. You are player ${i + 1}.`)
@@ -51,9 +53,13 @@ class Game {
     if (this.checkEnd()) {
       this.finish()
     }
+    else {
+      if (this.playerRoundComplete(player)) {
+        this.turn++
+        this.updateCurrentPlayer()
+      }
+    }
     this.sendState()
-    if (this.playerRoundComplete(player))
-      this.turn++
   }
 
   moveIsValid (player, move) {
@@ -74,7 +80,11 @@ class Game {
   }
 
   isPlayerTurn (player) {
-    return (this.players.indexOf(player) === this.turn % this.getPlayers().length)
+    return (this.players.indexOf(player) === this.currentPlayer)
+  }
+
+  updateCurrentPlayer () {
+    this.currentPlayer = this.turn % this.getPlayers().length
   }
 
   playerRoundComplete (player) {

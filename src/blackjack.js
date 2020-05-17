@@ -30,7 +30,6 @@ class Blackjack extends Game {
     util.shuffle(this.deck)
     this.createPlayerStates()
     this.createPlayerHands()
-    this.currentPlayer = 0
     this.lastCard = null
     this.state = this.getGameState()
     super.start()
@@ -164,7 +163,6 @@ class Blackjack extends Game {
     dealerCards.pop()
     dealerCards.push(-1)  // only show 1 card of dealer
     listOfHands.push(dealerCards)
-//    listOfHands.push(this.getPlayerCards('dealer'))
     return listOfHands
   }
 
