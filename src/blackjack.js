@@ -86,11 +86,11 @@ class Blackjack extends Game {
     const handTotal = this.handSum(player)
     if (handTotal > 21) {
       this.playerStates[player.id] = Blackjack.BUSTED
-      player.message("You are busted!")
+      this.table.messagePlayers(`Player ${player.name} got busted!`)
     }
     else if (this.handSum(player) === 21) {
       this.playerStates[player.id] = Blackjack.VICTORIOUS
-      player.message('You win!')
+      this.table.messagePlayers(`Player ${player.name} scored 21!`)
     }
     else
       player.message("You may keep playing!")
