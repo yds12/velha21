@@ -45,10 +45,10 @@ class Game {
   }
 
   update (player, move) {
-    this.logMove(player, move)
     if (!this.moveIsValid(player, move)) {
       return
     }
+    this.logMove(player, move)
     this.executeMove(player, move)
     if (this.checkEnd()) {
       this.finish()
