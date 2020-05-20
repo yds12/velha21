@@ -1,7 +1,13 @@
 // Socket setup
 const HOST = window.location.hostname
 const connectTo = (HOST === 'localhost') ? `${HOST}:${PORT}` : HOST
-const socket = io(connectTo + '/blackjack')
+
+let tableId = (new URL(window.location.href)).searchParams.get('tableId')
+if (!tableId){
+  tableId = Math.floor(Math.random() * 10000)
+}
+
+socket = io(connectTo + `/blackjack`, { query: { tableId: tableId } })
 
 // Screen elements
 const divMsg = document.getElementById('messages')
@@ -168,14 +174,12 @@ canvas.onmousemove = (event) => {
   draw()
 }
 
-canvas.onclick = (event) => {
-}
-// hit
+canvas.onclick = (event) => {}
+
 btnHit.onclick = (event) => {
   socket.emit('click', HIT)
 }
 
-// hit
 btnStand.onclick = (event) => {
   socket.emit('click', STAND)
 }

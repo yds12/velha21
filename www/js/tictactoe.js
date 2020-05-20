@@ -1,7 +1,12 @@
 // Socket setup
 const HOST = window.location.hostname
 const connectTo = (HOST === 'localhost') ? `${HOST}:${PORT}` : HOST
-const socket = io(connectTo + '/tictactoe')
+
+let tableId = (new URL(window.location.href)).searchParams.get("tableId")
+if (!tableId){
+  tableId = Math.floor(Math.random() * 10000)
+}
+const socket = io(connectTo + `/tictactoe`, {query: {tableId: tableId}})
 
 // Screen elements
 const divMsg = document.getElementById('messages')

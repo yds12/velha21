@@ -38,22 +38,19 @@ function setupRoutes () {
     res.send(`const PORT = ${config.port};`)
   })
 
-  app.get('/:gameType', (req, res) => {
+  app.get('/:gameType/:tableId', (req, res) => {
     const gameType = req.params.gameType
+    const tableId = req.params.tableId
 
     if (controller.isValidGame(gameType)) {
-      const tableId = controller.getNewTableId()
-      res.redirect(`/${gameType}/${tableId}`)
+      res.redirect(`/${gameType}?tableId=${tableId}`)
     } else {
       res.status(404).send('Error 404: Not found.')
     }
   })
 
-  app.get('/:gameType/:tableId', (req, res) => {
+  app.get('/:gameType', (req, res) => {
     const gameType = req.params.gameType
-    const tableId = req.params.tableId
-
-    console.log(`Player is joining table ${tableId}.`)
     res.sendFile(
       path.join(__dirname, '..', config.publicDir, gameType + '.html'))
   })
@@ -112,10 +109,8 @@ function handleGameConnection (socket, gameName) {
 }
 
 function getTableId (socket) {
-  // TODO figure out better way to get table ID
   try {
-    const x = socket.handshake.headers.referer.split('/')
-    return x[x.length - 1]
+    return socket.handshake.query.tableId
   } catch (e) {
     return 42
   }

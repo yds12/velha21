@@ -18,7 +18,7 @@ class Table {
     }
     this.players.push(player)
     // console.log(`Player ${player.name} joined the table.`)
-    this.messagePlayers(`Player ${player.name} joined the table.`)
+    this.messagePlayersExcept(`Player ${player.name} joined the table.`, player)
     player.setTable(this)
   }
 
@@ -46,6 +46,14 @@ class Table {
   messagePlayers (message) {
     for (const player of this.players) {
       player.message(message)
+    }
+  }
+
+  messagePlayersExcept (message, player) {
+    for (const p of this.players) {
+      if (p !== player) {
+        p.message(message)
+      }
     }
   }
 

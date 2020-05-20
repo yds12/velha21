@@ -16,7 +16,7 @@ class Player {
 
   setTable (table) {
     this.table = table
-    this.message(`Hello ${this.name}, you joined table ${table.id}.`)
+    this.message(`Hello ${this.name}, welcome.`)
   }
 
   turnIntoObserver () {

@@ -17,7 +17,7 @@ describe('server', () => {
 
   before((done) => {
     http.get(options, res => {
-      console.log('is already running and...')
+      console.log('    is already running and...')
       done()
     }).on('error', err => {
       console.log('is not running, we will start it for the tests and it...')
@@ -65,8 +65,9 @@ describe('server', () => {
 
     it('should respond to socket connections with a message',
       (done) => {
-        const socket = connectSocket('/tictactoe')
-        socket.on('message', () => {
+        const socket = connectSocket('/tictactoe?tableId=545')
+        socket.on('message', (message) => {
+          console.log(message)
           socket.disconnect()
           done()
         })
@@ -74,18 +75,16 @@ describe('server', () => {
 
     it('should message the player when an opponent joins the table',
       (done) => {
-        playerSocket = connectSocket('/tictactoe')
-        opponentSocket
+        playerSocket = connectSocket('/tictactoe?tableId=543')
+        playerSocket.on('message', (msg) => {
+          if (msg.endsWith('joined the table.')) {
+            playerSocket.disconnect()
+            done()
+          }
+        })
 
         playerSocket.on('connect', () => {
-          opponentSocket = connectSocket('/tictactoe')
-
-          opponentSocket.on('connect', () => {
-            playerSocket.on('message', (msg) => {
-              playerSocket.disconnect()
-              done()
-            })
-          })
+          opponentSocket = connectSocket('/tictactoe?tableId=543')
         })
       })
 
