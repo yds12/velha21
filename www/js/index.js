@@ -19,7 +19,6 @@ function updateTables (tables) {
     }
     result += '</ul>'
   }
-  console.log('result')
   ulTables.innerHTML = result
 }
 
