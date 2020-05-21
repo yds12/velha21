@@ -121,7 +121,11 @@ function updateTables () {
 }
 
 function updatePlayers (gameName, table) {
-  sioServerTTT.to(table.id).emit('updatePlayers', table.getPlayers())
+  if (gameName === 'tictactoe') {
+    sioServerTTT.to(table.id).emit('updatePlayers', table.getPlayers())
+  } else if (gameName === 'blackjack') {
+    sioServerBlackJack.to(table.id).emit('updatePlayers', table.getPlayers())
+  }
 }
 
 module.exports.start = start

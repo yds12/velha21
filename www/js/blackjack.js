@@ -3,14 +3,15 @@ const HOST = window.location.hostname
 const connectTo = (HOST === 'localhost') ? `${HOST}:${PORT}` : HOST
 
 let tableId = (new URL(window.location.href)).searchParams.get('tableId')
-if (!tableId){
+if (!tableId) {
   tableId = Math.floor(Math.random() * 10000)
 }
 
-socket = io(connectTo + `/blackjack`, { query: { tableId: tableId } })
+const socket = io(connectTo + '/blackjack', { query: { tableId: tableId } })
 
 // Screen elements
 const divMsg = document.getElementById('messages')
+const ulPlayers = document.getElementById('players')
 const btnClear = document.getElementById('clear')
 const btnStart = document.getElementById('start')
 const btnHit = document.getElementById('hit')
@@ -60,7 +61,6 @@ socket.on('state', (state) => {
   //  gameState = state;
   NAMES = state.playerNames
   if (state.gameStatus === WAITING) {
-    console.log('turn clear off')
     btnClear.hidden = true
     btnStart.hidden = false
   } else {
@@ -74,6 +74,20 @@ socket.on('state', (state) => {
     HANDS = []
   }
   draw()
+})
+
+socket.on('updatePlayers', (players) => {
+  let result = ''
+  console.log(players)
+  if (players.length > 0) {
+    result += '<p>Players:</p><ul>'
+    for (const player of players) {
+      result += `<li>${player.name} (${player.role})</a></li>`
+    }
+    result += '</ul>'
+  }
+  console.log('result')
+  ulPlayers.innerHTML = result
 })
 
 function setHandPositions () {
