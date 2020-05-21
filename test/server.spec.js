@@ -67,7 +67,6 @@ describe('server', () => {
       (done) => {
         const socket = connectSocket('/tictactoe?tableId=545')
         socket.on('message', (message) => {
-          console.log(message)
           socket.disconnect()
           done()
         })
