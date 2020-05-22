@@ -23,7 +23,7 @@
   },
   "standard": {
     "ignore": [
-      "/www/js/socket.io.js"
+      "/www/js/lib/"
     ],
     "env": [
       "mocha"
