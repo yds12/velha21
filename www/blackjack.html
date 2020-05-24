@@ -6,22 +6,36 @@
     <title>Blackjack</title>
   </head>
   <body>
-    <div class="main_parts">
-      <canvas id="screen"></canvas>
-      <button id="hit">Hit</button>
-      <button id="stand">Stand</button>
+    <div id="enter-table-box">
+      <div id="enter-player-name-box">
+        <label for="enter-player-name">Name</label>
+        <input id="enter-player-name"  type='text' maxlength="10">
+      </div>
+      <div id="enter-table-id-box">
+        <label for="enter-table-id">Table:</label>
+        <input id="enter-table-id"  type='text' maxlength="10">
+      </div>
+      <p id='error-message'> </p>
+      <button id="enter">Enter Table</button>
     </div>
-    <div class="main_parts">
-      <button id="start">Start game</button>
-      <button id="clear">Restart game</button>
-      <a href="/">leave table</a>
+    <div id="game-box">
+      <div class="main_parts">
+        <canvas id="screen"></canvas>
+        <button id="hit">Hit</button>
+        <button id="stand">Stand</button>
+      </div>
+      <div class="main_parts">
+        <button id="start">Start game</button>
+        <button id="clear">Restart game</button>
+        <a href="/">Leave table</a>
+      </div>
+      <div id="players" class="main_parts">
+      </div>
+      <div id="messages" class="main_parts">
+      </div>
+      <script src="../js/lib/socket.io.js"></script>
+      <script src="../js/config.js"></script>
+      <script src="../js/blackjack.js"></script>
     </div>
-    <div id="players" class="main_parts">
-    </div>
-    <div id="messages" class="main_parts">
-    </div>
-    <script src="../js/lib/socket.io.js"></script>
-    <script src="../js/config.js"></script>
-    <script src="../js/blackjack.js"></script>
   </body>
 </html>

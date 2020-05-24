@@ -16,6 +16,13 @@ const btnClear = document.getElementById('clear')
 const btnStart = document.getElementById('start')
 const btnHit = document.getElementById('hit')
 const btnStand = document.getElementById('stand')
+const btnEnter = document.getElementById('enter')
+const enterTableId = document.getElementById('enter-table-id')
+const enterPlayerName = document.getElementById('enter-player-name')
+const gameBox = document.getElementById('game-box')
+const enterTableBox = document.getElementById('enter-table-box')
+gameBox.style.display = 'none'
+enterTableBox.style.display = 'block'
 const canvas = document.getElementById('screen')
 canvas.width = 800
 canvas.height = 600
@@ -197,6 +204,23 @@ btnHit.onclick = (event) => {
 btnStand.onclick = (event) => {
   socket.emit('click', STAND)
 }
+
+btnEnter.onclick = (event) => {
+  socket.emit('enterTable', {
+    "playerName": enterPlayerName.value,
+    "tableId": enterTableId.value
+  })
+}
+
+socket.on('enterTableResponse', (success) => {
+  if (success){
+    gameBox.style.display = 'block'
+    enterTableBox.style.display = 'none'
+  } else {
+    gameBox.style.display = 'none'
+    enterTableBox.style.display = 'block'
+  }
+})
 
 btnStart.onclick = (event) => {
   socket.emit('start')

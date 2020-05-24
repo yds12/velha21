@@ -106,6 +106,17 @@ function handleGameConnection (socket, gameName) {
     updateTables()
     updatePlayers(gameName, player.table)
   })
+  socket.on('enterTable', (data) => {
+    console.log("data", data)
+    if (player.name !== '') {
+      player.name = data['playerName']
+      updatePlayers(gameName, player.table)
+      socket.emit('enterTableResponse', true)
+    }
+    else {
+      socket.emit('enterTableResponse', false)
+    }
+  })
 }
 
 function getTableId (socket) {
