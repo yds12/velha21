@@ -103,8 +103,15 @@ function handleGameConnection (socket, gameName) {
   })
   socket.on('enterTable', (data) => {
     console.log("data", data)
-    if (data["playerName"] !== '') {
-      const tableId = getTableId(socket)
+    if (data["playerName"].length <  3) {
+      socket.emit('enterTableResponse', 'Please choose a player name with at least 3 characters')
+    }
+    else if  (data["tableId"].length < 5) {
+      socket.emit('enterTableResponse', 'Please choose a table name with at least 5 characters')
+    }
+    else{
+      // const tableId = socket.handshake.query.tableId
+      const tableId = data["tableId"]
       console.log('tableId: ' + tableId)
       socket.join(tableId)
 
@@ -114,21 +121,12 @@ function handleGameConnection (socket, gameName) {
       updatePlayers(gameName, player.table)
 
       updatePlayers(gameName, player.table)
-      socket.emit('enterTableResponse', true)
-    }
-    else {
-      socket.emit('enterTableResponse', false)
+      socket.emit('enterTableResponse', 'success')
+
     }
   })
 }
 
-function getTableId (socket) {
-  try {
-    return socket.handshake.query.tableId
-  } catch (e) {
-    return 42
-  }
-}
 
 function updateTables () {
   sioServerIndex.to('indexRoom').emit('updateTables', controller.getTables())

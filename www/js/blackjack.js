@@ -1,13 +1,7 @@
 // Socket setup
 const HOST = window.location.hostname
 const connectTo = (HOST === 'localhost') ? `${HOST}:${PORT}` : HOST
-
-let tableId = (new URL(window.location.href)).searchParams.get('tableId')
-if (!tableId) {
-  tableId = Math.floor(Math.random() * 10000)
-}
-
-const socket = io(connectTo + '/blackjack', { query: { tableId: tableId } })
+const socket = io(connectTo + '/blackjack')
 
 // Screen elements
 const divMsg = document.getElementById('messages')
@@ -210,14 +204,21 @@ btnClear.onclick = (event) => {
 // Initialization
 loadImages()
 
+
+// entering table
+
+
 const btnEnter = document.getElementById('enter')
 const enterTableId = document.getElementById('enter-table-id')
 const enterPlayerName = document.getElementById('enter-player-name')
 const gameBox = document.getElementById('game-box')
 const enterTableBox = document.getElementById('enter-table-box')
+const enterTableErrorMessage = document.getElementById('error-message')
 gameBox.style.display = 'none'
 enterTableBox.style.display = 'block'
 
+let tableId = (new URL(window.location.href)).searchParams.get('tableId')
+if (tableId) enterTableId.value = tableId
 
 btnEnter.onclick = (event) => {
   socket.emit('enterTable', {
@@ -226,12 +227,13 @@ btnEnter.onclick = (event) => {
   })
 }
 
-socket.on('enterTableResponse', (success) => {
-  if (success){
+socket.on('enterTableResponse', (response) => {
+  if (response === 'success'){
     gameBox.style.display = 'block'
     enterTableBox.style.display = 'none'
   } else {
     gameBox.style.display = 'none'
     enterTableBox.style.display = 'block'
+    enterTableErrorMessage.innerText = response
   }
 })

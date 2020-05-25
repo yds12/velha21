@@ -65,8 +65,8 @@ describe('server', () => {
 
     it('should respond to socket connections with a message',
       (done) => {
-        const socket = connectSocket('/tictactoe?tableId=545')
-        socket.emit('enterTable', {'playerName': 'Arthur Dent'})
+        const socket = connectSocket('/tictactoe')
+        socket.emit('enterTable', {'playerName': 'Arthur Dent', "tableId": 'abcde'})
         socket.on('message', (message) => {
           socket.disconnect()
           done()
@@ -75,8 +75,8 @@ describe('server', () => {
 
     it('should message the player when an opponent joins the table',
       (done) => {
-        playerSocket = connectSocket('/tictactoe?tableId=543')
-        playerSocket.emit('enterTable', {'playerName': 'Arthur Dent'})
+        playerSocket = connectSocket('/tictactoe')
+        playerSocket.emit('enterTable', {'playerName': 'Arthur Dent', "tableId": 'abcde'})
         playerSocket.on('message', (msg) => {
           if (msg.endsWith('joined the table.')) {
             playerSocket.disconnect()
@@ -84,8 +84,8 @@ describe('server', () => {
           }
         })
         playerSocket.on('connect', () => {
-          opponentSocket = connectSocket('/tictactoe?tableId=543')
-          opponentSocket.emit('enterTable', {'playerName': 'Ford Prefect'})
+          opponentSocket = connectSocket('/tictactoe')
+          opponentSocket.emit('enterTable', {'playerName': 'Ford Prefect', "tableId": 'abcde'})
         })
       })
 
