@@ -16,13 +16,6 @@ const btnClear = document.getElementById('clear')
 const btnStart = document.getElementById('start')
 const btnHit = document.getElementById('hit')
 const btnStand = document.getElementById('stand')
-const btnEnter = document.getElementById('enter')
-const enterTableId = document.getElementById('enter-table-id')
-const enterPlayerName = document.getElementById('enter-player-name')
-const gameBox = document.getElementById('game-box')
-const enterTableBox = document.getElementById('enter-table-box')
-gameBox.style.display = 'none'
-enterTableBox.style.display = 'block'
 const canvas = document.getElementById('screen')
 canvas.width = 800
 canvas.height = 600
@@ -205,6 +198,27 @@ btnStand.onclick = (event) => {
   socket.emit('click', STAND)
 }
 
+
+btnStart.onclick = (event) => {
+  socket.emit('start')
+}
+
+btnClear.onclick = (event) => {
+  socket.emit('clear')
+}
+
+// Initialization
+loadImages()
+
+const btnEnter = document.getElementById('enter')
+const enterTableId = document.getElementById('enter-table-id')
+const enterPlayerName = document.getElementById('enter-player-name')
+const gameBox = document.getElementById('game-box')
+const enterTableBox = document.getElementById('enter-table-box')
+gameBox.style.display = 'none'
+enterTableBox.style.display = 'block'
+
+
 btnEnter.onclick = (event) => {
   socket.emit('enterTable', {
     "playerName": enterPlayerName.value,
@@ -221,14 +235,3 @@ socket.on('enterTableResponse', (success) => {
     enterTableBox.style.display = 'block'
   }
 })
-
-btnStart.onclick = (event) => {
-  socket.emit('start')
-}
-
-btnClear.onclick = (event) => {
-  socket.emit('clear')
-}
-
-// Initialization
-loadImages()
