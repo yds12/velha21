@@ -79,20 +79,15 @@ function setupSockets () {
 }
 
 function handleGameConnection (socket, gameName) {
-  const tableId = getTableId(socket)
-  console.log('tableId: ' + tableId)
-  socket.join(tableId)
-
-  console.log(`Client ${socket.id} connected.`)
-  const player = controller.createPlayer(socket, gameName, tableId)
-  updateTables()
-  updatePlayers(gameName, player.table)
+  let player = null
 
   socket.on('disconnect', () => {
     console.log(`Client ${socket.id} has disconnected.`)
-    controller.handleDisconnect(player)
-    updatePlayers(gameName, player.table)
-    updateTables()
+    if (player !== null) {
+      controller.handleDisconnect(player)
+      updatePlayers(gameName, player.table)
+      updateTables()
+    }
   })
 
   socket.on('click', (pos) => controller.handleClick(player, pos))
@@ -108,8 +103,16 @@ function handleGameConnection (socket, gameName) {
   })
   socket.on('enterTable', (data) => {
     console.log("data", data)
-    if (player.name !== '') {
-      player.name = data['playerName']
+    if (data["playerName"] !== '') {
+      const tableId = getTableId(socket)
+      console.log('tableId: ' + tableId)
+      socket.join(tableId)
+
+      console.log(`Client ${socket.id} connected.`)
+      player = controller.createPlayer(socket, gameName, tableId, data['playerName'])
+      updateTables()
+      updatePlayers(gameName, player.table)
+
       updatePlayers(gameName, player.table)
       socket.emit('enterTableResponse', true)
     }

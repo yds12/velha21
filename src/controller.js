@@ -1,11 +1,10 @@
 const Player = require('./player')
 const Table = require('./table')
-const faker = require('faker')
 
 const tables = []
 
-function createPlayer (socket, gameType, tableId) {
-  const player = new Player(faker.name.firstName(), socket)
+function createPlayer (socket, gameType, tableId, playerName) {
+  const player = new Player(playerName, socket)
   allocatePlayer(player, gameType, tableId)
   player.table.game.sendState()
   return player
