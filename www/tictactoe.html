@@ -6,16 +6,30 @@
     <title>Tic-tac-toe</title>
   </head>
   <body>
-    <div class="main_parts">
-      <canvas id="screen"></canvas>
+    <div id="enter-table-box">
+      <div id="enter-player-name-box">
+        <label for="enter-player-name">Name</label>
+        <input id="enter-player-name"  type='text' maxlength="10">
+      </div>
+      <div id="enter-table-id-box">
+        <label for="enter-table-id">Table:</label>
+        <input id="enter-table-id"  type='text' maxlength="10">
+      </div>
+      <p id='error-message'> </p>
+      <button id="enter">Enter Table</button>
     </div>
-    <div class="main_parts">
-      <button id="start">Start</button>
-      <button id="clear">Restart</button>
-      <a href="/">leave table</a>
+    <div id="game-box">
+      <div class="main_parts">
+        <canvas id="screen"></canvas>
+      </div>
+      <div class="main_parts">
+        <button id="start">Start</button>
+        <button id="clear">Restart</button>
+        <a href="/">leave table</a>
+      </div>
+      <div id="players" class="main_parts"></div>
+      <div id="messages" class="main_parts"></div>
     </div>
-    <div id="players" class="main_parts"></div>
-    <div id="messages" class="main_parts"></div>
     <script src="js/lib/socket.io.js"></script>
     <script src="js/config.js"></script>
     <script src="js/tictactoe.js"></script>
