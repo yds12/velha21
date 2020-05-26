@@ -72,7 +72,6 @@ function setupSockets () {
     console.log('new connection')
   })
   sioServerIndex.on('connection', (socket) => {
-    socket.join('indexRoom')
     console.log('someone joined the main page')
     socket.emit('updateTables', controller.getTables())
   })
@@ -122,14 +121,13 @@ function handleGameConnection (socket, gameName) {
 
       updatePlayers(gameName, player.table)
       socket.emit('enterTableResponse', 'success')
-
     }
   })
 }
 
 
 function updateTables () {
-  sioServerIndex.to('indexRoom').emit('updateTables', controller.getTables())
+  sioServerIndex.emit('updateTables', controller.getTables())
 }
 
 function updatePlayers (gameName, table) {
