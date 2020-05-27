@@ -3,20 +3,29 @@
   <head>
     <meta charset="UTF-8" />
     <link rel="stylesheet" href="css/main.css" type="text/css" />
-    <title>Tic-tac-toe</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="css/signin.css" type="text/css" />
+    <title>Velha21 · Tic-tac-toe</title>
   </head>
   <body>
-    <div id="enter-table-box">
-      <div id="enter-player-name-box">
-        <label for="enter-player-name">Name</label>
-        <input id="enter-player-name"  type='text' maxlength="10">
-      </div>
-      <div id="enter-table-id-box">
-        <label for="enter-table-id">Table:</label>
-        <input id="enter-table-id"  type='text' maxlength="10">
-      </div>
-      <p id='error-message'> </p>
-      <button id="enter">Enter Table</button>
+    <div id="enter-table-box" class="container text-center" >
+      <form id="enter-table-form" class="form-signin text-left">
+        <h1 class="h3 mb-3 font-weight-normal">
+          Please sign in
+        </h1>
+        <label for="enter-player-name">
+          Name:
+        </label>
+        <input id="enter-player-name"  type='text' maxlength="10" class="form-control" required autofocus>
+        <label for="enter-table-id">
+          Table:
+        </label>
+        <input id="enter-table-id"  type='text' maxlength="10"  class="form-control">
+        <p id='enter-table-error-message' class=" text-muted"> </p>
+        <button id="enter" class="btn btn-lg btn-primary btn-block" type="submit">
+          Enter Table
+        </button>
+      </form>
     </div>
     <div id="game-box">
       <div class="main_parts">
