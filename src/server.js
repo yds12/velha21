@@ -109,7 +109,6 @@ function handleGameConnection (socket, gameName) {
       socket.emit('enterTableResponse', 'Please choose a table name with at least 5 characters')
     }
     else{
-      // const tableId = socket.handshake.query.tableId
       const tableId = data["tableId"]
       console.log('tableId: ' + tableId)
       socket.join(tableId)
