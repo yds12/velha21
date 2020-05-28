@@ -5,10 +5,6 @@ const connectTo = (HOST === 'localhost') ? `${HOST}:${PORT}` : HOST
 const socket = io(connectTo + '/tictactoe')
 
 // Screen elements
-const divMsg = document.getElementById('messages')
-const ulPlayers = document.getElementById('players')
-const btnClear = document.getElementById('clear')
-const btnStart = document.getElementById('start')
 const canvas = document.getElementById('screen')
 canvas.width = 400
 canvas.height = 400
@@ -30,33 +26,11 @@ const BOARD = {
   tile: 130
 }
 
-// Event Handling (sockets)
-socket.on('connect', () => {
-  clearMessages()
-  logMessage('Socket connected!')
-})
-
-socket.on('message', (msg) => {
-  logMessage(msg)
-})
 
 socket.on('state', (state) => {
   console.log(`State ${JSON.stringify(state)} received`)
   gameState = state
   drawBoard()
-})
-
-socket.on('updatePlayers', (players) => {
-  let result = ''
-  if (players.length > 0) {
-    result += '<p>Players:</p><ul>'
-    for (const player of players) {
-      result += `<li>${player.name} (${player.role})</a></li>`
-    }
-    result += '</ul>'
-  }
-  console.log('result')
-  ulPlayers.innerHTML = result
 })
 
 // Game functions
@@ -103,16 +77,6 @@ function findQuadrant (x, y) {
   return pos
 }
 
-// Helper functions
-function logMessage (msg) {
-  const date = new Date()
-  const time = date.toLocaleTimeString()
-  divMsg.innerHTML = time + ': ' + msg + '</br>' + divMsg.innerHTML
-}
-
-function clearMessages () {
-  divMsg.innerHTML = ''
-}
 
 // Event handling (window)
 canvas.onmousemove = (event) => {
@@ -131,12 +95,4 @@ canvas.onclick = (event) => {
   const quad = findQuadrant(event.clientX, event.clientY)
 
   if (quad) socket.emit('click', quad)
-}
-
-btnStart.onclick = (event) => {
-  socket.emit('start')
-}
-
-btnClear.onclick = (event) => {
-  socket.emit('clear')
 }
