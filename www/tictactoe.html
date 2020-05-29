@@ -4,23 +4,26 @@
     <meta charset="UTF-8" />
     <link rel="stylesheet" href="css/main.css" type="text/css" />
     <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css" />
-    <link rel="stylesheet" href="css/signin.css" type="text/css" />
     <title>Velha21 · Tic-tac-toe</title>
   </head>
   <body>
     <div id="enter-table-box" class="container text-center" >
-      <form id="enter-table-form" class="form-signin text-left">
+      <form id="enter-table-form" class="form-enter-table text-left">
         <h1 class="h3 mb-3 font-weight-normal">
-          Please sign in
+          Choose your nickname
         </h1>
-        <label for="enter-player-name">
-          Name:
-        </label>
-        <input id="enter-player-name"  type='text' maxlength="10" class="form-control" required autofocus>
-        <label for="enter-table-id">
-          Table:
-        </label>
-        <input id="enter-table-id"  type='text' maxlength="10"  class="form-control">
+        <div>
+          <label for="enter-player-name">
+            Nickname:
+          </label>
+          <input id="enter-player-name"  type='text' maxlength="10" class="form-control" required autofocus>
+        </div>
+        <div>
+          <label for="enter-table-id">
+            Table:
+          </label>
+          <input id="enter-table-id"  type='text' maxlength="10"  class="form-control">
+        </div>
         <p id='enter-table-error-message' class=" text-muted"> </p>
         <button id="enter" class="btn btn-lg btn-primary btn-block" type="submit">
           Enter Table
@@ -28,16 +31,16 @@
       </form>
     </div>
     <div id="game-box">
-      <div class="main_parts">
-        <canvas id="screen"></canvas>
+      <div id="game-parts">
+        <canvas id="screen" class="canvas"></canvas>
       </div>
-      <div class="main_parts">
+      <div>
         <button id="start">Start</button>
         <button id="clear">Restart</button>
-        <a href="/">leave table</a>
+        <a href="/">Leave table</a>
       </div>
-      <div id="players" class="main_parts"></div>
-      <div id="messages" class="main_parts"></div>
+      <div id="players"></div>
+      <div id="messages"></div>
     </div>
     <script src="js/lib/socket.io.js"></script>
     <script src="js/config.js"></script>

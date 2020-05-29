@@ -1,30 +1,62 @@
-body {
+.jumbotron {
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+  margin-bottom: 0;
+  background-color: #fff;
+}
+@media (min-width: 768px) {
+  .jumbotron {
+    padding-top: 6rem;
+    padding-bottom: 6rem;
+  }
+}
+
+.jumbotron p:last-child {
+  margin-bottom: 0;
+}
+
+.jumbotron h1 {
+  font-weight: 300;
+}
+
+.jumbotron .container {
+  max-width: 40rem;
+}
+
+footer {
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+}
+
+footer p {
+  margin-bottom: .25rem;
+}
+
+canvas {
   background: #2f7465;
   color: #cccccc;
-  font-family: 'Didact Gothic', sans;
+  font-family: 'Didact Gothic', sans, serif;
   font-size: 24px;
 }
 
-.main_part * {
-  display: inline;
+.form-enter-table {
+  width: 100%;
+  max-width: 330px;
+  padding: 15px;
+  margin: auto;
 }
-
-.main_part ul {
-  display: block;
+.form-enter-table .form-control {
+  position: relative;
+  box-sizing: border-box;
+  height: auto;
+  padding: 10px;
+  font-size: 16px;
 }
-
-.main_part ul li {
-  display: block;
+.form-enter-table .form-control:focus {
+  z-index: 2;
 }
-
-input, button {
-  -webkit-border-radius: 50px;
-  -moz-border-radius: 50px;
-  border-radius: 50px;
-  font-size: 17px;
-}
-
-input[type=text] {
-  width: 130px;
-  padding-left: 10px;
+.form-enter-table input[type="text"] {
+  margin-bottom: 10px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
 }
