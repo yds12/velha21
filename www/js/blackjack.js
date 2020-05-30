@@ -57,7 +57,6 @@ socket.on('state', (state) => {
   draw()
 })
 
-
 function setHandPositions () {
   handPositions = []
   for (let i = 0; i < HANDS.length; i++) {
@@ -140,7 +139,6 @@ function draw () {
   drawHands()
 }
 
-
 // Event handling (window)
 canvas.onmousemove = (event) => {
   draw()
@@ -155,8 +153,6 @@ btnHit.onclick = (event) => {
 btnStand.onclick = (event) => {
   socket.emit('click', STAND)
 }
-
-
 
 // Initialization
 loadImages()

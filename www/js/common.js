@@ -1,6 +1,5 @@
-
 // entering table
-const enterTableForm = document.getElementById("enter-table-form");
+const enterTableForm = document.getElementById('enter-table-form')
 const enterTableId = document.getElementById('enter-table-id')
 const enterPlayerName = document.getElementById('enter-player-name')
 const gameBox = document.getElementById('game-box')
@@ -9,19 +8,19 @@ const enterTableErrorMessage = document.getElementById('enter-table-error-messag
 gameBox.style.display = 'none'
 enterTableBox.style.display = 'block'
 
-let tableId = (new URL(window.location.href)).searchParams.get('tableId')
+const tableId = (new URL(window.location.href)).searchParams.get('tableId')
 if (tableId) enterTableId.value = tableId
 
 enterTableForm.addEventListener('submit', (event) => {
   socket.emit('enterTable', {
-    "playerName": enterPlayerName.value,
-    "tableId": enterTableId.value
+    playerName: enterPlayerName.value,
+    tableId: enterTableId.value
   })
-  event.preventDefault();
+  event.preventDefault()
 })
 
 socket.on('enterTableResponse', (response) => {
-  if (response === 'success'){
+  if (response === 'success') {
     gameBox.style.display = 'block'
     enterTableBox.style.display = 'none'
   } else {
@@ -30,10 +29,6 @@ socket.on('enterTableResponse', (response) => {
     enterTableErrorMessage.innerText = response
   }
 })
-
-
-
-
 
 // Screen elements
 const divMsg = document.getElementById('messages')
@@ -64,8 +59,6 @@ socket.on('updatePlayers', (players) => {
   console.log('result')
   ulPlayers.innerHTML = result
 })
-
-
 
 function logMessage (msg) {
   const date = new Date()

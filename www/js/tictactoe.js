@@ -26,7 +26,6 @@ const BOARD = {
   tile: 130
 }
 
-
 socket.on('state', (state) => {
   console.log(`State ${JSON.stringify(state)} received`)
   gameState = state
@@ -76,7 +75,6 @@ function findQuadrant (x, y) {
 
   return pos
 }
-
 
 // Event handling (window)
 canvas.onmousemove = (event) => {
