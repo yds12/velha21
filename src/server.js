@@ -102,7 +102,7 @@ function handleGameConnection (socket, gameName) {
   })
   socket.on('enterTable', (data) => {
     console.log("data", data)
-    if (data["playerName"].length <  3) {
+    if (data["playerName"].length < 3) {
       socket.emit('enterTableResponse', 'Please choose a player name with at least 3 characters')
     }
     else if  (data["tableId"].length < 5) {

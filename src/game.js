@@ -10,6 +10,7 @@ class Game {
     this.players = table.players
     this.status = Game.WAITING
     this.currentPlayer = -1
+    this.turn = -1
   }
 
   canStart () {
@@ -17,18 +18,12 @@ class Game {
   }
 
   start () {
+    if (!this.canStart())
+      return false
     this.putPlayersAtFront()
     this.status = Game.ONGOING
-    this.turn = 0
-    this.updateCurrentPlayer()
-    for (let i = this.players.length - 1; i >= 0; i--) {
-      if (i < this.getNumPlayers())
-        this.players[i].message(`The game is starting. You are player ${i + 1}.`)
-      else
-        this.players[i].message('The game is starting. You are an observer.')
-    }
-    //console.log(
-    //  `A game of ${this.name} is starting on table ${this.table.id}.`)
+    this.table.messagePlayers("The game is starting!")
+    this.new_turn()
     this.sendState()
     return true
   }
@@ -51,17 +46,22 @@ class Game {
     }
     this.logMove(player, move)
     this.executeMove(player, move)
-    if (this.checkEnd()) {
+    if (this.checkEnd())
       this.finish()
-    }
-    else {
-      if (this.playerRoundComplete(player)) {
-        this.turn++
-        this.updateCurrentPlayer()
-        this.players[this.currentPlayer].message("It is your turn!")
-      }
-    }
+    else
+      this.tryStartNewTurn(player)
     this.sendState()
+  }
+
+  tryStartNewTurn (player) {
+    if (this.playerRoundComplete(player))
+      this.new_turn()
+  }
+
+  new_turn () {
+    this.turn++
+    this.updateCurrentPlayer()
+    this.players[this.currentPlayer].message('It is your turn!')
   }
 
   moveIsValid (player, move) {

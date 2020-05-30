@@ -18,15 +18,11 @@ class Blackjack extends Game {
     super(table)
     this.type = 'blackjack'
     this.name = 'Blackjack'
-    this.started = false
     this.deck = []
     this.dealer = new Player('dealer', null)
     this.hands = {}
   }
 
-  canStart () {
-    return this.started
-  }
 
   start () {
     this.deck = cardUtil.createDeck()
@@ -129,11 +125,7 @@ class Blackjack extends Game {
   }
 
   checkEnd () {
-    if (this.noPlayerPlaying()) {
-      return true
-    }
-    else
-      return false
+    return this.noPlayerPlaying();
   }
 
   /*
