@@ -79,6 +79,7 @@ function setupSockets () {
 
 function handleGameConnection (socket, gameName) {
   let player = null
+  console.log(`Client ${socket.id} connected.`)
 
   socket.on('disconnect', () => {
     console.log(`Client ${socket.id} has disconnected.`)
@@ -101,29 +102,21 @@ function handleGameConnection (socket, gameName) {
     updatePlayers(gameName, player.table)
   })
   socket.on('enterTable', (data) => {
-    console.log("data", data)
-    if (data["playerName"].length < 3) {
+    console.log('data', data)
+    if (data.playerName.length < 3) {
       socket.emit('enterTableResponse', 'Please choose a player name with at least 3 characters')
-    }
-    else if  (data["tableId"].length < 5) {
+    } else if (data.tableId.length < 5) {
       socket.emit('enterTableResponse', 'Please choose a table name with at least 5 characters')
-    }
-    else{
-      const tableId = data["tableId"]
-      console.log('tableId: ' + tableId)
-      socket.join(tableId)
-
-      console.log(`Client ${socket.id} connected.`)
-      player = controller.createPlayer(socket, gameName, tableId, data['playerName'])
+    } else {
+      socket.join(data.tableId)
+      player = controller.createPlayer(socket, gameName, data.tableId, data.playerName)
+      console.log(`Player ${data.playerName} joined ${data.tableId} for a ${gameName} game.`)
       updateTables()
-      updatePlayers(gameName, player.table)
-
       updatePlayers(gameName, player.table)
       socket.emit('enterTableResponse', 'success')
     }
   })
 }
-
 
 function updateTables () {
   sioServerIndex.emit('updateTables', controller.getTables())
