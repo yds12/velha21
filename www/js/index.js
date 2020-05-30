@@ -17,7 +17,7 @@ function updateTables (tables) {
     for (const table of tables) {
       result += makeTableDiv(table)
     }
-    '</div>\n'
+    result += '</div>\n'
   }
   ulTables.innerHTML = result
 }
