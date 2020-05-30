@@ -13,13 +13,13 @@ function connectSocket (path) {
 }
 
 describe('server', () => {
-  let httpServer, socket
+  let httpServer
 
   before((done) => {
     http.get(options, res => {
       console.log('    is already running and...')
       done()
-    }).on('error', err => {
+    }).on('error', () => {
       console.log('is not running, we will start it for the tests and it...')
 
       httpServer = server.start(CONFIG)
@@ -39,7 +39,7 @@ describe('server', () => {
 
   it('should listen at ' + port, (done) => {
     http.get(options, (res) => {
-      assert.equal(res.statusCode, 200)
+      assert.strictEqual(res.statusCode, 200)
       done()
     })
   })
@@ -66,7 +66,7 @@ describe('server', () => {
     it('should respond to socket connections with a message',
       (done) => {
         const socket = connectSocket('/tictactoe')
-        socket.emit('enterTable', {'playerName': 'Arthur Dent', "tableId": 'abcde'})
+        socket.emit('enterTable', { playerName: 'Arthur Dent', tableId: 'Persephone' })
         socket.on('message', (message) => {
           socket.disconnect()
           done()
@@ -76,7 +76,7 @@ describe('server', () => {
     it('should message the player when an opponent joins the table',
       (done) => {
         playerSocket = connectSocket('/tictactoe')
-        playerSocket.emit('enterTable', {'playerName': 'Arthur Dent', "tableId": 'abcde'})
+        playerSocket.emit('enterTable', { playerName: 'Arthur Dent', tableId: 'Earth' })
         playerSocket.on('message', (msg) => {
           if (msg.endsWith('joined the table.')) {
             playerSocket.disconnect()
@@ -85,7 +85,7 @@ describe('server', () => {
         })
         playerSocket.on('connect', () => {
           opponentSocket = connectSocket('/tictactoe')
-          opponentSocket.emit('enterTable', {'playerName': 'Ford Prefect', "tableId": 'abcde'})
+          opponentSocket.emit('enterTable', { playerName: 'Ford Prefect', tableId: 'Earth' })
         })
       })
 
@@ -120,10 +120,7 @@ describe('server', () => {
     }); */
 
     after(() => {
-      if (playerSocket && playerSocket.connected) {
-        console.log("disconnecting")
-        playerSocket.disconnect()
-      }
+      if (playerSocket && playerSocket.connected) playerSocket.disconnect()
       if (opponentSocket && opponentSocket.connected) opponentSocket.disconnect()
     })
   })
