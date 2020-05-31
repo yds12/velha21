@@ -61,8 +61,7 @@ function setupRoutes () {
 
   app.get('/:gameType', (req, res) => {
     const gameType = req.params.gameType
-    res.sendFile(
-      path.join(__dirname, '..', config.publicDir, gameType + '.html'))
+    res.render(gameType)
   })
 
   app.get('*', (req, res) => {
