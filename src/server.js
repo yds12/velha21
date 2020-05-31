@@ -3,6 +3,7 @@ const http = require('http')
 const socketIo = require('socket.io')
 const path = require('path')
 const controller = require('./controller')
+const { Liquid } = require('liquidjs');
 
 // Server setup
 const app = express()
@@ -20,17 +21,26 @@ function start (configurations) {
   config = configurations
   server.listen(config.port, () =>
     console.log(`Express server listening on port ${config.port}...`))
+  setupTemplateEngine()
   setupRoutes()
   setupSockets()
 
   return server
 }
 
+function setupTemplateEngine () {
+  const liquidEngine = new Liquid()
+  app.engine('liquid', liquidEngine.express())
+  app.set('views', path.join(__dirname, '..', './views'))
+  app.set('view engine', 'liquid')
+}
+
+
 function setupRoutes () {
   app.use(express.static(config.publicDir))
 
   app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, '..', config.publicDir, 'index.html'))
+    res.render('index')
   })
 
   app.get('/js/config.js', (req, res) => {
