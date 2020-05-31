@@ -19,6 +19,10 @@ class Player {
     this.message(`Hello ${this.name}, welcome.`)
   }
 
+  leaveTable () {
+    this.table.removePlayer(this)
+  }
+
   turnIntoObserver () {
     this.isObserver = true
   }

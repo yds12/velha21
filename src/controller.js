@@ -26,10 +26,10 @@ function allocatePlayer (player, gameType, tableId) {
 }
 
 function handleDisconnect (player) {
-  player.table.removePlayer(player)
-  if (player.table.empty()) {
-    tables.splice(player.table, 1)
-  }
+  const table = player.table
+  player.leaveTable()
+  if (table.empty())
+    tables.splice(table, 1)
 }
 
 function handleClick (player, pos) {
