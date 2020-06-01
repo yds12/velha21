@@ -1,52 +1,15 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="stylesheet" href="css/main.css" type="text/css" />
-    <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css" />
-    <title>Velha21 · Blackjack</title>
-  </head>
-  <body>
-    <div id="enter-table-box" class="container text-center" >
-      <form id="enter-table-form" class="form-enter-table text-left">
-        <h1 class="h3 mb-3 font-weight-normal">
-          Choose your nickname
-        </h1>
-        <div>
-          <label for="enter-player-name">
-            Nickname:
-          </label>
-          <input id="enter-player-name"  type='text' maxlength="10" class="form-control" required autofocus>
-        </div>
-        <div>
-          <label for="enter-table-id">
-            Table:
-          </label>
-          <input id="enter-table-id"  type='text' maxlength="10"  class="form-control">
-        </div>
-        <p id='enter-table-error-message' class=" text-muted"> </p>
-        <button id="enter" class="btn btn-lg btn-primary btn-block" type="submit">
-          Enter Table
-        </button>
-      </form>
-    </div>
-    <div id="game-box">
-      <div id="game-parts">
-        <canvas id="screen" class="canvas"></canvas>
-        <button id="hit">Hit</button>
-        <button id="stand">Stand</button>
-      </div>
-      <div>
-        <button id="start">Start</button>
-        <button id="clear">Restart</button>
-        <a href="/">leave table</a>
-      </div>
-      <div id="players"></div>
-      <div id="messages"></div>
-    </div>
-    <script src="js/lib/socket.io.js"></script>
-    <script src="js/config.js"></script>
-    <script src="js/blackjack.js"></script>
-    <script src="js/common.js"></script>
-  </body>
-</html>
+{% layout "game.liquid" %}
+
+{% assign name = 'BlackJack' %}
+
+{% block game-parts %}
+  <div id="game-parts">
+    <canvas id="screen" class="canvas"></canvas>
+    <button id="hit">Hit</button>
+    <button id="stand">Stand</button>
+  </div>
+{% endblock %}
+
+{% block game_js %}
+  <script src="js/blackjack.js"></script>
+{% endblock %}
