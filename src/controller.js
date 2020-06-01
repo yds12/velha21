@@ -42,7 +42,7 @@ function handleClear (player) {
 }
 
 function handleStart (player) {
-  const gameStarted = player.table.game.start()
+    const gameStarted = player.table.game.start()
   if (gameStarted) { player.table.waitingOpponents = false } else { player.table.messagePlayers('could not start game') }
 }
 
@@ -51,7 +51,7 @@ function getTables () {
     .map(table => ({
       id: table.id,
       game: table.game.type,
-      status: (table.waitingOpponents) ? 'waitingOpponents' : 'full'
+      status: (table.waitingOpponents) ? 'waiting for opponents...' : 'full'
     }))
 }
 
