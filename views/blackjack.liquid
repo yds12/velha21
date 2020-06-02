@@ -2,14 +2,13 @@
 
 {% assign name = 'BlackJack' %}
 
-{% block game-parts %}
-  <div id="game-parts">
-    <canvas id="screen" class="canvas"></canvas>
-    <button id="hit">Hit</button>
-    <button id="stand">Stand</button>
-  </div>
-{% endblock %}
+{% capture game-parts %}
+  <canvas id="screen" class="canvas"></canvas>
+  <button id="hit">Hit</button>
+  <button id="stand">Stand</button>
+{% endcapture %}
 
-{% block game_js %}
-  <script src="js/blackjack.js"></script>
+{% block page_js %}
+<script src="js/blackjack.js"></script>
+<script src="js/common.js"></script>
 {% endblock %}

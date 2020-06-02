@@ -1,12 +1,12 @@
 {% layout "game.liquid" %}
 
 {% assign name = 'Tic-tac-toe' %}
-{% block game-parts %}
-<div id="game-parts">
-  <canvas id="screen" class="canvas"></canvas>
-</div>
-{% endblock %}
 
-{% block game_js %}
-  <script src="js/tictactoe.js"></script>
+{% capture game-parts %}
+  <canvas id="screen" class="canvas"></canvas>
+{% endcapture %}
+
+{% block page_js %}
+<script src="js/tictactoe.js"></script>
+<script src="js/common.js"></script>
 {% endblock %}
