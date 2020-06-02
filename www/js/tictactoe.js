@@ -52,11 +52,13 @@ function drawBoard () {
 }
 
 function findQuadrant (x, y) {
+  const rect = canvas.getBoundingClientRect()
+  x -= rect.left
+  y -= rect.top
   const pos = {
     x: 0,
     y: 0
   }
-
   if (x > BOARD.x && x <= (BOARD.x + BOARD.tile)) {
     pos.x = 0
   } else if (x > (BOARD.x + BOARD.tile) && x <= (BOARD.x + 2 * BOARD.tile)) {
@@ -80,6 +82,7 @@ function findQuadrant (x, y) {
 canvas.onmousemove = (event) => {
 //  divMsg.innerHTML += event.clientX + ' ' + event.clientY + '; '
   drawBoard()
+  console.log(event)
   const quad = findQuadrant(event.clientX, event.clientY)
 
   if (quad) {
