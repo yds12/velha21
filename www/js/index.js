@@ -7,7 +7,7 @@ const engine = new Liquid()
 
 
 const ulTables = document.getElementById('tables')
-const tableTemplate = document.querySelector('[type="text/template"]').innerHTML
+const tableTemplate = document.getElementById('open-table-template').innerHTML
 
 // Event Handling (sockets)
 socket.on('updateTables', (tables) => {
