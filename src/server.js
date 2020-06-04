@@ -59,9 +59,12 @@ function setupRoutes () {
     }
   })
 
-  app.get('/:gameType', (req, res) => {
+  app.get('/:gameType', (req, res, next) => {
     const gameType = req.params.gameType
-    res.render(gameType)
+    if (controller.isValidGame(gameType))
+      res.render(gameType)
+    else
+      next()
   })
 
   app.get('*', (req, res) => {
