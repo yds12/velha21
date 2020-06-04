@@ -6,17 +6,23 @@
       <h1 class="h3 mb-3 font-weight-normal">
         Choose your nickname
       </h1>
-      <div>
+      <div class="form-group">
         <label for="enter-player-name">
           Nickname:
         </label>
-        <input id="enter-player-name"  type='text' maxlength="10" class="form-control" required autofocus>
+        <input id="enter-player-name" maxlength="10" class="form-control" required autofocus>
       </div>
-      <div>
+      <div class="form-group">
         <label for="enter-table-id">
           Table:
         </label>
-        <input id="enter-table-id"  type='text' maxlength="10"  class="form-control">
+        <input id="enter-table-id" maxlength="10"  class="form-control">
+      </div>
+      <div class="form-group  form-check" >
+        <input id="enter-table-observer"  type='checkbox' class="form-check-input">
+        <label for="enter-table-observer" class="form-check-label">
+          Observer
+        </label>
       </div>
       <p id='enter-table-error-message' class=" text-muted"> </p>
       <button id="enter" class="btn btn-lg btn-primary btn-block" type="submit">
