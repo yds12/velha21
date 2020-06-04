@@ -73,8 +73,11 @@
                 <p class="card-text">{{- game -}}:{{- id -}}</p>
                 <div class="d-flex justify-content-between align-items-center">
                     <div class="btn-group">
-                        <a type="button" class="btn btn-sm btn-outline-secondary" href="{{- game -}}/{{- id -}}">Join</a>
-                        <a type="button" class="btn btn-sm btn-outline-secondary" href="{{- game -}}/{{- id -}}">Watch</a>
+                        {% if playing %}
+                        {% else %}
+                        <a type="button" class="btn btn-sm btn-outline-secondary" href="{{- game -}}?tableId={{- id -}}">Join</a>
+                        {% endif %}
+                        <a type="button" class="btn btn-sm btn-outline-secondary" href="{{- game -}}?tableId={{- id -}}">Watch</a>
                     </div>
                     <small class="text-muted">{% if playing %} playing {% else %} waiting for players... {% endif %}</small>
                 </div>
