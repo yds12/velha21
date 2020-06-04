@@ -214,7 +214,7 @@ class Blackjack extends Game {
           if (playerScore > dealersScore)
             player.message('You won with a score larger than the dealer.')
           else
-            player.message("You lost, the dealer got more points than you.")
+            player.message("You lost, you didn't get more points than the dealer.")
         }
       }
 
