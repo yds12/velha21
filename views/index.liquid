@@ -76,7 +76,7 @@
                         <a type="button" class="btn btn-sm btn-outline-secondary" href="{{- game -}}/{{- id -}}">Join</a>
                         <a type="button" class="btn btn-sm btn-outline-secondary" href="{{- game -}}/{{- id -}}">Watch</a>
                     </div>
-                    <small class="text-muted">{{- status -}}</small>
+                    <small class="text-muted">{% if playing %} playing {% else %} waiting for players... {% endif %}</small>
                 </div>
             </div>
         </div>
