@@ -32,22 +32,8 @@ let OPPONENTS, TABLE, DECK
 const HIT = 0
 const STAND = 1
 
-const WAITING = 2
-const ONGOING = 0
-const FINISHED = 1
-
-// Event Handling (sockets)
-socket.on('state', (state) => {
-  console.log(`State ${JSON.stringify(state)} received`)
-  //  gameState = state;
+function updateGameState (state) {
   NAMES = state.playerNames
-  if (state.gameStatus === WAITING) {
-    btnClear.hidden = true
-    btnStart.hidden = false
-  } else {
-    btnClear.hidden = false
-    btnStart.hidden = true
-  }
   if (state) {
     HANDS = state.hands
     setHandPositions()
@@ -55,7 +41,7 @@ socket.on('state', (state) => {
     HANDS = []
   }
   draw()
-})
+}
 
 function setHandPositions () {
   handPositions = []

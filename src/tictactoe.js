@@ -23,7 +23,11 @@ class TicTacToe extends Game {
   }
 
   getGameState () {
-    return this.board
+    return {
+      board: this.board,
+      gameStatus: this.status
+    }
+    // return this.board
   }
 
   makeExtraPlayersObservers () {
@@ -60,12 +64,6 @@ class TicTacToe extends Game {
 
   fill (x, y, player) {
     this.board[y * 3 + x] = this.players.indexOf(player) + 1
-  }
-
-  sendState () {
-    for (let i = this.players.length - 1; i >= 0; i--) {
-      this.players[i].updateGameState(this.board)
-    }
   }
 
   checkEnd () {

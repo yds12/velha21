@@ -26,11 +26,10 @@ const BOARD = {
   tile: 130
 }
 
-socket.on('state', (state) => {
-  console.log(`State ${JSON.stringify(state)} received`)
-  gameState = state
+function updateGameState (state) {
+  gameState = state.board
   drawBoard()
-})
+}
 
 // Game functions
 function drawBoard () {

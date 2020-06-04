@@ -42,6 +42,23 @@ const btnClear = document.getElementById('clear')
 const btnStart = document.getElementById('start')
 
 // Event Handling (sockets)
+const WAITING = 2
+const ONGOING = 0
+const FINISHED = 1
+
+socket.on('state', (state) => {
+  console.log(`State ${JSON.stringify(state)} received`)
+  //  gameState = state;
+  if (state.gameStatus === WAITING) {
+    btnClear.hidden = true
+    btnStart.hidden = false
+  } else {
+    btnClear.hidden = false
+    btnStart.hidden = true
+  }
+  updateGameState(state)
+})
+
 socket.on('connect', () => {
   clearMessages()
   logMessage('Socket connected!')
