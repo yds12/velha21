@@ -1,6 +1,6 @@
 class Player {
-  constructor (name, socket) {
-    this.isObserver = false
+  constructor (name, socket, observer) {
+    this.isObserver = observer
     this.name = name
     this.socket = socket
     this.id = Math.floor(Math.random() * 1000000)

@@ -77,7 +77,7 @@
                         {% else %}
                         <a type="button" class="btn btn-sm btn-outline-secondary" href="{{- game -}}?tableId={{- id -}}">Join</a>
                         {% endif %}
-                        <a type="button" class="btn btn-sm btn-outline-secondary" href="{{- game -}}?tableId={{- id -}}">Watch</a>
+                        <a type="button" class="btn btn-sm btn-outline-secondary" href="{{- game -}}?tableId={{- id -}}&observer=true">Watch</a>
                     </div>
                     <small class="text-muted">{% if playing %} playing {% else %} waiting for players... {% endif %}</small>
                 </div>

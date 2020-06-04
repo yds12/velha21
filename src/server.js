@@ -121,7 +121,7 @@ function handleGameConnection (socket, gameName) {
       socket.emit('enterTableResponse', 'Please choose a table name with at least 5 characters')
     } else {
       socket.join(data.tableId)
-      player = controller.createPlayer(socket, gameName, data.tableId, data.playerName)
+      player = controller.createPlayer(socket, gameName, data.tableId, data.playerName, data.observer)
       console.log(`Player ${data.playerName} joined ${data.tableId} for a ${gameName} game.`)
       updateTables()
       updatePlayers(gameName, player.table)

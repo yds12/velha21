@@ -3,8 +3,8 @@ const Table = require('./table')
 
 const tables = []
 
-function createPlayer (socket, gameType, tableId, playerName) {
-  const player = new Player(playerName, socket)
+function createPlayer (socket, gameType, tableId, playerName, observer) {
+  const player = new Player(playerName, socket, observer)
   allocatePlayer(player, gameType, tableId)
   player.table.game.sendState()
   return player
