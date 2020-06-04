@@ -51,7 +51,7 @@ function getTables () {
     .map(table => ({
       id: table.id,
       game: table.game.type,
-      status: (table.waitingOpponents) ? 'waiting for opponents...' : 'full'
+      status: (table.waitingOpponents) ? 'waiting for players...' : 'playing'
     }))
 }
 
