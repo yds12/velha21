@@ -40,7 +40,7 @@ class TicTacToe extends Game {
   }
 
   logMove (player, move) {
-    this.table.messagePlayers(`Player ${player.name} clicked on quadrant ${move.x}, ${move.y}`)
+    this.table.logMovePlayers(`Player ${player.name} clicked on quadrant ${move.x}, ${move.y}`)
   }
 
   executeMove (player, move) {

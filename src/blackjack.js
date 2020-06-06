@@ -217,7 +217,6 @@ class Blackjack extends Game {
             player.message("You lost, you didn't get more points than the dealer.")
         }
       }
-
     }
   }
 
@@ -232,9 +231,9 @@ class Blackjack extends Game {
 
   logMove (player, move) {
     if (move === Blackjack.HIT)
-      this.table.messagePlayers(`Player ${player.name} hit`)
+      this.table.logMovePlayers(`Player ${player.name} hit`)
     if (move === Blackjack.STAND)
-      this.table.messagePlayers(`Player ${player.name} stand`)
+      this.table.logMovePlayers(`Player ${player.name} stand`)
   }
 }
 

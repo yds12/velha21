@@ -37,6 +37,7 @@ socket.on('enterTableResponse', (response) => {
 
 // Screen elements
 const divMsg = document.getElementById('messages')
+const divNotification = document.getElementById('notificationText')
 const ulPlayers = document.getElementById('players')
 const btnClear = document.getElementById('clear')
 const btnStart = document.getElementById('start')
@@ -68,6 +69,10 @@ socket.on('message', (msg) => {
   logMessage(msg)
 })
 
+socket.on('move', (msg) => {
+  logMove(msg)
+})
+
 socket.on('updatePlayers', (players) => {
   let result = ''
   console.log(players)
@@ -83,6 +88,14 @@ socket.on('updatePlayers', (players) => {
 })
 
 function logMessage (msg) {
+  // const date = new Date()
+  // const time = date.toLocaleTimeString()
+  // divMsg.innerHTML = time + ': ' + msg + '</br>' + divMsg.innerHTML
+  divNotification.innerHTML = msg
+  $('#notification').toast('show');
+}
+
+function logMove (msg) {
   const date = new Date()
   const time = date.toLocaleTimeString()
   divMsg.innerHTML = time + ': ' + msg + '</br>' + divMsg.innerHTML

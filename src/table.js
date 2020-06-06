@@ -49,6 +49,12 @@ class Table {
     }
   }
 
+  logMovePlayers (message) {
+    for (const player of this.players) {
+      player.logMove(message)
+    }
+  }
+
   messagePlayersExcept (message, player) {
     for (const p of this.players) {
       if (p !== player) {

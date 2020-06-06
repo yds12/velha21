@@ -10,6 +10,10 @@ class Player {
     this.socket.emit('message', message)
   }
 
+  logMove (message) {
+    this.socket.emit('move', message)
+  }
+
   updateGameState (state) {
     this.socket.emit('state', state)
   }
