@@ -101,18 +101,23 @@ function handleGameConnection (socket, gameName) {
       updateTables()
     }
   })
+  function setupGameListeners () {
+    socket.on('click', (pos) => {
 
-  socket.on('click', (pos) => controller.handleClick(player, pos))
-  socket.on('clear', () => {
-    controller.handleClear(player)
-    updateTables()
-    updatePlayers(gameName, player.table)
-  })
-  socket.on('start', () => {
-    controller.handleStart(player)
-    updateTables()
-    updatePlayers(gameName, player.table)
-  })
+        controller.handleClick(player, pos)
+      }
+    )
+    socket.on('clear', () => {
+      controller.handleClear(player)
+      updateTables()
+      updatePlayers(gameName, player.table)
+    })
+    socket.on('start', () => {
+      controller.handleStart(player)
+      updateTables()
+      updatePlayers(gameName, player.table)
+    })
+  }
   socket.on('enterTable', (data) => {
     console.log('data', data)
     if (data.playerName.length < 3) {
@@ -126,6 +131,7 @@ function handleGameConnection (socket, gameName) {
       updateTables()
       updatePlayers(gameName, player.table)
       socket.emit('enterTableResponse', 'success')
+      setupGameListeners()
     }
   })
 }
