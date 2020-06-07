@@ -72,6 +72,7 @@ class Blackjack extends Game {
       }
       case Blackjack.STAND: {
         this.playerStates[player.id] = Blackjack.STOPPED
+        this.table.logMovePlayers(`${player.name} stopped.`)
         break
       }
     }
@@ -82,11 +83,11 @@ class Blackjack extends Game {
     const handTotal = this.handSum(player)
     if (handTotal > 21) {
       this.playerStates[player.id] = Blackjack.BUSTED
-      this.table.messagePlayers(`Player ${player.name} got busted!`)
+      this.table.logMovePlayers(`${player.name} got busted!`)
     }
     else if (this.handSum(player) === 21) {
       this.playerStates[player.id] = Blackjack.VICTORIOUS
-      this.table.messagePlayers(`Player ${player.name} scored 21!`)
+      this.table.logMovePlayers(`${player.name} scored 21!`)
     }
     else
       player.message("You may keep playing!")
