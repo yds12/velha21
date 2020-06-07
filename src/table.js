@@ -26,7 +26,8 @@ class Table {
     this.players.splice(this.players.indexOf(player), 1)
     // console.log('Player', player.name, 'left table', this.id)
     this.messagePlayers(`${player.name} left table ${this.id}.`)
-    this.waitingOpponents = true
+    if (!player.isObserver)
+      this.waitingOpponents = true
   }
 
   clear () {
@@ -74,7 +75,8 @@ class Table {
     return this.players
       .map(player => ({
         name: player.name,
-        role: (player.isObserver) ? 'observer' : 'player'
+        role: (player.isObserver) ? 'observer' : 'player',
+        currentPlayer: this.game.isPlayerTurn(player)
       }))
   }
 }
