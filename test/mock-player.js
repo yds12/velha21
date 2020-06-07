@@ -10,6 +10,10 @@ class MockPlayer extends Player {
     // console.log(message)
   }
 
+  logMove (message) {
+    // console.log(message)
+  }
+
   updateGameState (state) {
     // console.log('updateGameState ', state)
   }
