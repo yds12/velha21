@@ -24,6 +24,7 @@ class Game {
       this.table.shufflePlayers()
     this.putPlayersAtFront()
     this.status = Game.ONGOING
+    this.table.logMovePlayers("Game start.")
     this.table.messagePlayers("The game is starting!")
     this.new_turn()
     this.sendState()
@@ -110,7 +111,7 @@ class Game {
   }
 
   finish () {
-    this.table.messagePlayers('End of the game')
+    this.table.logMovePlayers('End of the game')
     this.status = Game.FINISHED
     this.sendResults()
   }
