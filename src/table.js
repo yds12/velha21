@@ -24,8 +24,7 @@ class Table {
 
   removePlayer (player) {
     this.players.splice(this.players.indexOf(player), 1)
-    // console.log('Player', player.name, 'left table', this.id)
-    this.messagePlayers(`${player.name} left table ${this.id}.`)
+    this.messagePlayers(`${player.name} left.`)
     if (!player.isObserver)
       this.waitingOpponents = true
   }
