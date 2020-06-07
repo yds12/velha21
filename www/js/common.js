@@ -50,7 +50,7 @@ const FINISHED = 1
 socket.on('state', (state) => {
   console.log(`State ${JSON.stringify(state)} received`)
   //  gameState = state;
-  if (state.gameStatus === WAITING) {
+  if ((state.gameStatus === WAITING) || (state.gameStatus === FINISHED)) {
     btnClear.hidden = true
     btnStart.hidden = false
   } else {
