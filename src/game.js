@@ -70,8 +70,12 @@ class Game {
       return false
     }
 
-    if (this.status !== Game.ONGOING) {
-      player.message('Game finished.')
+    if (this.status === Game.FINISHED) {
+      player.message('Game finished. Click on start to go again.')
+      return false
+    }
+    if (this.status === Game.WAITING) {
+      player.message('Waiting for players. Click on start if you are ready.')
       return false
     }
     if (!this.isPlayerTurn(player)) {
