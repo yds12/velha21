@@ -17,9 +17,11 @@ class Game {
     return true
   }
 
-  start () {
+  start (shuffle = false) {
     if (!this.canStart())
       return false
+    if (shuffle)
+      this.table.shufflePlayers()
     this.putPlayersAtFront()
     this.status = Game.ONGOING
     this.table.messagePlayers("The game is starting!")

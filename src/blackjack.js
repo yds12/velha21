@@ -24,13 +24,13 @@ class Blackjack extends Game {
   }
 
 
-  start () {
+  start (shuffle) {
     this.deck = cardUtil.createDeck()
     util.shuffle(this.deck)
     this.createPlayerStates()
     this.createPlayerHands()
     this.lastCard = null
-    return super.start()
+    return super.start(shuffle)
   }
 
   createPlayerStates () {

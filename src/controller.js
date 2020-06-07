@@ -42,7 +42,7 @@ function handleClear (player) {
 }
 
 function handleStart (player) {
-    const gameStarted = player.table.game.start()
+  const gameStarted = player.table.game.start(true)
   if (gameStarted)
     player.table.waitingOpponents = false
 }

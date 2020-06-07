@@ -12,14 +12,14 @@ class TicTacToe extends Game {
     return this.getNumPlayers() === 2
   }
 
-  start () {
+  start (shuffle) {
     this.board = [0, 0, 0, 0, 0, 0, 0, 0, 0]
     if (this.getNumPlayers() < 2) {
       this.table.messagePlayers('not enough players')
       return false
     }
     this.makeExtraPlayersObservers()
-    return super.start()
+    return super.start(shuffle)
   }
 
   getGameState () {
