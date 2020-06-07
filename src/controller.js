@@ -43,7 +43,8 @@ function handleClear (player) {
 
 function handleStart (player) {
     const gameStarted = player.table.game.start()
-  if (gameStarted) { player.table.waitingOpponents = false } else { player.table.messagePlayers('could not start game') }
+  if (gameStarted)
+    player.table.waitingOpponents = false
 }
 
 function getTables () {
