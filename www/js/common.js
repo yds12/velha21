@@ -3,11 +3,8 @@ const enterTableForm = document.getElementById('enter-table-form')
 const enterTableId = document.getElementById('enter-table-id')
 const enterPlayerName = document.getElementById('enter-player-name')
 const enterObserver = document.getElementById('enter-table-observer')
-const gameBox = document.getElementById('game-box')
-const enterTableBox = document.getElementById('enter-table-box')
 const enterTableErrorMessage = document.getElementById('enter-table-error-message')
-gameBox.style.display = 'none'
-enterTableBox.style.display = 'block'
+$('#staticBackdrop').modal({keyboard: false })
 
 const tableId = (new URL(window.location.href)).searchParams.get('tableId')
 if (tableId) enterTableId.value = tableId
@@ -26,11 +23,8 @@ enterTableForm.addEventListener('submit', (event) => {
 
 socket.on('enterTableResponse', (response) => {
   if (response === 'success') {
-    gameBox.style.display = 'block'
-    enterTableBox.style.display = 'none'
+    $('#staticBackdrop').modal('hide')
   } else {
-    gameBox.style.display = 'none'
-    enterTableBox.style.display = 'block'
     enterTableErrorMessage.innerText = response
   }
 })
