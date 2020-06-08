@@ -81,7 +81,6 @@ function findQuadrant (x, y) {
 canvas.onmousemove = (event) => {
 //  divMsg.innerHTML += event.clientX + ' ' + event.clientY + '; '
   drawBoard()
-  console.log(event)
   const quad = findQuadrant(event.clientX, event.clientY)
 
   if (quad) {
