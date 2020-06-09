@@ -26,7 +26,7 @@ class Table {
     this.players.splice(this.players.indexOf(player), 1)
     this.messagePlayers(`${player.name} left.`)
     if (!player.isObserver)
-      this.waitingOpponents = true
+      this.clear()
   }
 
   clear () {
