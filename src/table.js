@@ -70,6 +70,10 @@ class Table {
     }
   }
 
+  updatePlayers () {
+    this.socket.emit('updatePlayers', this.getPlayers())
+  }
+
   getPlayers () {
     return this.players
       .map(player => ({

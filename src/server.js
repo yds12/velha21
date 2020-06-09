@@ -133,7 +133,7 @@ function updateTables () {
 }
 
 function updatePlayers (table) {
-  table.socket.emit('updatePlayers', table.getPlayers())
+  table.updatePlayers()
 }
 
 module.exports.start = start
