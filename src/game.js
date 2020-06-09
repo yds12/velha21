@@ -113,6 +113,7 @@ class Game {
   finish () {
     this.table.logMovePlayers('End of the game')
     this.status = Game.FINISHED
+    this.currentPlayer = -1
     this.sendResults()
   }
 
