@@ -3,8 +3,9 @@ const enterTableForm = document.getElementById('enter-table-form')
 const enterTableId = document.getElementById('enter-table-id')
 const enterPlayerName = document.getElementById('enter-player-name')
 const enterObserver = document.getElementById('enter-table-observer')
+const enterGameType = document.getElementById('enter-game-type')
 const enterTableErrorMessage = document.getElementById('enter-table-error-message')
-$('#staticBackdrop').modal({keyboard: false })
+$('#staticBackdrop').modal({ keyboard: false })
 
 const tableId = (new URL(window.location.href)).searchParams.get('tableId')
 if (tableId) enterTableId.value = tableId
@@ -16,7 +17,8 @@ enterTableForm.addEventListener('submit', (event) => {
   socket.emit('enterTable', {
     playerName: enterPlayerName.value,
     tableId: enterTableId.value,
-    observer: enterObserver.checked
+    observer: enterObserver.checked,
+    gameType: enterGameType.innerText
   })
   event.preventDefault()
 })
@@ -74,8 +76,7 @@ socket.on('updatePlayers', (players) => {
     result += '<p>Players:</p><ul>'
     for (const player of players) {
       result += `<li>${player.name} (${player.role})`
-      if (player.currentPlayer)
-        result += ' <span class="badge badge-pill badge-primary">Playing</span>'
+      if (player.currentPlayer) { result += ' <span class="badge badge-pill badge-primary">Playing</span>' }
       result += '</li>'
     }
     result += '</ul>'
@@ -89,7 +90,7 @@ function logMessage (msg) {
   // const time = date.toLocaleTimeString()
   // divMsg.innerHTML = time + ': ' + msg + '</br>' + divMsg.innerHTML
   divNotification.innerHTML = msg
-  $('#notification').toast('show');
+  $('#notification').toast('show')
 }
 
 function logMove (msg) {

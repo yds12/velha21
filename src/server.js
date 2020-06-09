@@ -3,7 +3,7 @@ const http = require('http')
 const socketIo = require('socket.io')
 const path = require('path')
 const controller = require('./controller')
-const { Liquid } = require('liquidjs');
+const { Liquid } = require('liquidjs')
 
 // Server setup
 const app = express()
@@ -13,8 +13,7 @@ const server = http.createServer(app)
 const sioServer = socketIo(server)
 let config
 
-const sioServerTTT = sioServer.of('/tictactoe')
-const sioServerBlackJack = sioServer.of('/blackjack')
+const sioServerGame = sioServer.of('/game')
 const sioServerIndex = sioServer.of('/index')
 
 function start (configurations) {
@@ -34,7 +33,6 @@ function setupTemplateEngine () {
   app.set('views', path.join(__dirname, '..', './views'))
   app.set('view engine', 'liquid')
 }
-
 
 function setupRoutes () {
   app.use(express.static(config.publicDir))
@@ -61,10 +59,7 @@ function setupRoutes () {
 
   app.get('/:gameType', (req, res, next) => {
     const gameType = req.params.gameType
-    if (controller.isValidGame(gameType))
-      res.render(gameType)
-    else
-      next()
+    if (controller.isValidGame(gameType)) { res.render(gameType) } else { next() }
   })
 
   app.get('*', (req, res) => {
@@ -74,22 +69,16 @@ function setupRoutes () {
 }
 
 function setupSockets () {
-  sioServerTTT.on('connection', (socket) =>
-    handleGameConnection(socket, 'tictactoe'))
+  sioServerGame.on('connection', (socket) =>
+    handleGameConnection(socket))
 
-  sioServerBlackJack.on('connection', (socket) =>
-    handleGameConnection(socket, 'blackjack'))
-
-  sioServer.on('connection', (socket) => {
-    console.log('new connection')
-  })
   sioServerIndex.on('connection', (socket) => {
     console.log('someone joined the main page')
     socket.emit('updateTables', controller.getTables())
   })
 }
 
-function handleGameConnection (socket, gameName) {
+function handleGameConnection (socket) {
   let player = null
   console.log(`Client ${socket.id} connected.`)
 
@@ -97,25 +86,25 @@ function handleGameConnection (socket, gameName) {
     console.log(`Client ${socket.id} has disconnected.`)
     if (player !== null) {
       controller.handleDisconnect(player)
-      updatePlayers(gameName, player.table)
+      updatePlayers(player.table)
       updateTables()
     }
   })
   function setupGameListeners () {
     socket.on('click', (pos) => {
-        controller.handleClick(player, pos)
-        updatePlayers(gameName, player.table)
-      }
+      controller.handleClick(player, pos)
+      updatePlayers(player.table)
+    }
     )
     socket.on('clear', () => {
       controller.handleClear(player)
       updateTables()
-      updatePlayers(gameName, player.table)
+      updatePlayers(player.table)
     })
     socket.on('start', () => {
       controller.handleStart(player)
       updateTables()
-      updatePlayers(gameName, player.table)
+      updatePlayers(player.table)
     })
   }
   socket.on('enterTable', (data) => {
@@ -125,11 +114,14 @@ function handleGameConnection (socket, gameName) {
     } else if (data.tableId.length < 5) {
       socket.emit('enterTableResponse', 'Please choose a table name with at least 5 characters')
     } else {
+      const roomName = `${data.gameType}_${data.tableId}`
+      socket.join(roomName)
+      const tableSocket = sioServerGame.to(roomName)
       socket.join(data.tableId)
-      player = controller.createPlayer(socket, gameName, data.tableId, data.playerName, data.observer)
-      console.log(`Player ${data.playerName} joined ${data.tableId} for a ${gameName} game.`)
+      player = controller.createPlayer(socket, data.gameType, data.tableId, data.playerName, data.observer, tableSocket)
+      console.log(`Player ${data.playerName} joined ${data.tableId} for a ${data.gameType} game.`)
       updateTables()
-      updatePlayers(gameName, player.table)
+      updatePlayers(player.table)
       socket.emit('enterTableResponse', 'success')
       setupGameListeners()
     }
@@ -140,12 +132,8 @@ function updateTables () {
   sioServerIndex.emit('updateTables', controller.getTables())
 }
 
-function updatePlayers (gameName, table) {
-  if (gameName === 'tictactoe') {
-    sioServerTTT.to(table.id).emit('updatePlayers', table.getPlayers())
-  } else if (gameName === 'blackjack') {
-    sioServerBlackJack.to(table.id).emit('updatePlayers', table.getPlayers())
-  }
+function updatePlayers (table) {
+  table.socket.emit('updatePlayers', table.getPlayers())
 }
 
 module.exports.start = start

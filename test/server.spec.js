@@ -65,8 +65,8 @@ describe('server', () => {
 
     it('should respond to socket connections with a message',
       (done) => {
-        const socket = connectSocket('/tictactoe')
-        socket.emit('enterTable', { playerName: 'Arthur Dent', tableId: 'Persephone' })
+        const socket = connectSocket('/game')
+        socket.emit('enterTable', { playerName: 'Arthur Dent', tableId: 'Persephone', gameType: 'tictactoe' })
         socket.on('message', (message) => {
           socket.disconnect()
           done()
@@ -75,8 +75,8 @@ describe('server', () => {
 
     it('should message the player when an opponent joins the table',
       (done) => {
-        playerSocket = connectSocket('/tictactoe')
-        playerSocket.emit('enterTable', { playerName: 'Arthur Dent', tableId: 'Earth' })
+        playerSocket = connectSocket('/game')
+        playerSocket.emit('enterTable', { playerName: 'Arthur Dent', tableId: 'Earth', gameType: 'tictactoe' })
         playerSocket.on('message', (msg) => {
           if (msg.endsWith('joined the table.')) {
             playerSocket.disconnect()
@@ -84,16 +84,16 @@ describe('server', () => {
           }
         })
         playerSocket.on('connect', () => {
-          opponentSocket = connectSocket('/tictactoe')
-          opponentSocket.emit('enterTable', { playerName: 'Ford Prefect', tableId: 'Earth' })
+          opponentSocket = connectSocket('/game')
+          opponentSocket.emit('enterTable', { playerName: 'Ford Prefect', tableId: 'Earth', gameType: 'tictactoe' })
         })
       })
 
     // Need to find a way to connect both to the same room
     /* it('should send an updated game state after two players connect and ' +
       'one of them makes a move', (done) => {
-      playerSocket = connectSocket('/tictactoe')
-      opponentSocket = connectSocket('/tictactoe')
+      playerSocket = connectSocket('/game')
+      opponentSocket = connectSocket('/game')
       let stateReceived = false
 
       playerSocket.on('connect', () => {

@@ -2,7 +2,7 @@
 const HOST = window.location.hostname
 const connectTo = (HOST === 'localhost') ? `${HOST}:${PORT}` : HOST
 
-const socket = io(connectTo + '/tictactoe')
+const socket = io(connectTo + '/game')
 
 // Screen elements
 const canvas = document.getElementById('screen')

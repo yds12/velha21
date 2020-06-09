@@ -5,7 +5,6 @@ const socket = io(connectTo + '/index')
 const Liquid = window.liquidjs.Liquid
 const engine = new Liquid()
 
-
 const ulTables = document.getElementById('tables')
 const tableTemplate = document.getElementById('open-table-template').innerHTML
 
@@ -29,5 +28,4 @@ function updateTables (tables) {
 
 function makeTableDiv (table) {
   return engine.parseAndRenderSync(tableTemplate, table)
-
 }

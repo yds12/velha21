@@ -4,12 +4,13 @@ const Blackjack = require('./blackjack')
 
 // a table manages players joining a game
 class Table {
-  constructor (gameType, tableId) {
+  constructor (gameType, tableId, tableSocket) {
     this.gameType = gameType
     this.players = []
     this.id = tableId
     this.waitingOpponents = true
     this.game = this.createNewGame(gameType)
+    this.socket = tableSocket
   }
 
   addPlayer (player) {
@@ -25,8 +26,7 @@ class Table {
   removePlayer (player) {
     this.players.splice(this.players.indexOf(player), 1)
     this.messagePlayers(`${player.name} left.`)
-    if (!player.isObserver)
-      this.clear()
+    if (!player.isObserver) { this.clear() }
   }
 
   clear () {
