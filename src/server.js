@@ -103,8 +103,8 @@ function handleGameConnection (socket, gameName) {
   })
   function setupGameListeners () {
     socket.on('click', (pos) => {
-
         controller.handleClick(player, pos)
+        updatePlayers(gameName, player.table)
       }
     )
     socket.on('clear', () => {
