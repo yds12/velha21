@@ -73,7 +73,10 @@ socket.on('updatePlayers', (players) => {
   if (players.length > 0) {
     result += '<p>Players:</p><ul>'
     for (const player of players) {
-      result += `<li>${player.name} (${player.role})</a></li>`
+      result += `<li>${player.name} (${player.role})`
+      if (player.currentPlayer)
+        result += ' <span class="badge badge-pill badge-primary">Playing</span>'
+      result += '</li>'
     }
     result += '</ul>'
   }
