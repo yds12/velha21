@@ -86,25 +86,25 @@ function handleGameConnection (socket) {
     console.log(`Client ${socket.id} has disconnected.`)
     if (player !== null) {
       controller.handleDisconnect(player)
-      updatePlayers(player.table)
+      player.table.updatePlayers()
       updateTables()
     }
   })
   function setupGameListeners () {
     socket.on('click', (pos) => {
       controller.handleClick(player, pos)
-      updatePlayers(player.table)
+      player.table.updatePlayers()
     }
     )
     socket.on('clear', () => {
       controller.handleClear(player)
       updateTables()
-      updatePlayers(player.table)
+      player.table.updatePlayers()
     })
     socket.on('start', () => {
       controller.handleStart(player)
       updateTables()
-      updatePlayers(player.table)
+      player.table.updatePlayers()
     })
   }
   socket.on('enterTable', (data) => {
@@ -121,7 +121,7 @@ function handleGameConnection (socket) {
       player = controller.createPlayer(socket, data.gameType, data.tableId, data.playerName, data.observer, tableSocket)
       console.log(`Player ${data.playerName} joined ${data.tableId} for a ${data.gameType} game.`)
       updateTables()
-      updatePlayers(player.table)
+      player.table.updatePlayers()
       socket.emit('enterTableResponse', 'success')
       setupGameListeners()
     }
@@ -130,10 +130,6 @@ function handleGameConnection (socket) {
 
 function updateTables () {
   sioServerIndex.emit('updateTables', controller.getTables())
-}
-
-function updatePlayers (table) {
-  table.updatePlayers()
 }
 
 module.exports.start = start
