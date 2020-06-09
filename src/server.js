@@ -117,7 +117,6 @@ function handleGameConnection (socket) {
       const roomName = `${data.gameType}_${data.tableId}`
       socket.join(roomName)
       const tableSocket = sioServerGame.to(roomName)
-      socket.join(data.tableId)
       player = controller.createPlayer(socket, data.gameType, data.tableId, data.playerName, data.observer, tableSocket)
       console.log(`Player ${data.playerName} joined ${data.tableId} for a ${data.gameType} game.`)
       updateTables()
