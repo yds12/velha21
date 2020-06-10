@@ -1,3 +1,5 @@
+const $ = window.$
+
 // entering table
 const enterTableForm = document.getElementById('enter-table-form')
 const enterTableId = document.getElementById('enter-table-id')
