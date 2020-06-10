@@ -12,6 +12,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "babel-eslint": "^10.1.0",
     "mocha": "^7.1.2",
     "nodemon": "^2.0.3",
     "standard": "^14.3.3"
@@ -22,6 +23,7 @@
     "socket.io": "^2.3.0"
   },
   "standard": {
+    "parser": "babel-eslint",
     "ignore": [
       "/www/js/lib/"
     ],
