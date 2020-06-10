@@ -28,6 +28,7 @@ class Player {
   }
 
   turnIntoObserver () {
+    this.message('You are now an observer.')
     this.isObserver = true
   }
 }
