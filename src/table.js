@@ -2,7 +2,6 @@ const util = require('./util.js')
 const Tictactoe = require('./tictactoe')
 const Blackjack = require('./blackjack')
 
-// a table manages players joining a game
 class Table {
   constructor (gameType, tableId, tableSocket) {
     this.gameType = gameType
@@ -18,7 +17,6 @@ class Table {
       player.isObserver = true
     }
     this.players.push(player)
-    // console.log(`Player ${player.name} joined the table.`)
     this.messagePlayersExcept(`Player ${player.name} joined the table.`, player)
     player.setTable(this)
   }
@@ -44,9 +42,7 @@ class Table {
   }
 
   messagePlayers (message) {
-    for (const player of this.players) {
-      player.message(message)
-    }
+    this.socket.emit('message', message)
   }
 
   logMovePlayers (message) {

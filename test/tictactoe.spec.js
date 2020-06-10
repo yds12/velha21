@@ -2,8 +2,9 @@ const path = require('path')
 const assert = require('assert')
 
 const TicTacToe = require(path.join(__dirname, '../src/tictactoe'))
-const MockPlayer = require(path.join(__dirname, '../test/mock-player'))
-const Table = require(path.join(__dirname, '../src/table'))
+const mock = require(path.join(__dirname, '../test/mock'))
+const Player = mock.Player
+const Table = mock.Table
 
 describe('TicTacToe', () => {
   let table = null
@@ -15,9 +16,9 @@ describe('TicTacToe', () => {
   beforeEach(() => {
     table = new Table('tictactoe', 42)
     game = table.game
-    player1 = new MockPlayer('player1')
-    player2 = new MockPlayer('player2')
-    observer = new MockPlayer('observer')
+    player1 = new Player('player1')
+    player2 = new Player('player2')
+    observer = new Player('observer')
     observer.isObserver = true
   })
 

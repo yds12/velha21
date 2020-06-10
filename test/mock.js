@@ -1,5 +1,6 @@
 const path = require('path')
 const Player = require(path.join(__dirname, '../src/player'))
+const Table = require(path.join(__dirname, '../src/table'))
 
 class MockPlayer extends Player {
   constructor (name) {
@@ -19,4 +20,11 @@ class MockPlayer extends Player {
   }
 }
 
-module.exports = MockPlayer
+class MockTable extends Table {
+  messagePlayers (message) {
+    // console.log(message)
+  }
+}
+
+module.exports.Player = MockPlayer
+module.exports.Table = MockTable

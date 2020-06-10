@@ -2,8 +2,9 @@ const path = require('path')
 const assert = require('assert')
 
 const Blackjack = require(path.join(__dirname, '../src/blackjack'))
-const MockPlayer = require(path.join(__dirname, '../test/mock-player'))
-const Table = require(path.join(__dirname, '../src/table'))
+const mock = require(path.join(__dirname, '../test/mock'))
+const Player = mock.Player
+const Table = mock.Table
 
 function createPlayerHands () {
   this.hands = this.getPlayers().reduce((hand, player) => {
@@ -25,9 +26,9 @@ describe('Blackjack', () => {
     table = new Table('blackjack', 42)
     game = table.game
     game.createPlayerHands = createPlayerHands
-    player1 = new MockPlayer('player1')
-    player2 = new MockPlayer('player2')
-    observer = new MockPlayer('observer')
+    player1 = new Player('player1')
+    player2 = new Player('player2')
+    observer = new Player('observer')
     observer.isObserver = true
   })
 
