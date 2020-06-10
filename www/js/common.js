@@ -54,7 +54,7 @@ socket.on('state', (state) => {
   if ((state.gameStatus === WAITING) || (state.gameStatus === FINISHED)) {
     btnClear.hidden = true
     btnStart.hidden = false
-  } else {
+  } else if (state.gameStatus === ONGOING) {
     btnClear.hidden = false
     btnStart.hidden = true
   }
