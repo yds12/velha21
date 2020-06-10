@@ -1,9 +1,3 @@
-// Socket setup
-const HOST = window.location.hostname
-const connectTo = (HOST === 'localhost') ? `${HOST}:${PORT}` : HOST
-
-const socket = io(connectTo + '/game')
-
 // Screen elements
 const canvas = document.getElementById('screen')
 canvas.width = 400

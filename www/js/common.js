@@ -1,4 +1,8 @@
 const $ = window.$
+// Socket setup
+const HOST = window.location.hostname
+const connectTo = (HOST === 'localhost') ? `${HOST}:${PORT}` : HOST
+const socket = io(connectTo + '/game')
 
 // entering table
 const enterTableForm = document.getElementById('enter-table-form')
@@ -83,7 +87,6 @@ socket.on('updatePlayers', (players) => {
     }
     result += '</ul>'
   }
-  console.log('result')
   ulPlayers.innerHTML = result
 })
 
