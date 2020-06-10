@@ -89,3 +89,6 @@ canvas.onclick = (event) => {
 
   if (quad) socket.emit('click', quad)
 }
+
+// Initialization
+updateGameState({ board: [0, 0, 0, 0, 0, 0, 0, 0, 0] })

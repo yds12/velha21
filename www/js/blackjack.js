@@ -137,3 +137,4 @@ btnStand.onclick = (event) => {
 
 // Initialization
 loadImages()
+updateGameState({ playerNames: [], hands: [] })
