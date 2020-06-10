@@ -90,6 +90,12 @@ socket.on('updatePlayers', (players) => {
   ulPlayers.innerHTML = result
 })
 
+function updateGameState (state) {
+  // update the game state on the screen
+  // should be overwritten on the specific game
+  console.log(state)
+}
+
 function logMessage (msg) {
   // const date = new Date()
   // const time = date.toLocaleTimeString()
