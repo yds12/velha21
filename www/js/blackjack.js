@@ -27,7 +27,6 @@ const NAME_H = 40
 let NAMES = []
 let HANDS = []
 let handPositions = []
-let OPPONENTS, TABLE, DECK
 
 const HIT = 0
 const STAND = 1

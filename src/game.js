@@ -125,7 +125,6 @@ class Game {
     return this.players.filter(pl => !pl.isObserver);
   }
 
-  // Just the non-observers
   getNumPlayers() {
     return this.getPlayers().length
   }

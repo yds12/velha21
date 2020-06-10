@@ -27,7 +27,6 @@ class TicTacToe extends Game {
       board: this.board,
       gameStatus: this.status
     }
-    // return this.board
   }
 
   makeExtraPlayersObservers () {
