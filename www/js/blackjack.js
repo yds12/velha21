@@ -1,3 +1,4 @@
+/* global socket */
 
 // Screen elements
 const btnHit = document.getElementById('hit')

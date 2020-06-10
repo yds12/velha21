@@ -27,6 +27,10 @@
     ],
     "env": [
       "mocha"
+    ],
+    "globals": [
+      "PORT",
+      "io"
     ]
   }
 }

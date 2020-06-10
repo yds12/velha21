@@ -1,3 +1,5 @@
+/* global socket */
+
 // Screen elements
 const canvas = document.getElementById('screen')
 canvas.width = 400
