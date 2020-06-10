@@ -46,9 +46,7 @@ class Table {
   }
 
   logMovePlayers (message) {
-    for (const player of this.players) {
-      player.logMove(message)
-    }
+    this.socket.emit('move', message)
   }
 
   messagePlayersExcept (message, player) {

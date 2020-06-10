@@ -24,6 +24,10 @@ class MockTable extends Table {
   messagePlayers (message) {
     // console.log(message)
   }
+
+  logMovePlayers (message) {
+    // console.log(message)
+  }
 }
 
 module.exports.Player = MockPlayer
