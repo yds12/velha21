@@ -3,9 +3,7 @@ const Player = require('./player')
 const util = require('./util')
 const cardUtil = require('./card-util')
 
-
 class Blackjack extends Game {
-
   static PLAYING = 0
   static BUSTED = 1
   static STOPPED = 2
@@ -22,7 +20,6 @@ class Blackjack extends Game {
     this.dealer = new Player('dealer', null)
     this.hands = {}
   }
-
 
   start (shuffle) {
     this.deck = cardUtil.createDeck()
@@ -45,9 +42,9 @@ class Blackjack extends Game {
       hand[player.id] = [this.deck.pop(), this.deck.pop()]
       return hand
     }, {})
-    for (let player of this.getPlayers())
+    for (const player of this.getPlayers()) {
       this.updatePlayerState(player)
-
+    }
     this.hands[this.dealer.id] = [this.deck.pop(), this.deck.pop()]
   }
 
@@ -55,8 +52,7 @@ class Blackjack extends Game {
     if (!super.moveIsValid(player, move)) {
       return false
     }
-    if ((move === Blackjack.HIT) && 
-      (this.playerStates[player.id] !== Blackjack.PLAYING)) {
+    if ((move === Blackjack.HIT) && (this.playerStates[player.id] !== Blackjack.PLAYING)) {
       player.message('You are not playing anymore.')
       return false
     }
@@ -85,12 +81,13 @@ class Blackjack extends Game {
       this.playerStates[player.id] = Blackjack.BUSTED
       this.table.logMovePlayers(`${player.name} got busted!`)
     }
-    else if (this.handSum(player) === 21) {
+    if (handTotal === 21) {
       this.playerStates[player.id] = Blackjack.VICTORIOUS
       this.table.logMovePlayers(`${player.name} scored 21!`)
     }
-    else
-      player.message("You may keep playing!")
+    if (handTotal < 21) {
+      player.message('You may keep playing!')
+    }
   }
 
   buyCard (player) {
@@ -105,7 +102,7 @@ class Blackjack extends Game {
   handSum (player) {
     let total = this.hands[player.id].reduce((sum, card) => sum + this.cardPoint(card), 0)
     let usableAces = this.numberOfAces(this.hands[player.id])
-    while ((total > 21) && (usableAces > 0)){
+    while ((total > 21) && (usableAces > 0)) {
       total -= 10
       usableAces -= 1
     }
@@ -115,18 +112,17 @@ class Blackjack extends Game {
   numberOfAces (hand) {
     let total = 0
     for (const card of hand) {
-      if (cardUtil.decodeCard(card).value === 1)
-        total += 1
+      if (cardUtil.decodeCard(card).value === 1) { total += 1 }
     }
     return total
   }
 
   playerRoundComplete (player) {
-    return  this.playerStates[player.id] !== Blackjack.PLAYING
+    return this.playerStates[player.id] !== Blackjack.PLAYING
   }
 
   checkEnd () {
-    return this.noPlayerPlaying();
+    return this.noPlayerPlaying()
   }
 
   /*
@@ -144,27 +140,26 @@ class Blackjack extends Game {
       playerNames: this.getPlayerNames(),
       playerStates: this.playerStates,
       currentPlayer: this.currentPlayer,
-      hands: this.status === Game.WAITING ? []: this.getListOfHands(),
+      hands: this.status === Game.WAITING ? [] : this.getListOfHands(),
       lastCard: this.lastCard,
       gameStatus: this.status
     }
   }
 
   getPlayerNames () {
-    const  res = this.getPlayers().map((player) => player.name)
+    const res = this.getPlayers().map((player) => player.name)
     res.push('Dealer')
     return res
   }
 
   getListOfHands () {
     const listOfHands = []
-    for (let player of this.getPlayers())
-      listOfHands.push(this.getPlayerCards(player))
+    for (const player of this.getPlayers()) { listOfHands.push(this.getPlayerCards(player)) }
 
-    let dealerCards = this.getPlayerCards(this.dealer)
+    const dealerCards = this.getPlayerCards(this.dealer)
     if (this.status !== Game.FINISHED) {
       dealerCards.pop()
-      dealerCards.push(-1)  // only show 1 card of dealer
+      dealerCards.push(-1) // only show 1 card of dealer
     }
     listOfHands.push(dealerCards)
     return listOfHands
@@ -172,28 +167,26 @@ class Blackjack extends Game {
 
   getPlayerCards (player) {
     const hand = this.hands[player.id]
-    if (hand === undefined)
-      return []
+    if (hand === undefined) { return [] }
     return hand.reduce((cards, cardNumber) => {
       const card = cardUtil.decodeCard(cardNumber)
       cards.push(card)
       return cards
     }, [])
   }
-  
 
   noPlayerPlaying () {
-    for (const player of this.getPlayers())
-      if (this.playerStates[player.id] === Blackjack.PLAYING)
-        return false
+    for (const player of this.getPlayers()) {
+      if (this.playerStates[player.id] === Blackjack.PLAYING) { return false }
+    }
     return true
   }
 
   getWinners () {
     const result = []
-    for (const player of this.getPlayers())
-      if (this.handSum(player) === 21)
-        result.push(this.players.indexOf(player))
+    for (const player of this.getPlayers()) {
+      if (this.handSum(player) === 21) { result.push(this.players.indexOf(player)) }
+    }
     return result
   }
 
@@ -201,21 +194,23 @@ class Blackjack extends Game {
     this.state = this.getGameState()
     this.sendState()
     const dealersScore = this.computeDealerScore()
-    for (let player of this.getPlayers()){
+    for (const player of this.getPlayers()) {
       const playerScore = this.handSum(player)
-      if (playerScore > 21)
-        player.message("You lost because you got busted.")
-      else if (playerScore === 21 )
-        player.message("You won with 21 points.")
-      else {
+      if (playerScore > 21) {
+        player.message('You lost because you got busted.')
+      }
+      if (playerScore === 21) {
+        player.message('You won with 21 points.')
+      }
+      if (playerScore === 21) {
         if (dealersScore > 21) {
           player.message('You won, dealer got busted.')
-        }
-        else{
-          if (playerScore > dealersScore)
+        } else {
+          if (playerScore > dealersScore) {
             player.message('You won with a score larger than the dealer.')
-          else
-            player.message("You lost, you didn't get more points than the dealer.")
+          } else {
+            player.message('You lost, you didn\'t get more points than the dealer.')
+          }
         }
       }
     }
@@ -231,10 +226,12 @@ class Blackjack extends Game {
   }
 
   logMove (player, move) {
-    if (move === Blackjack.HIT)
+    if (move === Blackjack.HIT) {
       this.table.logMovePlayers(`Player ${player.name} hit`)
-    if (move === Blackjack.STAND)
+    }
+    if (move === Blackjack.STAND) {
       this.table.logMovePlayers(`Player ${player.name} stand`)
+    }
   }
 }
 

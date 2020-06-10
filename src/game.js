@@ -18,29 +18,34 @@ class Game {
   }
 
   start (shuffle = false) {
-    if (!this.canStart())
+    if (!this.canStart()) {
       return false
-    if (shuffle)
+    }
+    if (shuffle) {
       this.table.shufflePlayers()
+    }
     this.putPlayersAtFront()
     this.status = Game.ONGOING
-    this.table.logMovePlayers("Game start.")
-    this.table.messagePlayers("The game is starting!")
-    this.new_turn()
+    this.table.logMovePlayers('Game start.')
+    this.table.messagePlayers('The game is starting!')
+    this.newTurn()
     this.sendState()
     return true
   }
 
   putPlayersAtFront () {
-    for (let i = 0; i < this.getNumPlayers(); i++)
-      if (this.players[i].isObserver)
-        for (let j = i + 1; j <= this.players.length; j++)
+    for (let i = 0; i < this.getNumPlayers(); i++) {
+      if (this.players[i].isObserver) {
+        for (let j = i + 1; j <= this.players.length; j++) {
           if (!this.players[j].isObserver) {
             const x = this.players[i]
             this.players[i] = this.players[j]
             this.players[j] = x
             break
           }
+        }
+      }
+    }
   }
 
   update (player, move) {
@@ -49,19 +54,19 @@ class Game {
     }
     this.logMove(player, move)
     this.executeMove(player, move)
-    if (this.checkEnd())
+    if (this.checkEnd()) {
       this.finish()
-    else
+    } else {
       this.tryStartNewTurn(player)
+    }
     this.sendState()
   }
 
   tryStartNewTurn (player) {
-    if (this.playerRoundComplete(player))
-      this.new_turn()
+    if (this.playerRoundComplete(player)) { this.newTurn() }
   }
 
-  new_turn () {
+  newTurn () {
     this.turn++
     this.updateCurrentPlayer()
     this.players[this.currentPlayer].message('It is your turn!')
@@ -121,11 +126,11 @@ class Game {
   }
 
   // Just the non-observers
-  getPlayers() {
-    return this.players.filter(pl => !pl.isObserver);
+  getPlayers () {
+    return this.players.filter(pl => !pl.isObserver)
   }
 
-  getNumPlayers() {
+  getNumPlayers () {
     return this.getPlayers().length
   }
 
