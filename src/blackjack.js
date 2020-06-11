@@ -31,17 +31,25 @@ class Blackjack extends Game {
   }
 
   createPlayerStates () {
-    this.playerStates = this.getPlayers().reduce((states, player) => {
-      if (!player.isObserver) states[player.id] = Blackjack.PLAYING
-      return states
-    }, {})
+    this.playerStates = this.getPlayers().reduce(
+      (states, player) => {
+        if (!player.isObserver) {
+          states[player.id] = Blackjack.PLAYING
+        }
+        return states
+      },
+      {}
+    )
   }
 
   createPlayerHands () {
-    this.hands = this.getPlayers().reduce((hand, player) => {
-      hand[player.id] = [this.deck.pop(), this.deck.pop()]
-      return hand
-    }, {})
+    this.hands = this.getPlayers().reduce(
+      (hand, player) => {
+        hand[player.id] = [this.deck.pop(), this.deck.pop()]
+        return hand
+      },
+      {}
+    )
     for (const player of this.getPlayers()) {
       this.updatePlayerState(player)
     }
