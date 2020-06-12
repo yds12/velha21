@@ -37,6 +37,7 @@ canvas {
   color: #cccccc;
   font-family: 'Didact Gothic', sans, serif;
   font-size: 24px;
+  border: solid 1px black;
 }
 
 .form-enter-table {

@@ -4,9 +4,7 @@
 const btnHit = document.getElementById('hit')
 const btnStand = document.getElementById('stand')
 const canvas = document.getElementById('screen')
-canvas.width = 800
-canvas.height = 600
-canvas.style = 'border: solid 1px black;'
+
 const ctx = canvas.getContext('2d')
 let imgCards, imgBack, imgBg
 
@@ -42,7 +40,7 @@ function updateGameState (state) {
 function setHandPositions () {
   handPositions = []
   for (let i = 0; i < HANDS.length; i++) {
-    const x = (i % 2 === 0) ? HANDS_X_OFFSET : HANDS_X_OFFSET + SCREEN_W / 2
+    const x = (i % 2 === 0) ? HANDS_X_OFFSET : HANDS_X_OFFSET + canvas.width / 2
     const y = NAME_H + HANDS_Y_OFFSET + Math.floor(i / 2.0) * (CARD_H + HAND_SEP)
     handPositions.push({ x: x, y: y })
   }
@@ -75,7 +73,6 @@ function drawCard (card, pos) {
   if (card !== -1) {
     const spriteXpos = card.value - 1
     const spriteYpos = card.suit
-
     ctx.drawImage(imgCards, spriteXpos * CARD_W, spriteYpos * CARD_H,
       CARD_W, CARD_H, pos.x, pos.y, CARD_W, CARD_H)
   } else {
