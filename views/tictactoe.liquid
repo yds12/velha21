@@ -4,8 +4,8 @@
 {% assign gameType = 'tictactoe' %}
 
 {% capture game-parts %}
-  <div class="text-center">
-    <canvas id="screen" class="canvas">
+  <div id="screen-holder" class="text-center container">
+    <canvas id="screen" width=400 height=400 style="width: 100%; max-width: 400px;">
     </canvas>
   </div>
 {% endcapture %}

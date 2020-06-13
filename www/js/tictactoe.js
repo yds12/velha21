@@ -2,9 +2,6 @@
 
 // Screen elements
 const canvas = document.getElementById('screen')
-canvas.width = 400
-canvas.height = 400
-canvas.style = 'border: solid 1px black;'
 const ctx = canvas.getContext('2d')
 const imgCircle = document.createElement('img')
 const imgCross = document.createElement('img')
@@ -14,12 +11,12 @@ imgCross.src = '../res/img/cross.png'
 // Game variables
 let gameState = [0, 0, 0, 0, 0, 0, 0, 0, 0]
 
-let SCREEN_W = canvas.width
+const SCREEN_W = canvas.width
 
 const BOARD = {
   x: 5,
   y: 5,
-  tile: (canvas.width - 10) / 3
+  tile: 130
 }
 
 function updateGameState (state) {
@@ -54,19 +51,20 @@ function findQuadrant (x, y) {
     x: 0,
     y: 0
   }
-  if (x > BOARD.x && x <= (BOARD.x + BOARD.tile)) {
+  const clientTileW = (canvas.clientWidth * 0.985) / 3
+  if (x > BOARD.x && x <= (BOARD.x + clientTileW)) {
     pos.x = 0
-  } else if (x > (BOARD.x + BOARD.tile) && x <= (BOARD.x + 2 * BOARD.tile)) {
+  } else if (x > (BOARD.x + clientTileW) && x <= (BOARD.x + 2 * clientTileW)) {
     pos.x = 1
-  } else if (x > (BOARD.x + 2 * BOARD.tile) && x <= (BOARD.x + 3 * BOARD.tile)) {
+  } else if (x > (BOARD.x + 2 * clientTileW) && x <= (BOARD.x + 3 * clientTileW)) {
     pos.x = 2
   } else return null
 
-  if (y > BOARD.y && y <= (BOARD.y + BOARD.tile)) {
+  if (y > BOARD.y && y <= (BOARD.y + clientTileW)) {
     pos.y = 0
-  } else if (y > (BOARD.y + BOARD.tile) && y <= (BOARD.y + 2 * BOARD.tile)) {
+  } else if (y > (BOARD.y + clientTileW) && y <= (BOARD.y + 2 * clientTileW)) {
     pos.y = 1
-  } else if (y > (BOARD.y + 2 * BOARD.tile) && y <= (BOARD.y + 3 * BOARD.tile)) {
+  } else if (y > (BOARD.y + 2 * clientTileW) && y <= (BOARD.y + 3 * clientTileW)) {
     pos.y = 2
   } else return null
 
@@ -75,11 +73,8 @@ function findQuadrant (x, y) {
 
 // Event handling (window)
 canvas.onmousemove = (event) => {
-  SCREEN_W = canvas.width
-  BOARD.tile = (canvas.width - 10) / 3
   drawBoard()
   const quad = findQuadrant(event.clientX, event.clientY)
-
   if (quad) {
     ctx.fillStyle = '#33333388'
     ctx.fillRect(BOARD.x + quad.x * BOARD.tile,
