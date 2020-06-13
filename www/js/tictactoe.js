@@ -14,12 +14,12 @@ imgCross.src = '../res/img/cross.png'
 // Game variables
 let gameState = [0, 0, 0, 0, 0, 0, 0, 0, 0]
 
-const SCREEN_W = canvas.width
-const SCREEN_H = canvas.height
+let SCREEN_W = canvas.width
+
 const BOARD = {
   x: 5,
   y: 5,
-  tile: 130
+  tile: (canvas.width - 10) / 3
 }
 
 function updateGameState (state) {
@@ -29,7 +29,7 @@ function updateGameState (state) {
 
 // Game functions
 function drawBoard () {
-  ctx.clearRect(0, 0, SCREEN_W, SCREEN_H)
+  ctx.clearRect(0, 0, SCREEN_W, SCREEN_W)
 
   for (let i = 0; i <= 2; i++) {
     for (let j = 0; j <= 2; j++) {
@@ -37,10 +37,10 @@ function drawBoard () {
 
       if (cell === 1) { // draw X
         ctx.drawImage(imgCross,
-          BOARD.x + BOARD.tile * i, BOARD.y + BOARD.tile * j)
+          BOARD.x + BOARD.tile * i, BOARD.y + BOARD.tile * j, BOARD.tile, BOARD.tile)
       } else if (cell === 2) { // draw O
         ctx.drawImage(imgCircle,
-          BOARD.x + BOARD.tile * i, BOARD.y + BOARD.tile * j)
+          BOARD.x + BOARD.tile * i, BOARD.y + BOARD.tile * j, BOARD.tile, BOARD.tile)
       }
     }
   }
@@ -75,7 +75,8 @@ function findQuadrant (x, y) {
 
 // Event handling (window)
 canvas.onmousemove = (event) => {
-//  divMsg.innerHTML += event.clientX + ' ' + event.clientY + '; '
+  SCREEN_W = canvas.width
+  BOARD.tile = (canvas.width - 10) / 3
   drawBoard()
   const quad = findQuadrant(event.clientX, event.clientY)
 
