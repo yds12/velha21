@@ -13,10 +13,11 @@ let gameState = [0, 0, 0, 0, 0, 0, 0, 0, 0]
 
 const SCREEN_W = canvas.width
 
+const PADDING_RATIO = 0.02
+const TILE_RATIO = (1 - 2 * PADDING_RATIO) / 3
 const BOARD = {
-  x: 5,
-  y: 5,
-  tile: 130
+  padding: canvas.width * PADDING_RATIO,
+  tile: canvas.width * TILE_RATIO
 }
 
 function updateGameState (state) {
@@ -34,16 +35,18 @@ function drawBoard () {
 
       if (cell === 1) { // draw X
         ctx.drawImage(imgCross,
-          BOARD.x + BOARD.tile * i, BOARD.y + BOARD.tile * j, BOARD.tile, BOARD.tile)
+          BOARD.padding + BOARD.tile * i, BOARD.padding + BOARD.tile * j, BOARD.tile, BOARD.tile)
       } else if (cell === 2) { // draw O
         ctx.drawImage(imgCircle,
-          BOARD.x + BOARD.tile * i, BOARD.y + BOARD.tile * j, BOARD.tile, BOARD.tile)
+          BOARD.padding + BOARD.tile * i, BOARD.padding + BOARD.tile * j, BOARD.tile, BOARD.tile)
       }
     }
   }
 }
 
 function findQuadrant (x, y) {
+  const clientTile = canvas.clientWidth * TILE_RATIO
+  const clientPadding = canvas.width * PADDING_RATIO
   const rect = canvas.getBoundingClientRect()
   x -= rect.left
   y -= rect.top
@@ -51,20 +54,19 @@ function findQuadrant (x, y) {
     x: 0,
     y: 0
   }
-  const clientTileW = (canvas.clientWidth * 0.985) / 3
-  if (x > BOARD.x && x <= (BOARD.x + clientTileW)) {
+  if (x > clientPadding && x <= (clientPadding + clientTile)) {
     pos.x = 0
-  } else if (x > (BOARD.x + clientTileW) && x <= (BOARD.x + 2 * clientTileW)) {
+  } else if (x > (clientPadding + clientTile) && x <= (clientPadding + 2 * clientTile)) {
     pos.x = 1
-  } else if (x > (BOARD.x + 2 * clientTileW) && x <= (BOARD.x + 3 * clientTileW)) {
+  } else if (x > (clientPadding + 2 * clientTile) && x <= (clientPadding + 3 * clientTile)) {
     pos.x = 2
   } else return null
 
-  if (y > BOARD.y && y <= (BOARD.y + clientTileW)) {
+  if (y > clientPadding && y <= (clientPadding + clientTile)) {
     pos.y = 0
-  } else if (y > (BOARD.y + clientTileW) && y <= (BOARD.y + 2 * clientTileW)) {
+  } else if (y > (clientPadding + clientTile) && y <= (clientPadding + 2 * clientTile)) {
     pos.y = 1
-  } else if (y > (BOARD.y + 2 * clientTileW) && y <= (BOARD.y + 3 * clientTileW)) {
+  } else if (y > (clientPadding + 2 * clientTile) && y <= (clientPadding + 3 * clientTile)) {
     pos.y = 2
   } else return null
 
@@ -77,8 +79,8 @@ canvas.onmousemove = (event) => {
   const quad = findQuadrant(event.clientX, event.clientY)
   if (quad) {
     ctx.fillStyle = '#33333388'
-    ctx.fillRect(BOARD.x + quad.x * BOARD.tile,
-      BOARD.y + quad.y * BOARD.tile, BOARD.tile, BOARD.tile)
+    ctx.fillRect(BOARD.padding + quad.x * BOARD.tile,
+      BOARD.padding + quad.y * BOARD.tile, BOARD.tile, BOARD.tile)
   }
 }
 
