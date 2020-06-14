@@ -202,22 +202,29 @@ class Blackjack extends Game {
     this.state = this.getGameState()
     this.sendState()
     const dealersScore = this.computeDealerScore()
+    this.table.logMovePlayers(`Dealer score: ${dealersScore}`)
     for (const player of this.getPlayers()) {
       const playerScore = this.handSum(player)
+      this.table.logMovePlayers(`${player.name} score: ${playerScore}`)
       if (playerScore > 21) {
         player.message('You lost because you got busted.')
+        this.table.logMovePlayers(`${player.name} loses`)
       }
       if (playerScore === 21) {
         player.message('You won with 21 points.')
+        this.table.logMovePlayers(`${player.name} wins`)
       }
-      if (playerScore === 21) {
+      if (playerScore < 21) {
         if (dealersScore > 21) {
           player.message('You won, dealer got busted.')
+          this.table.logMovePlayers(`${player.name} wins`)
         } else {
           if (playerScore > dealersScore) {
             player.message('You won with a score larger than the dealer.')
+            this.table.logMovePlayers(`${player.name} wins`)
           } else {
             player.message('You lost, you didn\'t get more points than the dealer.')
+            this.table.logMovePlayers(`${player.name} loses`)
           }
         }
       }
