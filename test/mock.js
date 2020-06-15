@@ -28,6 +28,10 @@ class MockTable extends Table {
   logMovePlayers (message) {
     // console.log(message)
   }
+
+  updateGameState (state) {
+    // console.log('updateGameState ', state)
+  }
 }
 
 module.exports.Player = MockPlayer

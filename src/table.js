@@ -49,6 +49,10 @@ class Table {
     this.socket.emit('move', message)
   }
 
+  updateGameState (state) {
+    this.socket.emit('state', state)
+  }
+
   messagePlayersExcept (message, player) {
     for (const p of this.players) {
       if (p !== player) {

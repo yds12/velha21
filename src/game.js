@@ -106,9 +106,7 @@ class Game {
   }
 
   sendState () {
-    for (let i = this.players.length - 1; i >= 0; i--) {
-      this.players[i].updateGameState(this.getGameState())
-    }
+    this.table.updateGameState(this.getGameState())
   }
 
   getGameState () {
