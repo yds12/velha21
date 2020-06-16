@@ -60,7 +60,7 @@ describe('server', () => {
     })
   })
 
-  describe('on tic-tac-toe', () => {
+  describe('multiple players', () => {
     let playerSocket, opponentSocket
 
     it('should respond to socket connections with a message',
@@ -87,6 +87,28 @@ describe('server', () => {
           opponentSocket = connectSocket('/game')
           opponentSocket.emit('enterTable', { playerName: 'Ford Prefect', tableId: 'Earth', gameType: 'tictactoe' })
         })
+      })
+
+    it('should not message the player when someone starts a game in another table',
+      (done) => {
+        playerSocket = connectSocket('/game')
+        playerSocket.emit('enterTable', { playerName: 'Arthur Dent', tableId: 'Earth', gameType: 'blackjack' })
+        opponentSocket = connectSocket('/game')
+        opponentSocket.emit('enterTable', { playerName: 'Ford Prefect', tableId: 'Venus', gameType: 'blackjack' })
+        opponentSocket.emit('start')
+        playerSocket.on('message', (msg) => {
+          assert.notStrictEqual(msg, 'The game is starting!')
+        })
+        playerSocket.on('connect', () => {
+        })
+        setTimeout(
+          (err, result) => {
+            if (err) {
+              done(err)
+            } else {
+              done()
+            }
+          }, 100)
       })
 
     // Need to find a way to connect both to the same room

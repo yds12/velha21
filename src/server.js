@@ -114,10 +114,8 @@ function handleGameConnection (socket) {
     } else if (data.tableId.length < 5) {
       socket.emit('enterTableResponse', 'Please choose a table name with at least 5 characters')
     } else {
-      const roomName = `${data.gameType}_${data.tableId}`
-      socket.join(roomName)
-      const tableSocket = sioServerGame.to(roomName)
-      player = controller.createPlayer(socket, data.gameType, data.tableId, data.playerName, data.observer, tableSocket)
+      player = controller.createPlayer(socket, data.gameType, data.tableId, data.playerName, data.observer, sioServerGame)
+      socket.join(player.table.roomName)
       console.log(`Player ${data.playerName} joined ${data.tableId} for a ${data.gameType} game.`)
       updateTables()
       player.table.updatePlayers()

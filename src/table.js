@@ -10,6 +10,7 @@ class Table {
     this.waitingOpponents = true
     this.game = this.createNewGame(gameType)
     this.socket = tableSocket
+    this.roomName = `${gameType}_${tableId}`
   }
 
   addPlayer (player) {
@@ -42,15 +43,15 @@ class Table {
   }
 
   messagePlayers (message) {
-    this.socket.emit('message', message)
+    this.socket.to(this.roomName).emit('message', message)
   }
 
   logMovePlayers (message) {
-    this.socket.emit('move', message)
+    this.socket.to(this.roomName).emit('move', message)
   }
 
   updateGameState (state) {
-    this.socket.emit('state', state)
+    this.socket.to(this.roomName).emit('state', state)
   }
 
   messagePlayersExcept (message, player) {
@@ -69,7 +70,7 @@ class Table {
   }
 
   updatePlayers () {
-    this.socket.emit('updatePlayers', this.getPlayers())
+    this.socket.to(this.roomName).emit('updatePlayers', this.getPlayers())
   }
 
   getPlayers () {
