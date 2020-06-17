@@ -3,14 +3,14 @@ const Table = require('./table')
 
 const tables = []
 
-function createPlayer (socket, gameType, tableId, playerName, observer, tableSocket) {
+function createPlayer (socket, gameType, tableId, playerName, observer, tableSocket, privateTable) {
   const player = new Player(playerName, socket, observer)
-  allocatePlayer(player, gameType, tableId, tableSocket)
+  allocatePlayer(player, gameType, tableId, tableSocket, privateTable)
   player.table.game.sendState()
   return player
 }
 
-function allocatePlayer (player, gameType, tableId, tableSocket) {
+function allocatePlayer (player, gameType, tableId, tableSocket, privateTable) {
   let table
   for (const t of tables) {
     if (t.id === tableId && (t.game.type === gameType)) {
@@ -19,7 +19,7 @@ function allocatePlayer (player, gameType, tableId, tableSocket) {
     }
   }
   if (!table) {
-    table = new Table(gameType, tableId, tableSocket)
+    table = new Table(gameType, tableId, tableSocket, privateTable)
     tables.push(table)
   }
   table.addPlayer(player)
@@ -47,6 +47,7 @@ function handleStart (player) {
 
 function getTables () {
   return tables
+    .filter(table => (!table.isPrivate))
     .map(table => ({
       id: table.id,
       game: table.game.type,

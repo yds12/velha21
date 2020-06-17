@@ -3,7 +3,7 @@ const Tictactoe = require('./tictactoe')
 const Blackjack = require('./blackjack')
 
 class Table {
-  constructor (gameType, tableId, tableSocket) {
+  constructor (gameType, tableId, tableSocket, privateTable = false) {
     this.gameType = gameType
     this.players = []
     this.id = tableId
@@ -11,6 +11,7 @@ class Table {
     this.game = this.createNewGame(gameType)
     this.socket = tableSocket
     this.roomName = `${gameType}_${tableId}`
+    this.isPrivate = privateTable
   }
 
   addPlayer (player) {

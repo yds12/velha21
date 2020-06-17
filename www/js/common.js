@@ -9,6 +9,7 @@ const enterTableForm = document.getElementById('enter-table-form')
 const enterTableId = document.getElementById('enter-table-id')
 const enterPlayerName = document.getElementById('enter-player-name')
 const enterObserver = document.getElementById('enter-table-observer')
+const enterPrivateTable = document.getElementById('enter-table-private')
 const enterGameType = document.getElementById('enter-game-type')
 const enterTableErrorMessage = document.getElementById('enter-table-error-message')
 $('#staticBackdrop').modal({ keyboard: false })
@@ -19,12 +20,16 @@ if (tableId) enterTableId.value = tableId
 const observer = (new URL(window.location.href)).searchParams.get('observer')
 if (observer) enterObserver.checked = true
 
+const privateTable = (new URL(window.location.href)).searchParams.get('privateTable')
+if (privateTable) enterPrivateTable.checked = true
+
 enterTableForm.addEventListener('submit', (event) => {
   socket.emit('enterTable', {
     playerName: enterPlayerName.value,
     tableId: enterTableId.value,
     observer: enterObserver.checked,
-    gameType: enterGameType.innerText
+    gameType: enterGameType.innerText,
+    privateTable: enterPrivateTable.checked
   })
   event.preventDefault()
 })
