@@ -46,17 +46,6 @@ function setupRoutes () {
     res.send(`const PORT = ${config.port};`)
   })
 
-  app.get('/:gameType/:tableId', (req, res) => {
-    const gameType = req.params.gameType
-    const tableId = req.params.tableId
-
-    if (controller.isValidGame(gameType)) {
-      res.redirect(`/${gameType}?tableId=${tableId}`)
-    } else {
-      res.status(404).send('Error 404: Not found.')
-    }
-  })
-
   app.get('/:gameType', (req, res, next) => {
     const gameType = req.params.gameType
     if (controller.isValidGame(gameType)) { res.render(gameType) } else { next() }
