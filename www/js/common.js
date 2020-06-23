@@ -37,6 +37,7 @@ enterTableForm.addEventListener('submit', (event) => {
 socket.on('enterTableResponse', (response) => {
   if (response === 'success') {
     $('#staticBackdrop').modal('hide')
+    window.history.pushState({}, '', `/${enterGameType.innerText}?tableId=${enterTableId.value}`)
   } else {
     enterTableErrorMessage.innerText = response
   }
